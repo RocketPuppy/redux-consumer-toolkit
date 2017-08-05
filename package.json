@@ -1,8 +1,12 @@
 {
-  "name": "staticland-redux",
+  "name": "redux-reducer-toolkit",
   "version": "1.0.0",
-  "description": "Derive memoized reducers",
+  "description": "Toolkit for combining and creating efficient derived reducers",
   "main": "dist/bundle.js",
+  "repository": {
+      "type": "github",
+      "url": "https://github.com/RocketPuppy/redux-reducer-toolkit"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "babel src/ -d build/",
@@ -12,8 +16,8 @@
     "flow": "flow",
     "lint": "eslint src"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Daniel Wilson-Thomas",
+  "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
