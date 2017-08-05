@@ -226,7 +226,7 @@ Chain.expand(userReducer, cartReducer);
 #### API
 
 ```javascript
-chain : (b : outs => Reducer<action, ins, outs_>, a : Reducer<action, ins, outs>) =. Reducer<action, ins, outs_>
+chain : (b : outs => Reducer<action, ins, outs_>, a : Reducer<action, ins, outs>) => Reducer<action, ins, outs_>
 expand: (a : Reducer<action, ins, outs>, b : Reducer<action, ins, outs_>) => Reducer<action, ins, outs & outs_>
 ```
 
