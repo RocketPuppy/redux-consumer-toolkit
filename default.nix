@@ -5,9 +5,9 @@ let nixpkgs = nixpkgsFn ({
     } // ( if system == null then {} else { inherit system; } ));
 in
 nixpkgs.stdenv.mkDerivation {
-  name = "staticland-redux";
+  name = "redux-reducer-toolkit";
   buildInputs = with nixpkgs; [ nodejs flow awscli ];
-  src = "/home/dwilson/staticland-redux";
+  src = "/home/dwilson/redux-reducer-toolkit";
 
   builder = builtins.toFile "builder.sh" ''
     echo "Use this derivation with nix-shell only"
