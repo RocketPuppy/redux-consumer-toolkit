@@ -58,7 +58,7 @@ Functor.map(grandTotal, receiptReducer);
 #### API
 
 ```javascript
-map : (f : (out_a => out_b), r : Reducer<action, input, out_a>) => Reducer<action, input, out_b>)
+map : ((out_a => out_b), Reducer<action, input, out_a>) => Reducer<action, input, out_b>)
 ```
 
 ### Profunctor
@@ -90,9 +90,9 @@ Promap.promap(Ramda.prop('receipt'), grandTotal, orderReducer);
 #### API
 
 ```javascript
-promap : (f : (in_a => in_b), g : (out_a => out_b), r : Reducer<action, in_b, out_a>) => Reducer<action, in_a, out_b>
-mapIn : (f : (in_a => in_b), r : Reducer<action, in_b, out>) => Reducer<action, in_a, out>
-mapOut : (f : (out_a => out_b), r : Reducer<action, input, out_a>) => Reducer<action, input, out_b>)
+promap : ((in_a => in_b), (out_a => out_b), Reducer<action, in_b, out_a>) => Reducer<action, in_a, out_b>
+mapIn : ((in_a => in_b), Reducer<action, in_b, out>) => Reducer<action, in_a, out>
+mapOut : ((out_a => out_b), Reducer<action, input, out_a>) => Reducer<action, input, out_b>)
 ```
 
 ### Apply
@@ -118,7 +118,7 @@ Apply.ap(Apply.ap(Apply.ap(Applicative.of(grandTotal), shippingReducer), taxRedu
 #### API
 
 ```javascript
-ap : (a : Reducer<action, ins, (outs => outs_)>, b : Reducer<action, ins, outs>) => Reducer<action, ins, outs_>
+ap : (Reducer<action, ins, (outs => outs_)>, Reducer<action, ins, outs>) => Reducer<action, ins, outs_>
 ```
 
 ### Applicative
@@ -136,7 +136,7 @@ returns the same value. See the Use case for `Apply` for an example.
 #### API
 
 ```javascript
-of: (a : outs) => Reducer<action, ins, outs>
+of: (outs) => Reducer<action, ins, outs>
 ```
 
 ### Semigroup
@@ -164,7 +164,7 @@ Semigroup.concat(lineItemsReducer, subtotalReducer);
 #### API
 
 ```javascript
-concat : (a : Reducer<action, in_a, out_a>, b : Reducer<action, out_a, out_b>) => Reducer<action, in_a, out_b>
+concat : (Reducer<action, in_a, out_a>, Reducer<action, out_a, out_b>) => Reducer<action, in_a, out_b>
 ```
 
 ### Monoid
@@ -226,8 +226,8 @@ Chain.expand(userReducer, cartReducer);
 #### API
 
 ```javascript
-chain : (b : outs => Reducer<action, ins, outs_>, a : Reducer<action, ins, outs>) => Reducer<action, ins, outs_>
-expand : (a : Reducer<action, ins, outs>, b : Reducer<action, ins, outs_>) => Reducer<action, ins, outs & outs_>
+chain : (outs => Reducer<action, ins, outs_>, Reducer<action, ins, outs>) => Reducer<action, ins, outs_>
+expand : (Reducer<action, ins, outs>, Reducer<action, ins, outs_>) => Reducer<action, ins, outs & outs_>
 ```
 
 ## Contributing
