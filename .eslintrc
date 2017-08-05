@@ -1,0 +1,77 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+      "ecmaFeatures": {
+        "classes": true,
+        "modules": true,
+        "experimentalObjectRestSpread": true
+      }
+  },
+  "env": {
+    "es6": true
+  },
+  "rules": {
+    "eqeqeq": 2,
+    "comma-dangle": 1,
+    "no-multi-spaces": 1,
+    "no-unused-vars": [2, { "argsIgnorePattern": "^_" }],
+    "no-shadow": 1,
+    "no-console": 2,
+    "no-debugger": 2,
+    "no-empty": 2,
+    "no-irregular-whitespace": 1,
+    "no-sparse-arrays": 2,
+    "no-unreachable": 2,
+    "valid-typeof": 2,
+    "block-scoped-var": 2,
+    "consistent-return": 2,
+    "curly": 1,
+    "dot-location": [1, "property"],
+    "dot-notation": [1, {"allowPattern": "^[a-z]+(_[a-z]+)+$"}],
+    "no-param-reassign": [1, {"props": true}],
+    "no-redeclare": 1,
+    "no-unused-expressions": [1, {"allowShortCircuit": true, "allowTernary": true}],
+    "yoda": [2, "never", {"exceptRange": true}],
+    "no-lonely-if": 2,
+    "no-multiple-empty-lines": 1,
+    "semi-spacing": [1, {"before": false, "after": true}],
+    "no-constant-condition": 1,
+    "no-var": 2,
+    "object-shorthand": [1, "always"],
+    "prefer-const": 1,
+    "prefer-spread": 1,
+    "prefer-template": 1,
+    "strict": 0,
+    "semi": [2, "always"],
+    "radix": 2,
+    "flowtype/boolean-style": [2, "boolean"],
+    "flowtype/define-flow-type": 1,
+    "flowtype/object-type-delimiter": [2, "comma"],
+    "flowtype/use-flow-type": 1,
+    "import/export": 2,
+    "import/namespace": 2,
+    "import/no-amd": 2,
+    "import/no-commonjs": 2,
+    "import/no-duplicates": 2,
+    "import/no-named-as-default-member": 2,
+    "import/no-unresolved": 2,
+    "import/unambiguous": 2
+  },
+  "plugins": [
+    "flowtype",
+    "import"
+  ],
+  "globals": {
+    "global": false,
+    "alert": false,
+    "console": false,
+    "require": false,
+    "module": false,
+    "process": false,
+    "expect": false,
+    "fetch": false,
+    "it": false,
+    "setTimeout": false,
+    "clearTimeout": false
+  }
+}
