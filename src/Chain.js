@@ -18,6 +18,9 @@ const Chain = {
   expand: (r : Reducer<action, ins, outs>, r_ : Reducer<action, ins, outs_>) : Reducer<action, ins, outs & outs_> => (
     Chain.chain((s_) => (s, a) => ({ ...s_, ...r_(s, a) }), r)
   ),
+  expandAll: (...reducers) => (
+    reducers.reduce(Chain.expand, Monoid.empty)
+  ),
   combine: (reducerSpec) => (
     values(mapObjIndexed((r, k) => Profunctor.objectify(k, r), reducerSpec))
       .reduceRight(Chain.expand, Monoid.empty)

@@ -216,8 +216,9 @@ Chain.chain((routerState) => (
 ), Promap.mapIn(Ramda.prop('router'), routerReducer));
 ```
 
-Expand handles the use case where you might want two reducers operating on the
-same state to each return separate keys of a resulting object.
+`Chain.expand` handles the use case where you might want two reducers operating
+on the same state to each return separate keys of a resulting object.
+`Chain.expandAll` operates on more than two reducers.
 
 ```javascript
 // Manages user account information
@@ -245,6 +246,7 @@ the individual reducers.
 ```javascript
 chain : (outs => Reducer<action, ins, outs_>, Reducer<action, ins, outs>) => Reducer<action, ins, outs_>
 expand : (Reducer<action, ins, outs>, Reducer<action, ins, outs_>) => Reducer<action, ins, outs & outs_>
+expandAll : (...Reducer<action, ins, *>) => Reducer<action, ins, outs>
 combine : (Object<string, Reducer<action, *, *>>) => Reducer<action, *, *>
 ```
 
