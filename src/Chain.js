@@ -1,5 +1,9 @@
 // @flow
 import memoize from 'ramda/src/memoize.js';
+import mapObjIndexed from 'ramda/src/mapObjIndexed.js';
+import values from 'ramda/src/values.js';
+import Profunctor from './Profunctor';
+import Monoid from './Monoid';
 
 // Chain<Reducer<action, ins>>
 // Capture the output of a reducer to be used as additional input to a second reducer.
@@ -13,6 +17,10 @@ const Chain = {
   // Take two reducers and merge their output, biased towards the second reducer
   expand: (r : Reducer<action, ins, outs>, r_ : Reducer<action, ins, outs_>) : Reducer<action, ins, outs & outs_> => (
     Chain.chain((s_) => (s, a) => ({ ...s_, ...r_(s, a) }), r)
+  ),
+  combine: (reducerSpec) => (
+    values(mapObjIndexed((r, k) => Profunctor.objectify(k, r), reducerSpec))
+      .reduceRight(Chain.expand, Monoid.empty)
   )
 };
 

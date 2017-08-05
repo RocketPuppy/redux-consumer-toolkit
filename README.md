@@ -230,6 +230,11 @@ const cartReducer;
 Chain.expand(userReducer, cartReducer);
 ```
 
+`Chain.combine` works just like the traditional `combineReducers` function. It
+accepts an object whose values are reducers, and returns a reducer that will
+generate an object with the same keys whose values are the state returned from
+the individual reducers.
+
 #### Parameterized Types
 
 * Input state
@@ -240,6 +245,7 @@ Chain.expand(userReducer, cartReducer);
 ```javascript
 chain : (outs => Reducer<action, ins, outs_>, Reducer<action, ins, outs>) => Reducer<action, ins, outs_>
 expand : (Reducer<action, ins, outs>, Reducer<action, ins, outs_>) => Reducer<action, ins, outs & outs_>
+combine : (Object<string, Reducer<action, *, *>>) => Reducer<action, *, *>
 ```
 
 ## Contributing
