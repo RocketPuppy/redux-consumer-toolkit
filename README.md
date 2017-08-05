@@ -82,6 +82,17 @@ const orderReducer;
 Promap.promap(Ramda.prop('receipt'), grandTotal, orderReducer);
 ```
 
+`Profunctor.objectify` takes a key and a reducer and generates a reducer which
+can take an object with that key and return an object with that key. You can
+reimplement `combineReducers` this way.
+
+```javascript
+const combineReducers = (reducerSpec) => (
+  reducerSpec.map((r, k) => Profunctor.objectify(k, r))
+    .reduce(Chain.expand, Monoid.identity)
+)
+```
+
 #### Parameterized Types
 
 * Input state
@@ -93,6 +104,7 @@ Promap.promap(Ramda.prop('receipt'), grandTotal, orderReducer);
 promap : ((in_a => in_b), (out_a => out_b), Reducer<action, in_b, out_a>) => Reducer<action, in_a, out_b>
 mapIn : ((in_a => in_b), Reducer<action, in_b, out>) => Reducer<action, in_a, out>
 mapOut : ((out_a => out_b), Reducer<action, input, out_a>) => Reducer<action, input, out_b>)
+objectify : (string, Reducer<action, ins, outs>) => Reducer<action, { string: ins }, { string: outs }>
 ```
 
 ### Apply

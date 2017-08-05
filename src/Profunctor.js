@@ -14,7 +14,10 @@ const Profunctor = {
     ))
   ),
   mapIn: (inF, r) => Profunctor.promap(inF, x => x, r),
-  mapOut: Functor.map
+  mapOut: Functor.map,
+  objectify: (k : string, r : Reducer<action, ins, outs>) : Reducer<action, { k: ins }, { k: outs }> => (
+    Profunctor.promap((s) => s[k], (s) => ({ [k]: s }), r)
+  )
 };
 
 export default Profunctor;
