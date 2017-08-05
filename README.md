@@ -66,7 +66,7 @@ map : ((out_a => out_b), Reducer<action, input, out_a>) => Reducer<action, input
 #### Use case
 
 This module provides methods for modifying both the input state and the output
-state of a reducer. Note that `mapOut` is identical to `Functor.map`
+state of a reducer. Note that `mapOut` is identical to `Functor.map`.
 
 * Glue reducers lower in the hierarchy to reducers higher in the hierarchy
 
