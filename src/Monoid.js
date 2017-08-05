@@ -3,7 +3,7 @@ import memoize from 'ramda/src/memoize.js';
 
 // Monoid<Reducer<action, state, state>>
 // Identity for reducers. It always returns the same state that was given.
-export const Monoid = {
+const Monoid = {
   empty: () : Reducer<action, state, state> => (
     memoize((s : state, _ : action) => (
       s
@@ -11,6 +11,7 @@ export const Monoid = {
   )
 };
 
+export default Monoid;
 /*
  * Right identity
  *

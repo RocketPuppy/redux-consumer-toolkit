@@ -8,14 +8,7 @@ import Semigroup from './Semigroup';
 import Monoid from './Monoid';
 import Chain from './Chain';
 
-export default {
-  ...Functor,
-  ...Profunctor,
-  ...Apply,
-  ...Applicative,
-  ...Semigroup,
-  ...Monoid,
-  ...Chain,
+export {
   Functor,
   Profunctor,
   Apply,
@@ -23,4 +16,14 @@ export default {
   Semigroup,
   Monoid,
   Chain
+};
+
+export default {
+  ...Functor,
+  ...Profunctor,
+  ...Apply,
+  ...Applicative,
+  ...Semigroup,
+  ...Monoid,
+  ...Chain
 };

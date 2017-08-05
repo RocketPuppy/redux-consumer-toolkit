@@ -1,12 +1,13 @@
 // @flow
 import memoize from 'ramda/src/memoize.js';
+import Functor from './Functor';
 
 // Profunctor<Reducer<action>>
 // Transform the input and output of a reducer.
 // Promap transforms both at the same time
 // MapIn transforms only the input.
 // MapOut transforms only the output, identical to Functor.map
-export const Profunctor = {
+const Profunctor = {
   promap: (inF : new_in => old_in, outF : old_out => new_out, r : Reducer<action, old_in, old_out>) : Reducer<action, new_in, new_out> => (
     memoize((s : new_in, a : action) : new_out => (
       outF(r(in_f(s), a))
@@ -16,6 +17,7 @@ export const Profunctor = {
   mapOut: Functor.map
 };
 
+export default Profunctor;
 /*
  * Identity
  * promap(id, id, r) === r

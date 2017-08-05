@@ -4,7 +4,7 @@ import memoize from 'ramda/src/memoize.js';
 // Chain<Reducer<action, ins>>
 // Capture the output of a reducer to be used as additional input to a second reducer.
 
-export const Chain = {
+const Chain = {
   chain: (r_ : outs => Reducer<action, ins, outs_>, r : Reducer<action, ins, outs>) : Reducer<action, ins, outs_> => (
     memoize((state : ins, action : action) => (
       r_(r(state, action))(state, action)
@@ -15,6 +15,8 @@ export const Chain = {
     Chain.chain((s_) => (s, a) => ({ ...s_, ...r_(s, a) }), r)
   )
 };
+
+export default Chain;
 /*
  * Associativity
  * chain(g, chain(f, u)) === chain(x => chain(g, f(x)), u)

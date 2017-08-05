@@ -5,7 +5,7 @@ import type Reducer from './types';
 // Functor<Reducer<action, ins>>
 // Transform the output of a reducer
 
-export const Functor = {
+const Functor = {
   map: (f : (state => new_state), reducer : Reducer<ins, state>) : Reducer<ins, new_state> => (
     memoize((state : state, action : action) : new_state => (
       f(reducer(state, action))
@@ -13,6 +13,7 @@ export const Functor = {
   )
 };
 
+export default Functor;
 /*
  * Identity:
  * map(id, r) === r
