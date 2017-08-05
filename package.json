@@ -1,11 +1,11 @@
 {
   "name": "redux-reducer-toolkit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Toolkit for combining and creating efficient derived reducers",
   "main": "dist/bundle.js",
   "repository": {
-      "type": "github",
-      "url": "https://github.com/RocketPuppy/redux-reducer-toolkit"
+    "type": "github",
+    "url": "https://github.com/RocketPuppy/redux-reducer-toolkit"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
