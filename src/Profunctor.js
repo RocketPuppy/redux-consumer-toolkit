@@ -10,7 +10,7 @@ import Functor from './Functor';
 const Profunctor = {
   promap: (inF : new_in => old_in, outF : old_out => new_out, r : Reducer<action, old_in, old_out>) : Reducer<action, new_in, new_out> => (
     memoize((s : new_in, a : action) : new_out => (
-      outF(r(in_f(s), a))
+      outF(r(inF(s), a))
     ))
   ),
   mapIn: (inF, r) => Profunctor.promap(inF, x => x, r),
