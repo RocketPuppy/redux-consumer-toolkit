@@ -11,11 +11,17 @@ const Apply = {
     (state : ins, action : action) => (
       a(state, action)(b(state, action))
     )
+  ),
+  apAll: (a, ...args) => (
+    (state, action) => (
+      a(state, action).apply(args.map(arg => arg(state, action)))
+    )
   )
 };
 
 export const ApplyM = {
-  ap: memoize(Apply.ap)
+  ap: memoize(Apply.ap),
+  apAll: memoize(Apply.apAll)
 };
 
 export default Apply;
