@@ -1,5 +1,7 @@
 // @flow
 
+import Memoized, * as MemMod from './memoized';
+
 import Functor from './Functor';
 import Profunctor from './Profunctor';
 import Apply from './Apply';
@@ -25,5 +27,9 @@ export default {
   ...Applicative,
   ...Semigroup,
   ...Monoid,
-  ...Chain
+  ...Chain,
+  Memoized: {
+    ...Memoized,
+    ...MemMod
+  }
 };

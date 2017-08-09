@@ -8,10 +8,14 @@ import memoize from 'ramda/src/memoize.js';
 
 const Apply = {
   ap: (a : Reducer<action, ins, (outs => outs_)>, b : Reducer<action, ins, outs>) : Reducer<action, ins, outs_> => (
-    memoize((state : ins, action : action) => (
+    (state : ins, action : action) => (
       a(state, action)(b(state, action))
-    ))
+    )
   )
+};
+
+export const ApplyM = {
+  ap: memoize(Apply.ap)
 };
 
 export default Apply;

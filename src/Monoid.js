@@ -5,10 +5,14 @@ import memoize from 'ramda/src/memoize.js';
 // Identity for reducers. It always returns the same state that was given.
 const Monoid = {
   empty: () : Reducer<action, state, state> => (
-    memoize((s : state, _ : action) => (
+    (s : state, _ : action) => (
       s
-    ))
+    )
   )
+};
+
+export const MonoidM = {
+  empty: memoize(Monoid.empty)
 };
 
 export default Monoid;

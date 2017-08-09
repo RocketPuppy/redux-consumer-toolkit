@@ -5,10 +5,14 @@ import memoize from 'ramda/src/memoize.js';
 // Lifts a value into a reducer so it can be used by Apply.ap
 const Applicative = {
   of: (a : outs) : Reducer<action, ins, outs> => (
-    memoize((s : ins, action : action) : outs => (
+    (s : ins, action : action) : outs => (
       a
-    ))
+    )
   )
+};
+
+export const ApplicativeM = {
+  of: memoize(Applicative.of)
 };
 
 export default Applicative;

@@ -7,10 +7,14 @@ import memoize from 'ramda/src/memoize.js';
 // the same type.
 const Semigroup = {
   concat: (r : Reducer<action, in_a, out_a>, r_ : Reducer<action, out_a, out_b>) : Reducer<action, in_a, out_b> => (
-    memoize((s : state, a : action) : state => (
+    (s : state, a : action) : state => (
       r_(r(s, a), a)
-    ))
+    )
   )
+};
+
+export const SemigroupM = {
+  concat: memoize(Semigroup.concat)
 };
 
 export default Semigroup;

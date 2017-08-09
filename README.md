@@ -34,6 +34,9 @@ across arguments or return values. Depending on the module, either the output
 state or both the input and output state types will vary across arguments and
 return values. These will be noted in each module.
 
+Both memoized and non-memoized versions of these modules are exported. Memoized
+versions can be accessed by `import { Memoized } from 'redux-reducer-toolkit'`.
+
 ### Functor
 
 ### Use case

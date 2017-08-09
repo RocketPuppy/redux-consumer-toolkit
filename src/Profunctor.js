@@ -9,15 +9,22 @@ import Functor from './Functor';
 // MapOut transforms only the output, identical to Functor.map
 const Profunctor = {
   promap: (inF : new_in => old_in, outF : old_out => new_out, r : Reducer<action, old_in, old_out>) : Reducer<action, new_in, new_out> => (
-    memoize((s : new_in, a : action) : new_out => (
+    (s : new_in, a : action) : new_out => (
       outF(r(inF(s), a))
-    ))
+    )
   ),
   mapIn: (inF, r) => Profunctor.promap(inF, x => x, r),
   mapOut: Functor.map,
   objectify: (k : string, r : Reducer<action, ins, outs>) : Reducer<action, { k: ins }, { k: outs }> => (
     Profunctor.promap((s) => s[k], (s) => ({ [k]: s }), r)
   )
+};
+
+export const ProfunctorM = {
+  promap: memoize(Profunctor.promap),
+  mapIn: memoize(Profunctor.mapIn),
+  mapOut: memoize(Profunctor.mapOut),
+  objectify: memoize(Profunctor.objectify)
 };
 
 export default Profunctor;

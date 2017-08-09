@@ -10,9 +10,9 @@ import Monoid from './Monoid';
 
 const Chain = {
   chain: (r_ : outs => Reducer<action, ins, outs_>, r : Reducer<action, ins, outs>) : Reducer<action, ins, outs_> => (
-    memoize((state : ins, action : action) => (
+    (state : ins, action : action) => (
       r_(r(state, action))(state, action)
-    ))
+    )
   ),
   // Take two reducers and merge their output, biased towards the second reducer
   expand: (r : Reducer<action, ins, outs>, r_ : Reducer<action, ins, outs_>) : Reducer<action, ins, outs & outs_> => (
@@ -25,6 +25,13 @@ const Chain = {
     values(mapObjIndexed((r, k) => Profunctor.objectify(k, r), reducerSpec))
       .reduceRight(Chain.expand, Monoid.empty)
   )
+};
+
+export const ChainM = {
+  chain: memoize(Chain.chain),
+  expand: memoize(Chain.expand),
+  expandAll: memoize(Chain.expandAll),
+  combine: memoize(Chain.combine)
 };
 
 export default Chain;

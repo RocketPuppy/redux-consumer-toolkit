@@ -7,10 +7,14 @@ import type Reducer from './types';
 
 const Functor = {
   map: (f : (state => new_state), reducer : Reducer<ins, state>) : Reducer<ins, new_state> => (
-    memoize((state : state, action : action) : new_state => (
+    (state : state, action : action) : new_state => (
       f(reducer(state, action))
-    ))
+    )
   )
+};
+
+export const FunctorM = {
+  map: memoize(Functor.map)
 };
 
 export default Functor;
