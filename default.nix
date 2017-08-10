@@ -16,6 +16,7 @@ nixpkgs.stdenv.mkDerivation {
   '';
 
   shellHook = ''
+    export PATH=$src/node_modules/.bin:$PATH
     cd $src
   '';
 }
