@@ -9,7 +9,7 @@ export type ApplicativeT<Static, In, Out> = {
 // Lifts a value into a reducer so it can be used by Apply.ap
 const Applicative : ApplicativeT<*, *, *> = {
   of: (a) => (
-    (s, action) => (
+    (_s, _action) => (
       a
     )
   )
