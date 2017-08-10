@@ -8,18 +8,25 @@ import Monoid from './Monoid';
 // Chain<Reducer<action, ins>>
 // Capture the output of a reducer to be used as additional input to a second reducer.
 
-const Chain = {
-  chain: (r_ : outs => Reducer<action, ins, outs_>, r : Reducer<action, ins, outs>) : Reducer<action, ins, outs_> => (
-    (state : ins, action : action) => (
+export type ChainT<Static, In, OutA, OutB> = {
+  chain: (OutA => ((In, Static) => OutB), (In, Static) => OutA) => (In, Static) => OutB,
+  expand: ((In, Static) => OutA, (In, Static) => {[string]: mixed}) => (In, Static) => {[string]: mixed},
+  expandAll: (...Array<(In, Static) => {[string]: mixed}>) => (In, Static) => {[string]: mixed},
+  combine: ({[key : string]: (In, Static) => mixed }) => (In, Static) => mixed
+};
+
+const Chain : ChainT<*, *, *, *> = {
+  chain: (r_, r) => (
+    (state, action) => (
       r_(r(state, action))(state, action)
     )
   ),
   // Take two reducers and merge their output, biased towards the second reducer
-  expand: (r : Reducer<action, ins, outs>, r_ : Reducer<action, ins, outs_>) : Reducer<action, ins, outs & outs_> => (
+  expand: (r, r_) => (
     Chain.chain((s_) => (s, a) => ({ ...s_, ...r_(s, a) }), r)
   ),
   expandAll: (...reducers) => (
-    reducers.reduce(Chain.expand, Monoid.empty)
+    reducers.reduce(Chain.expand, Monoid.empty())
   ),
   combine: (reducerSpec) => (
     values(mapObjIndexed((r, k) => Profunctor.objectify(k, r), reducerSpec))
@@ -27,7 +34,7 @@ const Chain = {
   )
 };
 
-export const ChainM = {
+export const ChainM : ChainT<*, *, *, *> = {
   chain: memoize(Chain.chain),
   expand: memoize(Chain.expand),
   expandAll: memoize(Chain.expandAll),

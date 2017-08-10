@@ -6,9 +6,14 @@ import memoize from 'ramda/src/memoize.js';
 // transform chains of reducers. If the function is curried, you can chain
 // usages of ap to fill all the arguments.
 
-const Apply = {
-  ap: (a : Reducer<action, ins, (outs => outs_)>, b : Reducer<action, ins, outs>) : Reducer<action, ins, outs_> => (
-    (state : ins, action : action) => (
+export type ApplyT<Static, In, OutA, OutB> = {
+  ap: ((In, Static) => (OutA => OutB), (In, Static) => OutA) => (In, Static) => OutB,
+  apAll: ((In, Static) => (mixed => OutB), ...Array<(In, Static) => mixed>) => (In, Static) => OutB
+};
+
+const Apply : ApplyT<*, *, *, *> = {
+  ap: (a, b) => (
+    (state, action) => (
       a(state, action)(b(state, action))
     )
   ),
@@ -19,7 +24,7 @@ const Apply = {
   )
 };
 
-export const ApplyM = {
+export const ApplyM : ApplyT<*, *, *, *> = {
   ap: memoize(Apply.ap),
   apAll: memoize(Apply.apAll)
 };

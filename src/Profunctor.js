@@ -2,25 +2,32 @@
 import memoize from 'ramda/src/memoize.js';
 import Functor from './Functor';
 
+export type ProfunctorT<Static, InA, InB, OutA, OutB> = {
+  promap: ((InB => InA), (OutA => OutB), (InA, Static) => OutA) => (InB, Static) => OutB,
+  mapIn: ((InB => InA), (InA, Static) => OutA) => (InB, Static) => OutB,
+  mapOut: ((OutA => OutB), (InA, Static) => OutA) => (InA, Static) => OutB,
+  objectify: (string, (InA, Static) => OutA) => ({[string]: InA}, Static) => {[string]: OutA}
+};
+
 // Profunctor<Reducer<action>>
 // Transform the input and output of a reducer.
 // Promap transforms both at the same time
 // MapIn transforms only the input.
 // MapOut transforms only the output, identical to Functor.map
-const Profunctor = {
-  promap: (inF : new_in => old_in, outF : old_out => new_out, r : Reducer<action, old_in, old_out>) : Reducer<action, new_in, new_out> => (
-    (s : new_in, a : action) : new_out => (
+const Profunctor : ProfunctorT<*, *, *, *, *> = {
+  promap: (inF, outF, r) => (
+    (s, a) => (
       outF(r(inF(s), a))
     )
   ),
   mapIn: (inF, r) => Profunctor.promap(inF, x => x, r),
   mapOut: Functor.map,
-  objectify: (k : string, r : Reducer<action, ins, outs>) : Reducer<action, { k: ins }, { k: outs }> => (
+  objectify: (k, r) => (
     Profunctor.promap((s) => s[k], (s) => ({ [k]: s }), r)
   )
 };
 
-export const ProfunctorM = {
+export const ProfunctorM : ProfunctorT<*, *, *, *, *> = {
   promap: memoize(Profunctor.promap),
   mapIn: memoize(Profunctor.mapIn),
   mapOut: memoize(Profunctor.mapOut),

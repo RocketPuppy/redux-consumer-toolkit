@@ -1,19 +1,22 @@
 // @flow
 import memoize from 'ramda/src/memoize.js';
-import type Reducer from './types';
 
 // Functor<Reducer<action, ins>>
 // Transform the output of a reducer
 
-const Functor = {
-  map: (f : (state => new_state), reducer : Reducer<ins, state>) : Reducer<ins, new_state> => (
-    (state : state, action : action) : new_state => (
+export type FunctorT<Static, In, OutA, OutB> = {
+  map: ((OutA => OutB), (In, Static) => OutA) => (In, Static) => OutB
+};
+
+const Functor : FunctorT<*, *, *, *> = {
+  map: (f, reducer) => (
+    (state, action) => (
       f(reducer(state, action))
     )
   )
 };
 
-export const FunctorM = {
+export const FunctorM : FunctorT<*, *, *, *> = {
   map: memoize(Functor.map)
 };
 

@@ -1,17 +1,21 @@
 // @flow
 import memoize from 'ramda/src/memoize.js';
 
+export type ApplicativeT<Static, In, Out> = {
+  of: (Out) => (In, Static) => Out
+};
+
 // Applicative<Reducer<action, ins>>
 // Lifts a value into a reducer so it can be used by Apply.ap
-const Applicative = {
-  of: (a : outs) : Reducer<action, ins, outs> => (
-    (s : ins, action : action) : outs => (
+const Applicative : ApplicativeT<*, *, *> = {
+  of: (a) => (
+    (s, action) => (
       a
     )
   )
 };
 
-export const ApplicativeM = {
+export const ApplicativeM : ApplicativeT<*, *, *> = {
   of: memoize(Applicative.of)
 };
 

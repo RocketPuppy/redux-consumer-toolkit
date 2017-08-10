@@ -1,19 +1,23 @@
 // @flow
 import memoize from 'ramda/src/memoize.js';
 
+export type SemigroupT<Static, In, OutA, OutB> = {
+  concat: ((In, Static) => OutA, (OutA, Static) => OutB) => (In, Static) => OutB
+};
+
 // Semigroup <Reducer<action, state, state>>
 // Apply the two reducers to the same action, with the output of the first
 // argument being used as input to the second. Reducers must take and return
 // the same type.
-const Semigroup = {
-  concat: (r : Reducer<action, in_a, out_a>, r_ : Reducer<action, out_a, out_b>) : Reducer<action, in_a, out_b> => (
-    (s : state, a : action) : state => (
+const Semigroup : SemigroupT<*, *, *, *> = {
+  concat: (r, r_) => (
+    (s, a) => (
       r_(r(s, a), a)
     )
   )
 };
 
-export const SemigroupM = {
+export const SemigroupM : SemigroupT<*, *, *, *> = {
   concat: memoize(Semigroup.concat)
 };
 
