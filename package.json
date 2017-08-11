@@ -1,6 +1,6 @@
 {
   "name": "redux-reducer-toolkit",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Toolkit for combining and creating efficient derived reducers",
   "main": "dist/bundle.js",
   "repository": {
