@@ -2,7 +2,7 @@
   "name": "redux-reducer-toolkit",
   "version": "1.2.0",
   "description": "Toolkit for combining and creating efficient derived reducers",
-  "main": "dist/bundle.js",
+  "main": "dist/redux-reducer-toolkit.js",
   "repository": {
     "type": "github",
     "url": "https://github.com/RocketPuppy/redux-reducer-toolkit"
@@ -10,7 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "babel src/ -d build/",
-    "bundle": "webpack --output-library=staticland-redux --output-library-target=umd build/index.js dist/bundle.js",
+    "bundle": "webpack --config webpack.config.js",
     "build": "npm run lint && npm run compile && npm run bundle",
     "prepublish": "npm run build",
     "flow": "flow",
