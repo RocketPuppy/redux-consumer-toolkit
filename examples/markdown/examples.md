@@ -18,5 +18,5 @@ can apply to your programs now.
 You can also get a feel for the concepts and practices introduced in
 this library through the following sections:
 
-[Concepts](_book/concepts.md)
+[Concepts](_book/Concepts_contents.md)
 
