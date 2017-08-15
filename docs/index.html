@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Redux Reducer Toolkit Examples</title>
+<title>Redux Reducer Toolkit</title>
 <script>
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
 (function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
@@ -42,19 +42,28 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </head>
 <body onload="prettyPrint()">
 <section>
-<h1>Redux Reducer Toolkit Examples</h1>
+<h1>Redux Reducer Toolkit</h1>
 <a name="1:1"><div class="section"><h4>1. Introduction</h4></a>
-<p>This document is a table of contents for the various examples that can be found in this directory.
+<p>Welcome to the documentation on the Redux Reducer Toolkit library. It is a library intended to help you build up both complicated reducer functions and complicated selector functions from simple parts.
 </p>
-<p>If you are familiar with Reselect, starting with the chapter on translating concepts from Reselect is a good idea.
+
+</div>
+<a name="1:2"><div class="section"><h4>2. Reselect</h4></a>
+<p>This library is occupying a niche already filled in some part by the <a href="https://github.com/reactjs/reselect">Reselect</a> library. If you are familiar with Reselect, starting with the chapters on translating concepts from Reselect is a good idea.
 </p>
 <p><a href="_book/Reselect Translations_contents.html">Reselect Translations</a>
 </p>
+
+</div>
+<a name="1:3"><div class="section"><h4>3. Cookbook</h4></a>
 <p>You can dive into the cookbook which will demonstrate a few recipes you can apply to your programs now.
 </p>
 <p><a href="_book/cookbook.html">Cookbook</a>
 </p>
-<p>You can also get a feel for the concepts and practices introduced in this library through the following sections:
+
+</div>
+<a name="1:4"><div class="section"><h4>4. Fundamentals</h4></a>
+<p>You can also get a feel for the concepts and practices introduced in this library through the following chapters. They are literate programs, which means they will explain how and why the library is built by intermingling prose with source code. The goal being to gain a deep understanding through reading.
 </p>
 <p><a href="_book/Concepts_contents.html">Concepts</a>
 </p>

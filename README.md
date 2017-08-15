@@ -12,7 +12,7 @@ specification. This made it simple to build this as a library instead of pinning
 it to a specific redux version.
 
 See the [Github Pages
-site](https://rocketpuppy.github.io/redux-reducer-toolkit/examples.html) for
+site](https://rocketpuppy.github.io/redux-reducer-toolkit/index.html) for
 usage examples and documentation on the library.
 
 ## API
