@@ -11,8 +11,9 @@ based off of the [static-land](https://github.com/rpominov/static-land)
 specification. This made it simple to build this as a library instead of pinning
 it to a specific redux version.
 
-See the [examples](examples) directory for usage examples, including a
-comparison with reselect.
+See the [Github Pages
+site](https://rocketpuppy.github.io/redux-reducer-toolkit/examples.html) for
+usage examples and documentation on the library.
 
 ## API
 
