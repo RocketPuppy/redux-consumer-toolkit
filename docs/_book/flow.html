@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Functor</title>
+<title>Flow Basics</title>
 <script>
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
 (function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
@@ -42,122 +42,41 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </head>
 <body onload="prettyPrint()">
 <section>
-<h1>Functor</h1>
-<a name="2:1"><div class="section"><h4>1. Motivation</h4></a>
-<p>It is often the case when programming that you have a function that takes some input argument and returns a transformed output. You also might have some piece of data you'd like to apply that function to, but you can't because the data is encapsulated inside something else. We'll call the "data" in this case the "target" and the "something else" the "context". To make it concrete, we might have some way to get the number of completed todo items but the only way to get the todo items is via a selector function.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{introduction_concrete <a href="functor.html#2:1">1</a>}</span>
-<pre class="prettyprint">
-const todoSelector = (state, props) =&gt; state.todos;
-
-const lengthOfTodos = (todos) =&gt; todos.length;
-</pre>
-
-
-
-</div>
-<p>Note how you can't just apply the <code>lengthOfTodos</code> function to the <code>todoSelector</code>. The <code>lengthOfTodos</code> function expects an array of todo objects, and the <code>todoSelector</code> is a function. This is where Functor comes to help. With Functor you can define that <code>lengthOfTodos</code> is to be applied to the target data in the context of the selector function. This is what it looks like.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{introduction_concrete <a href="functor.html#2:1">1</a>} +=</span>
-<pre class="prettyprint">
-Functor.map(lengthOfTodos, todoSelector)
-</pre>
-
-
-
-</div>
-<p>Simple!
+<h1>Flow Basics</h1>
+<a name="1:1"><div class="section"><h4>1. Motivation</h4></a>
+<p>The <a href="https://flow.org">Flow</a> type checker for Javascript provides me with some guarantees while I'm developing that the code I write is all internally consistent. This helps prevent me from making silly mistakes. Additionally the type signatures serve as a useful form of documentation.
 </p>
 
 </div>
-<a name="2:2"><div class="section"><h4>2. Details</h4></a>
-<p>A Functor is really best talked about as an interface that an entity can implement. That interface is pretty simple. It is simply the map function, along with some properties on how that function behaves. The specification is below.
+<a name="1:2"><div class="section"><h4>2. Basic Requirements</h4></a>
+<p>I make use of several concepts throughout the source code, but the most important one is the use of generics. Generis are a way to signal to the user that a given function will operate with any type that you provide it. Every module and function that is exported by the library is parameterized on several generic types. As an example, take the Functor module.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{details <a href="functor.html#2:2">2</a>}</span>
+<span class="codeblock_name">{generic type example <a href="flow.html#1:2">2</a>}</span>
 <pre class="prettyprint">
-const Functor = {
-  map: function(transformer, context) {
-<span class="nocode pln">    {implementation, <a href="functor.html#2:2">2</a>}</span>
-  }
+type FunctorT&lt;Static, In, OutA, OutB&gt; = {
+  map: ((OutA =&gt; OutB), (In, Static) =&gt; OutA) =&gt; (In, Static) =&gt; OutB
 };
 </pre>
-<p class="seealso">Added to in section <a href="functor.html#2:2">2</a></p>
-
-
-</div>
-<p>It takes a transformer function and the context as arguments. It must also return a value that is in the same context. You'll see what that means in the implementation.
-</p>
-<p>The map function has a few properties that make it convenient to work with. The first property is called the Identity property. It simply says that if your transformer is the identity function, the target doesn't change.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{details <a href="functor.html#2:2">2</a>} +=</span>
-<pre class="prettyprint">
-const identity = x =&gt; x;
-
-Functor.map(identity, todoSelector) === todoSelector;
-</pre>
-<p class="seealso">Added to in section <a href="functor.html#2:2">2</a></p>
-
-
-</div>
-<p>The second property is known as the Composition property. This property says that if you have two transformers you'd like to apply to a target, applying the composition of those transformers is the same as applying each transformer individually one after the other.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{details <a href="functor.html#2:2">2</a>} +=</span>
-<pre class="prettyprint">
-<span class="nocode pln">{compose, <a href="functor.html#2:3">3</a>}</span>
-const transformerA = todos =&gt; todos.emptyTodos;
-const transformerB = todos =&gt; todos.length;
-
-Functor.map(compose(transformerB, transformerA), todoSelector) ===
-    Functor.map(transformerB, map(transformerA, todoSelector));
-</pre>
-<p class="seealso">Added to in section <a href="functor.html#2:2">2</a></p>
-
-
-</div>
-<p>The consequence of this is that you don't need to worry about how you call <code>map</code> when you have multiple transformations. You can call it once, twice, or as many times as makes sense. You can also always refactor so you build up one large transformer pipeline and only call map once.
-</p>
-<p>The implementation is relatively simple, but can be tricky if you aren't used to functional programming or the Functor concepts. Remember that our context is selector functions, which have a specific shape.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{implementation <a href="functor.html#2:2">2</a>}</span>
-<pre class="prettyprint">
-return (state, props) =&gt;
-    transformer(context(state, props));
-</pre>
 
 
 
 </div>
-<p>It needs to return a value in the same context, so the return value is a selector function that takes state and props as arguments. That returned function though, applies the transformer that was passed into map to the returned value of evaluating the context with the given state and props. Thus we get a new context that contains the transformed value.
+<p>The syntax for the Flow type definitions is as follows:
 </p>
-<p>This does obey the laws, but I leave it as an exercise to the reader to reason through them and prove it themselves.
+<ul>
+<li><code>=&gt;</code> signifies a function type. On the left hand side are the arguments in parentheses, separated by commas, and on the right hand side is the return type.
+</li>
+<li><code>:</code> signifies that a type is coming. The left hand side contains the identifier and the right hand side contains the type.
+</li>
+<li><code>&lt;</code> and <code>&gt;</code> specify generic arguments. There can be as many as necessary, separated by commas. They must be valid Javascript identifiers. By convention I use capitalized identifiers for generic arguments.
+</li>
+<li>The syntax that looks like Javascript object notation specifies an object type with the given identifiers as keys and the values must have the specified type.
+</li>
+</ul>
+<p>Altogether this is specifying that a FunctorT is an object with a map property. The map property is a function. The first argument of map is a function that transforms from one generic type to another, possibly different type. The second argument is the reducer or selector function. These take some input state <code>In</code>, and some static type (actions for reducers, props for selectors), and turn it into some output <code>OutA</code>. Finally, map returns a function that is the same shape as its second argument, but it returns <code>OutB</code>. Note how the <code>OutA</code> and <code>OutB</code> properties align in the different arguments and return values. Crucially, these can be <strong>any</strong> type. Therefore Flow will ensure that I cannot inspect them or otherwise do anything other than pass them around as untouched values.
 </p>
 
 </div>
-<a name="2:3"><div class="section"><h4>3. Appendix</h4></a>
-<p>The definition of compose used here is as follows.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{compose <a href="functor.html#2:3">3</a>}</span>
-<pre class="prettyprint">
-const compose = (f, g) =&gt; (...args) =&gt; f(g(...args))
-</pre>
-
-
-<p class="seealso">Used in section <a href="functor.html#2:2">2</a></p>
-</div>
-
-</div>
-<br><a style="float:left;" class="chapter-nav" href="flow.html">Previous Chapter</a></body>
+<br><a style="float:right;" class="chapter-nav" href="functor.html">Next Chapter</a></body>

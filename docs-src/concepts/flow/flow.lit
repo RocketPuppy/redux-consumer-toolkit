@@ -1,0 +1,26 @@
+@code javascript .js
+
+@title Flow Basics
+
+@s Motivation
+
+The [Flow](https://flow.org) type checker for Javascript provides me with some guarantees while I'm developing that the code I write is all internally consistent. This helps prevent me from making silly mistakes. Additionally the type signatures serve as a useful form of documentation.
+
+@s Basic Requirements
+
+I make use of several concepts throughout the source code, but the most important one is the use of generics. Generis are a way to signal to the user that a given function will operate with any type that you provide it. Every module and function that is exported by the library is parameterized on several generic types. As an example, take the Functor module.
+
+--- generic type example
+type FunctorT<Static, In, OutA, OutB> = {
+  map: ((OutA => OutB), (In, Static) => OutA) => (In, Static) => OutB
+};
+---
+
+The syntax for the Flow type definitions is as follows:
+
+* `=>` signifies a function type. On the left hand side are the arguments in parentheses, separated by commas, and on the right hand side is the return type.
+* `:` signifies that a type is coming. The left hand side contains the identifier and the right hand side contains the type.
+* `<` and `>` specify generic arguments. There can be as many as necessary, separated by commas. They must be valid Javascript identifiers. By convention I use capitalized identifiers for generic arguments.
+* The syntax that looks like Javascript object notation specifies an object type with the given identifiers as keys and the values must have the specified type.
+
+Altogether this is specifying that a FunctorT is an object with a map property. The map property is a function. The first argument of map is a function that transforms from one generic type to another, possibly different type. The second argument is the reducer or selector function. These take some input state `In`, and some static type (actions for reducers, props for selectors), and turn it into some output `OutA`. Finally, map returns a function that is the same shape as its second argument, but it returns `OutB`. Note how the `OutA` and `OutB` properties align in the different arguments and return values. Crucially, these can be **any** type. Therefore Flow will ensure that I cannot inspect them or otherwise do anything other than pass them around as untouched values.
