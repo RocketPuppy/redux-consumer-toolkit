@@ -6,7 +6,7 @@ let nixpkgs = nixpkgsFn ({
 in
 nixpkgs.stdenv.mkDerivation {
   name = "redux-reducer-toolkit";
-  buildInputs = with nixpkgs; [ nodejs flow awscli ];
+  buildInputs = with nixpkgs; [ nodejs flow (import <custom_pkgs> {}).Literate ];
   src = "/home/dwilson/redux-reducer-toolkit";
 
   builder = builtins.toFile "builder.sh" ''

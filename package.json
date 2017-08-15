@@ -14,7 +14,8 @@
     "build": "npm run lint && npm run compile && npm run bundle",
     "prepublish": "npm run build",
     "flow": "flow",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "examples": "cd examples && make"
   },
   "author": "Daniel Wilson-Thomas",
   "license": "MIT",
