@@ -23,19 +23,31 @@ Simple!
 
 A Functor is really best talked about as an interface that an entity can implement. That interface is pretty simple. It is simply the map function, along with some properties on how that function behaves. The specification is below.
 
---- details
-const Functor = {
-  map: function(transformer, context) {
-    @{implementation}
-  }
+--- types/functor.js
+@{import-types-consumer}
+
+export type Functor<Static, In, OutA, OutB> = {
+  map: ((OutA => OutB), Consumer<Static, In, OutA>) => Consumer<Static, In, OutB>
 };
+---
+
+So a Functor is an object that implements a map property. That property must be a function that takes two arguments: a function that transforms from one type to another, and a consumer that outputs the first output state. It returns a consumer that outputs the second output state. In other words, it allows the transformation of the consumer output without knowledge of the specific consumer.
+
+--- functor.js
+@{functor-imports}
+
+const FunctorI : Functor = {
+@{implementation}
+}
+
+export default FunctorI;
 ---
 
 It takes a transformer function and the context as arguments. It must also return a value that is in the same context. You'll see what that means in the implementation.
 
 The map function has a few properties that make it convenient to work with. The first property is called the Identity property. It simply says that if your transformer is the identity function, the target doesn't change.
 
---- details --- +=
+--- laws ---
 const identity = x => x;
 
 Functor.map(identity, todoSelector) === todoSelector;
@@ -43,7 +55,7 @@ Functor.map(identity, todoSelector) === todoSelector;
 
 The second property is known as the Composition property. This property says that if you have two transformers you'd like to apply to a target, applying the composition of those transformers is the same as applying each transformer individually one after the other.
 
---- details --- +=
+--- laws --- +=
 @{compose}
 const transformerA = todos => todos.emptyTodos;
 const transformerB = todos => todos.length;
@@ -57,13 +69,23 @@ The consequence of this is that you don't need to worry about how you call `map`
 The implementation is relatively simple, but can be tricky if you aren't used to functional programming or the Functor concepts. Remember that our context is selector functions, which have a specific shape.
 
 --- implementation
-return (state, props) =>
-    transformer(context(state, props));
+map: function(transformer, context) {
+  return (state, props) =>
+      transformer(context(state, props));
+}
 ---
 
 It needs to return a value in the same context, so the return value is a selector function that takes state and props as arguments. That returned function though, applies the transformer that was passed into map to the returned value of evaluating the context with the given state and props. Thus we get a new context that contains the transformed value.
 
 This does obey the laws, but I leave it as an exercise to the reader to reason through them and prove it themselves.
+
+@s Imports
+
+The Functor implementation must import the Functor type definition.
+
+--- functor-imports
+import type { Functor } from './types/functor';
+---
 
 @s Appendix
 

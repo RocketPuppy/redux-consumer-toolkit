@@ -1,0 +1,31 @@
+@code javascript js
+
+@title Consumer
+
+@s Definition
+
+Throughout the documentation I will be referencing Consumers. Consumers are my generic term for a function that has a specific shape. In Flow terms it is described as follows.
+
+--- types/consumer.js
+export type Consumer<Static, In, Out> = (In, Static) => Out;
+---
+
+The `Static` parameter is specified first as it works out to be more convenient in usage.
+
+This type describes both selector functions as traditionally used to derive component props from store state, and reducer functions as used to respond to actions by manipulating a piece of state. To see this, consider what the signatures of these functions look like.
+
+--- consumer-signatures
+const selector = (state, ownProps) => componentProps;
+
+const reducer = (state, action) => newState;
+---
+
+They both have two arguments and return a single argument, of course, so superficially they are similar. Semantically, though, they might seem different. They have different intended use cases after all. Crucially, in the context of the Redux data-flow cycle, a similarity emerges. Both of these functions can be combined and mixed in a single pipeline. In the context of that pipeline the first argument is allowed to vary while the second argument always stays static! In a reducer pipeline every reducer is given a chance to respond to the same action with its piece of state. In a selector pipeline every selector is given a chance to build up component props while also being given the props that were initially passed into the component. Semantically that similarity is enough to allow all the machinery in the Redux Reducer toolkit to operate on either selector or reducer functions simultaneously.
+
+@s Details
+
+In order to use this type other modules must import it.
+
+--- import-types-consumer
+import { Consumer } from './consumer';
+---

@@ -4,6 +4,6 @@
 
 This document will outline the concepts used in this library and how you can apply them. It will provide both a generic overview of the concepts, and the specific implementation of them in this library.
 
-I use the [Flow](https://flow.org) type system for Javascript throughout the implementation. You can read the chapter [Flow Basics](concepts/flow/flow.lit) for an introduction to the basics necessary for understanding the code.
-
+[Flow Basics](concepts/flow/flow.lit)
+[Consumers](concepts/consumer/consumer.lit)
 [Functor](concepts/functor/functor.lit)
