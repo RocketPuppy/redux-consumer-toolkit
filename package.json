@@ -15,7 +15,7 @@
     "prepublish": "npm run build",
     "flow": "flow",
     "lint": "eslint src",
-    "examples": "cd docs-src && make"
+    "docs": "cd docs-src && make"
   },
   "author": "Daniel Wilson-Thomas",
   "license": "MIT",
