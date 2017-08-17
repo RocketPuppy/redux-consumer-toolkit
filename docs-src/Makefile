@@ -1,14 +1,34 @@
 HTML=../docs
+SRC=../src_
+ESLINTCONF=../.eslintrc
 
-.PHONY: markdown dirs
+.PHONY: all markdown code
 
-markdown: clean dirs
+all: markdown code
+
+markdown: cleanmarkdown dirsmarkdown
 	lit --weave -odir $(HTML) *.lit
 	lit --weave -odir $(HTML) */*.lit
 
-dirs:
+code: cleancode dirscode
+	lit --tangle -odir $(SRC) *.lit
+	lit --tangle -odir $(SRC) */*.lit
+	find $(SRC) -name "*.js" -execdir sh -c "echo '// @flow' | cat - {} > {}.f" \;
+	find $(SRC) -name "*.js" -exec mv {}.f {} \;
+	prettier --write "$(SRC)/**/*.js"
+	eslint --config $(ESLINTCONF) $(SRC)
+	flow check
+
+dirsmarkdown:
 	mkdir -p $(HTML)
 	touch $(HTML)/.nojekyll
 
-clean:
+dirscode:
+	mkdir -p $(SRC)
+	mkdir -p $(SRC)/types
+
+cleanmarkdown:
 	rm -rf $(HTML)
+
+cleancode:
+	rm -rf $(SRC)
