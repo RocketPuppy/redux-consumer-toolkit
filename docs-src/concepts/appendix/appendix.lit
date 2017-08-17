@@ -1,0 +1,25 @@
+@title Appendix
+
+@s Library Entry-point
+
+I need to define an entry-point file for the library so that NPM can package it
+properly.
+
+I want the library to be usable by importing specific modules to aid in
+self-documenting code.
+
+--- index.js
+import Functor from './Functor';
+
+export {
+  Functor
+};
+---
+
+However I also want to allow users to just import all the functions if they wish.
+
+--- index.js --- +=
+export default {
+  ...Functor
+};
+---
