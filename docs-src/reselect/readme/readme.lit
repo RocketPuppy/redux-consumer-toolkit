@@ -84,7 +84,6 @@ could also use the selector as the `mapStateToProps` function if it returned an
 object.
 
 --- connecting-reselect.js
-@{imports-reselect}
 @{imports-react-redux}
 @{props-reselect.js}
 const mapStateToProps = (state) => {
@@ -102,7 +101,6 @@ With redux-reducer-toolkit there's a helper to combine selectors into a given
 object shape, so you can connect them to the redux store concisely and directly.
 
 --- connecting-toolkit.js
-@{imports-redux-reducer-toolkit}
 @{imports-react-redux}
 @{props-toolkit.js}
 connect($.combine({ todos: getVisibleTodos }));
@@ -129,7 +127,7 @@ const getTodos = (state, props) =>
 
 const getVisibleTodos = createSelector(
   [ getVisibilityFilter, getTodos ],
-  (visibilityFilter, todos) => { ... }
+  (visibilityFilter, todos) => { /* ... */ }
 );
 ---
 
@@ -145,8 +143,8 @@ const getVisibilityFilter = (state, props) => state.todoLists[props.listId].visi
 const getTodos = (state, props) => state.todoLists[props.listId].todos;
 
 const getVisibleTodos = $.apAll(
-  $.of((visibilityFilter, todos) => ( ... )),
-  getVisibilityFilter),
+  $.of((visibilityFilter, todos) => { /* ... */ }),
+  getVisibilityFilter,
   getTodos
 );
 ---
@@ -163,8 +161,8 @@ const getVisibilityFilter = $.map(list => list.visibilityFilter, todoList);
 const getTodos = $.map(list => list.todos, todoLists);
 
 const getVisibleTodos = $.apAll(
-  $.of((visibilityFilter, todos) => ( ... )),
-  getVisibilityFilter),
+  $.of((visibilityFilter, todos) => { /* ... */ }),
+  getVisibilityFilter,
   getTodos
 );
 ---
@@ -189,7 +187,7 @@ const getTodos = createSelector(
 
 const getVisibleTodos = createSelector(
   [ getVisibilityFilter, getTodos ],
-  (visibilityFilter, todos) => { ... }
+  (visibilityFilter, todos) => { /* ... */ }
 );
 ---
 
@@ -200,7 +198,7 @@ import { createSelector } from 'reselect';
 ---
 
 --- imports-redux-reducer-toolkit
-import * as $ from 'redux-reducer-toolkit';
+import * as $ from './index.js';
 ---
 
 --- imports-react-redux

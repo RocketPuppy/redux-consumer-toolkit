@@ -33,18 +33,6 @@ export type Functor<Static, In, OutA, OutB> = {
 
 So a Functor is an object that implements a map property. That property must be a function that takes two arguments: a function that transforms from one type to another, and a consumer that outputs the first output state. It returns a consumer that outputs the second output state. In other words, it allows the transformation of the consumer output without knowledge of the specific consumer.
 
---- functor.js
-@{functor-imports}
-
-const FunctorI : Functor = {
-@{implementation}
-}
-
-export default FunctorI;
----
-
-It takes a transformer function and the context as arguments. It must also return a value that is in the same context. You'll see what that means in the implementation.
-
 The map function has a few properties that make it convenient to work with. The first property is called the Identity property. It simply says that if your transformer is the identity function, the target doesn't change.
 
 --- laws ---
@@ -79,11 +67,23 @@ It needs to return a value in the same context, so the return value is a selecto
 
 This does obey the laws, but I leave it as an exercise to the reader to reason through them and prove it themselves.
 
+Finally I need to wrap it all up in nice module.
+
+--- Functor.js
+@{import-types-functor}
+
+const FunctorI : Functor<*, *, *, *> = {
+@{implementation}
+}
+
+export default FunctorI;
+---
+
 @s Imports
 
 The Functor implementation must import the Functor type definition.
 
---- functor-imports
+--- import-types-functor
 import type { Functor } from './types/functor';
 ---
 

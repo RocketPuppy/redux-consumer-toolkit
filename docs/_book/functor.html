@@ -93,24 +93,6 @@ export type Functor&lt;Static, In, OutA, OutB&gt; = {
 </div>
 <p>So a Functor is an object that implements a map property. That property must be a function that takes two arguments: a function that transforms from one type to another, and a consumer that outputs the first output state. It returns a consumer that outputs the second output state. In other words, it allows the transformation of the consumer output without knowledge of the specific consumer.
 </p>
-
-<div class="codeblock">
-<span class="codeblock_name">{<strong>functor.js</strong> <a href="functor.html#3:2">2</a>}</span>
-<pre class="prettyprint">
-<span class="nocode pln">{functor-imports, <a href="functor.html#3:3">3</a>}</span>
-
-const FunctorI : Functor = {
-<span class="nocode pln">{implementation, <a href="functor.html#3:2">2</a>}</span>
-}
-
-export default FunctorI;
-</pre>
-
-
-
-</div>
-<p>It takes a transformer function and the context as arguments. It must also return a value that is in the same context. You'll see what that means in the implementation.
-</p>
 <p>The map function has a few properties that make it convenient to work with. The first property is called the Identity property. It simply says that if your transformer is the identity function, the target doesn't change.
 </p>
 
@@ -163,14 +145,31 @@ map: function(transformer, context) {
 </p>
 <p>This does obey the laws, but I leave it as an exercise to the reader to reason through them and prove it themselves.
 </p>
+<p>Finally I need to wrap it all up in nice module.
+</p>
 
+<div class="codeblock">
+<span class="codeblock_name">{<strong>Functor.js</strong> <a href="functor.html#3:2">2</a>}</span>
+<pre class="prettyprint">
+<span class="nocode pln">{import-types-functor, <a href="functor.html#3:3">3</a>}</span>
+
+const FunctorI : Functor&lt;*, *, *, *&gt; = {
+<span class="nocode pln">{implementation, <a href="functor.html#3:2">2</a>}</span>
+}
+
+export default FunctorI;
+</pre>
+
+
+
+</div>
 </div>
 <a name="3:3"><div class="section"><h4>3. Imports</h4></a>
 <p>The Functor implementation must import the Functor type definition.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{functor-imports <a href="functor.html#3:3">3</a>}</span>
+<span class="codeblock_name">{import-types-functor <a href="functor.html#3:3">3</a>}</span>
 <pre class="prettyprint">
 import type { Functor } from './types/functor';
 </pre>
@@ -194,4 +193,4 @@ const compose = (f, g) =&gt; (...args) =&gt; f(g(...args))
 </div>
 
 </div>
-<br><a style="float:left;" class="chapter-nav" href="consumer.html">Previous Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="consumer.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="appendix.html">Next Chapter</a></body>

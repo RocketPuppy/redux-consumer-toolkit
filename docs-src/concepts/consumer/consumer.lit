@@ -27,5 +27,5 @@ They both have two arguments and return a single argument, of course, so superfi
 In order to use this type other modules must import it.
 
 --- import-types-consumer
-import { Consumer } from './consumer';
+import type { Consumer } from './consumer';
 ---
