@@ -44,7 +44,7 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 <section>
 <h1>Functor</h1>
 <a name="3:1"><div class="section"><h4>1. Motivation</h4></a>
-<p>It is often the case when programming that you have a function that takes some input argument and returns a transformed output. You also might have some piece of data you'd like to apply that function to, but you can't because the data is encapsulated inside something else. We'll call the "data" in this case the "target" and the "something else" the "context". To make it concrete, we might have some way to get the number of completed todo items but the only way to get the todo items is via a selector function.
+<p>It is often the case when programming that I have a function that takes some input argument and returns a transformed output. I also might have some piece of data I wouldd like to apply that function to, but I can't because the data is encapsulated inside something else. I'll call the "data" in this case the "target" and the "something else" the "context". To make it concrete, I might have some way to get the number of completed todo items but the only way to get the todo items is via a selector function, because they are stored in a global store using Redux.
 </p>
 
 <div class="codeblock">
@@ -58,7 +58,7 @@ const lengthOfTodos = (todos) =&gt; todos.length;
 
 
 </div>
-<p>Note how you can't just apply the <code>lengthOfTodos</code> function to the <code>todoSelector</code>. The <code>lengthOfTodos</code> function expects an array of todo objects, and the <code>todoSelector</code> is a function. This is where Functor comes to help. With Functor you can define that <code>lengthOfTodos</code> is to be applied to the target data in the context of the selector function. This is what it looks like.
+<p>Note how I can't just apply the <code>lengthOfTodos</code> function to the <code>todoSelector</code>. The <code>lengthOfTodos</code> function expects an array of todo objects, and the <code>todoSelector</code> is a function. Somehow I need to apply <code>lengthOfTodos</code> to the result of <code>todoSelector</code>. I don't have the arguments to pass to <code>todoSelector</code> though to get the result! This is where Functor comes to help. With Functor I can define that <code>lengthOfTodos</code> is to be applied to the target data in the context of the selector function. This is what it looks like.
 </p>
 
 <div class="codeblock">
@@ -93,7 +93,7 @@ export type Functor&lt;Static, In, OutA, OutB&gt; = {
 </div>
 <p>So a Functor is an object that implements a map property. That property must be a function that takes two arguments: a function that transforms from one type to another, and a consumer that outputs the first output state. It returns a consumer that outputs the second output state. In other words, it allows the transformation of the consumer output without knowledge of the specific consumer.
 </p>
-<p>The map function has a few properties that make it convenient to work with. The first property is called the Identity property. It simply says that if your transformer is the identity function, the target doesn't change.
+<p>The map function has a few properties that make it convenient to work with. The first property is called the Identity property. It simply says that if the transformer is the identity function, the target doesn't change.
 </p>
 
 <div class="codeblock">
@@ -107,7 +107,7 @@ Functor.map(identity, todoSelector) === todoSelector;
 
 
 </div>
-<p>The second property is known as the Composition property. This property says that if you have two transformers you'd like to apply to a target, applying the composition of those transformers is the same as applying each transformer individually one after the other.
+<p>The second property is known as the Composition property. This property says that if I have two transformers I want to apply to a target, applying the composition of those transformers is the same as applying each transformer individually one after the other.
 </p>
 
 <div class="codeblock">
@@ -124,9 +124,9 @@ Functor.map(compose(transformerB, transformerA), todoSelector) ===
 
 
 </div>
-<p>The consequence of this is that you don't need to worry about how you call <code>map</code> when you have multiple transformations. You can call it once, twice, or as many times as makes sense. You can also always refactor so you build up one large transformer pipeline and only call map once.
+<p>The consequence of this is that I don't need to worry about how I call <code>map</code> when I have multiple transformations. I can call it once, twice, or as many times as makes sense. I can also always refactor to build up one large transformer pipeline and only call map once.
 </p>
-<p>The implementation is relatively simple, but can be tricky if you aren't used to functional programming or the Functor concepts. Remember that our context is selector functions, which have a specific shape.
+<p>The implementation is relatively simple, but can be tricky for those who aren't used to functional programming or the Functor concepts. Remember that the context is selector functions, which have a specific shape.
 </p>
 
 <div class="codeblock">
@@ -141,11 +141,11 @@ map: function(transformer, context) {
 
 
 </div>
-<p>It needs to return a value in the same context, so the return value is a selector function that takes state and props as arguments. That returned function though, applies the transformer that was passed into map to the returned value of evaluating the context with the given state and props. Thus we get a new context that contains the transformed value.
+<p>It needs to return a value in the same context, so the return value is a selector function that takes state and props as arguments. That returned function though, applies the transformer that was passed into map to the returned value of evaluating the context with the given state and props. Thus I get a new context that contains the transformed value.
 </p>
 <p>This does obey the laws, but I leave it as an exercise to the reader to reason through them and prove it themselves.
 </p>
-<p>Finally I need to wrap it all up in nice module.
+<p>Finally I need to wrap it all up in a nice module.
 </p>
 
 <div class="codeblock">
