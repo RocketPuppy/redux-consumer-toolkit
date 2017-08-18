@@ -113,7 +113,7 @@ Functor.map(identity, todoSelector) === todoSelector;
 <div class="codeblock">
 <span class="codeblock_name">{laws <a href="functor.html#3:2">2</a>} +=</span>
 <pre class="prettyprint">
-<span class="nocode pln">{compose, <a href="functor.html#3:4">4</a>}</span>
+<span class="nocode pln">{compose, <a href="appendix.html#5:2">5:2</a>}</span>
 const transformerA = todos =&gt; todos.emptyTodos;
 const transformerB = todos =&gt; todos.length;
 
@@ -171,21 +171,7 @@ export default FunctorI;
 <div class="codeblock">
 <span class="codeblock_name">{import-types-functor <a href="functor.html#3:3">3</a>}</span>
 <pre class="prettyprint">
-import type { Functor } from './types/functor';
-</pre>
-
-
-<p class="seealso">Used in section <a href="functor.html#3:2">2</a></p>
-</div>
-</div>
-<a name="3:4"><div class="section"><h4>4. Appendix</h4></a>
-<p>The definition of compose used here is as follows.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{compose <a href="functor.html#3:4">4</a>}</span>
-<pre class="prettyprint">
-const compose = (f, g) =&gt; (...args) =&gt; f(g(...args))
+import type { Functor } from './types/Functor';
 </pre>
 
 

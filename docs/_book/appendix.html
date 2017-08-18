@@ -78,6 +78,20 @@ export default {
 
 
 </div>
+</div>
+<a name="5:2"><div class="section"><h4>2. Utility Functions</h4></a>
+<p>I use a version of function composition throughout the examples. It is defined as follows.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{compose <a href="appendix.html#5:2">2</a>}</span>
+<pre class="prettyprint">
+const compose = (f, g) =&gt; (...args) =&gt; f(g(...args))
+</pre>
+
+
+<p class="seealso">Used in sections <a href="functor.html#3:2">3:2</a> and <a href="apply.html#4:2">4:2</a></p>
+</div>
 
 </div>
 <br><a style="float:left;" class="chapter-nav" href="functor.html">Previous Chapter</a></body>

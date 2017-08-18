@@ -23,3 +23,11 @@ export default {
   ...Functor
 };
 ---
+
+@s Utility Functions
+
+I use a version of function composition throughout the examples. It is defined as follows.
+
+--- compose
+const compose = (f, g) => (...args) => f(g(...args))
+---

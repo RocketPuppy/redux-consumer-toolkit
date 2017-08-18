@@ -84,13 +84,5 @@ export default FunctorI;
 The Functor implementation must import the Functor type definition.
 
 --- import-types-functor
-import type { Functor } from './types/functor';
----
-
-@s Appendix
-
-The definition of compose used here is as follows.
-
---- compose
-const compose = (f, g) => (...args) => f(g(...args))
+import type { Functor } from './types/Functor';
 ---
