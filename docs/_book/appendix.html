@@ -43,7 +43,7 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 <body onload="prettyPrint()">
 <section>
 <h1>Appendix</h1>
-<a name="4:1"><div class="section"><h4>1. Library Entry-point</h4></a>
+<a name="5:1"><div class="section"><h4>1. Library Entry-point</h4></a>
 <p>I need to define an entry-point file for the library so that NPM can package it
 properly.
 </p>
@@ -52,12 +52,14 @@ self-documenting code.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#4:1">1</a>}</span>
+<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#5:1">1</a>}</span>
 <pre class="prettyprint">
 import Functor from './Functor';
+import Apply from './Apply';
 
 export {
-  Functor
+  Functor,
+  Apply
 };
 </pre>
 
@@ -68,10 +70,11 @@ export {
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#4:1">1</a>} +=</span>
+<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#5:1">1</a>} +=</span>
 <pre class="prettyprint">
 export default {
-  ...Functor
+  ...Functor,
+  ...Apply
 };
 </pre>
 
@@ -94,4 +97,4 @@ const compose = (f, g) =&gt; (...args) =&gt; f(g(...args))
 </div>
 
 </div>
-<br><a style="float:left;" class="chapter-nav" href="functor.html">Previous Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="apply.html">Previous Chapter</a></body>

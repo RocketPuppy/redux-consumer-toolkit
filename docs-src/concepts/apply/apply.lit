@@ -1,0 +1,162 @@
+@code javascript js
+
+@title Apply
+
+@s Motivation
+
+In the previous chapter I discussed the motivation and implementation of
+Functor. Recall that Functor was a principled manner of applying
+single-argument functions to a context (consumers). That works well
+for a while, but at some point I'm going to need functions that have multiple
+arguments. These arguments might even need filled from different contexts. For
+example, consider the following scenario where I might want to get all the
+things I need to do in a day from my lists of todos and groceries.
+
+--- apply_introduction_1
+const todos = (state, props) => state.todos;
+const groceries = (state, props) => state.groceries;
+
+const chores = (todos) => (groceries) => todos.concat(groceries);
+---
+
+I have defined chores in a manner that might seem unorthodox, as a function
+returning another function. This will be cleared up shortly.
+
+What help can Functor give me?
+
+--- apply_introduction_2 ---
+const mappedChores = Functor.map(chores, todos)
+---
+
+If I use Functor to map chores over todos, I will end up with a consumer that returns a function from groceries to all my chores. I cannot, however, then map groceries over that. I consider what that would look like in the following code sample.
+
+--- apply_introduction_3 ---
+mappedChores(state, props)
+// => (groceries) => (state.todos).concat(groceries)
+
+const mappedChores_ = Functor.map(groceries, mappedChores);
+// => (state, props) => groceries(mappedChores(state, props))
+// => (state, props) => groceries((groceries) => (state.todos).concat(groceries))
+---
+
+Mapping groceries over mappedChores is going to result in trying to pass groceries a function, instead of the state and props value it expects. That's not going to work. I need something that will let me apply a consumer that returns a function to the result of another consumer. I'll call this the Apply interface.
+
+@s Details
+
+The Apply interface is going to be defined as follows.
+
+--- types/Apply.js
+export type Apply<Static, In, OutA, OutB> = {
+  ap: ((In, Static) => (OutA => OutB), (In, Static) => OutA) => (In, Static) => OutB,
+  @{apAll-type}
+};
+---
+
+Like Functor, it has four generics representing the value that doesn't change, the input state, the output state of the initial consumer, and the output state of the final consumer. The difference between Functor is that instead of a map function taking a transformer, Apply has an ap function that takes a consumer that returns a transformer. This is precisely what I identified as necessary in the introduction.
+
+The properties that Functor had make it convenient to work with, and Apply is
+no exception. It has a single property, similar to the composition property of
+Functor. Given two consumers that return functions and one that returns a
+value, I can map the normal function composition operation over the function
+returning consumers just as I would if the functions were not in consumers.
+
+--- apply-laws
+const fC = (state, props) => (x) => state.foo + x
+const gC = (state, props) => (y) => state.bar * y
+const vC = (state, props) => state.baz
+
+@{compose}
+
+ap(ap(map(compose, fC), gC), vC) === ap(fC, ap(gC, vC))
+---
+
+The same thing, without the context of consumers.
+
+--- apply-laws --- +=
+const f = (x) => x+1
+const g = (y) => y*2
+const v = 3
+
+compose(f, g)(v) === f(g(v))
+---
+
+Basically, Apply works the same as function application.
+
+The implementation of Apply is somewhat similar to that of Functor, recall
+@{functor-implementation}. Instead of applying a transformer directly though,
+it first applies state and props to get the transformer out of the consumer.
+
+--- apply-implementation
+ap: (transformerConsumer, valueConsumer) => (
+  (state, props) => (
+    transformerConsumer(state, props)(valueConsumer(state, props))
+  )
+)
+---
+
+Again, I leave it as an exercise to the reader to prove that this satisfies the laws.
+
+@s Convenience
+
+This implementation of Apply is good from an academic perspective. However it
+can be a little clunky to use in a language that does not automatically curry
+all functions. Currying is converting the functions to the style of chores from
+@{apply_introduction_1}, where the curried function takes a single argument and
+returns a function taking the next argument, and so on for all the arguments. I
+can curry my functions manually, but that is clunky. To help alleviate this
+I've defined an additional function in the Apply interface.
+
+--- apAll-type
+apAll: ((In, Static) => (mixed => OutB), ...Array<(In, Static) => mixed>) => (In, Static) => OutB
+---
+
+The apAll function takes a consumer that returns a function of any number of
+arguments and the appropriate number of consumers to fill those arguments. This
+is useful if I have everything all ready to go in one place. If I don't then I
+can curry and partially apply the function and pass the result around to be
+used later. The apAll function is implemented as follows.
+
+--- apAll-implementation
+apAll: (transformerConsumer, ...argsConsumers) => (
+  (state, props) => (
+    transformerConsumer(state, props).apply(
+      argsConsumers.map(argConsumer => argConsumer(state, props))
+    )
+  )
+)
+---
+
+An alternative implementation can be had using ap, although it will be slower
+and thrash the call stack a bit.
+
+--- apAll-implementation-alternative
+apAll: (transformerConsumer, ...argsConsumers) => (
+  (state, props) => (
+    argsConsumers.reduce((partiallyApplied, argConsumer) => (
+      ap(partiallyApplied, argConsumer)
+    ), (state, props) => curry(transformerConsumer(state, props)))
+  )
+)
+---
+
+Finally it all needs wrapped up in a module
+
+--- Apply.js
+@{import-types-apply}
+
+const ApplyI : Apply<*, *, *, *> = {
+@{apply-implementation}
+,
+@{apAll-implementation}
+};
+
+export default ApplyI;
+---
+
+@s Imports
+
+The Apply module must import the Apply type definition.
+
+--- import-types-apply
+import type { Apply } from './types/Apply'
+---

@@ -7,4 +7,5 @@ This document will outline the concepts used in this library and how they can be
 [Flow Basics](concepts/flow/flow.lit)
 [Consumers](concepts/consumer/consumer.lit)
 [Functor](concepts/functor/functor.lit)
+[Apply](concepts/apply/apply.lit)
 [Appendix](concepts/appendix/appendix.lit)

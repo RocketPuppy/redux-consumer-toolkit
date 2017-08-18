@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Functor</title>
+<title>Apply</title>
 <script>
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
 (function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
@@ -42,141 +42,239 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </head>
 <body onload="prettyPrint()">
 <section>
-<h1>Functor</h1>
-<a name="3:1"><div class="section"><h4>1. Motivation</h4></a>
-<p>It is often the case when programming that I have a function that takes some input argument and returns a transformed output. I also might have some piece of data I wouldd like to apply that function to, but I can't because the data is encapsulated inside something else. I'll call the "data" in this case the "target" and the "something else" the "context". To make it concrete, I might have some way to get the number of completed todo items but the only way to get the todo items is via a selector function, because they are stored in a global store using Redux.
+<h1>Apply</h1>
+<a name="4:1"><div class="section"><h4>1. Motivation</h4></a>
+<p>In the previous chapter I discussed the motivation and implementation of
+Functor. Recall that Functor was a principled manner of applying
+single-argument functions to a context (consumers). That works well
+for a while, but at some point I'm going to need functions that have multiple
+arguments. These arguments might even need filled from different contexts. For
+example, consider the following scenario where I might want to get all the
+things I need to do in a day from my lists of todos and groceries.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{introduction_concrete <a href="functor.html#3:1">1</a>}</span>
+<span class="codeblock_name">{apply_introduction_1 <a href="apply.html#4:1">1</a>}</span>
 <pre class="prettyprint">
-const todoSelector = (state, props) =&gt; state.todos;
+const todos = (state, props) =&gt; state.todos;
+const groceries = (state, props) =&gt; state.groceries;
 
-const lengthOfTodos = (todos) =&gt; todos.length;
+const chores = (todos) =&gt; (groceries) =&gt; todos.concat(groceries);
 </pre>
 
 
 
 </div>
-<p>Note how I can't just apply the <code>lengthOfTodos</code> function to the <code>todoSelector</code>. The <code>lengthOfTodos</code> function expects an array of todo objects, and the <code>todoSelector</code> is a function. Somehow I need to apply <code>lengthOfTodos</code> to the result of <code>todoSelector</code>. I don't have the arguments to pass to <code>todoSelector</code> though to get the result! This is where Functor comes to help. With Functor I can define that <code>lengthOfTodos</code> is to be applied to the target data in the context of the selector function. This is what it looks like.
+<p>I have defined chores in a manner that might seem unorthodox, as a function
+returning another function. This will be cleared up shortly.
+</p>
+<p>What help can Functor give me?
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{introduction_concrete <a href="functor.html#3:1">1</a>} +=</span>
+<span class="codeblock_name">{apply_introduction_2 <a href="apply.html#4:1">1</a>}</span>
 <pre class="prettyprint">
-Functor.map(lengthOfTodos, todoSelector)
+const mappedChores = Functor.map(chores, todos)
 </pre>
 
 
 
 </div>
-<p>Simple!
-</p>
-
-</div>
-<a name="3:2"><div class="section"><h4>2. Details</h4></a>
-<p>A Functor is really best talked about as an interface that an entity can implement. That interface is pretty simple. It is simply the map function, along with some properties on how that function behaves. The specification is below.
+<p>If I use Functor to map chores over todos, I will end up with a consumer that returns a function from groceries to all my chores. I cannot, however, then map groceries over that. I consider what that would look like in the following code sample.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>types/functor.js</strong> <a href="functor.html#3:2">2</a>}</span>
+<span class="codeblock_name">{apply_introduction_3 <a href="apply.html#4:1">1</a>}</span>
 <pre class="prettyprint">
-<span class="nocode pln">{import-types-consumer, <a href="consumer.html#2:2">2:2</a>}</span>
+mappedChores(state, props)
+// =&gt; (groceries) =&gt; (state.todos).concat(groceries)
 
-export type Functor&lt;Static, In, OutA, OutB&gt; = {
-  map: ((OutA =&gt; OutB), Consumer&lt;Static, In, OutA&gt;) =&gt; Consumer&lt;Static, In, OutB&gt;
+const mappedChores_ = Functor.map(groceries, mappedChores);
+// =&gt; (state, props) =&gt; groceries(mappedChores(state, props))
+// =&gt; (state, props) =&gt; groceries((groceries) =&gt; (state.todos).concat(groceries))
+</pre>
+
+
+
+</div>
+<p>Mapping groceries over mappedChores is going to result in trying to pass groceries a function, instead of the state and props value it expects. That's not going to work. I need something that will let me apply a consumer that returns a function to the result of another consumer. I'll call this the Apply interface.
+</p>
+
+</div>
+<a name="4:2"><div class="section"><h4>2. Details</h4></a>
+<p>The Apply interface is going to be defined as follows.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>types/Apply.js</strong> <a href="apply.html#4:2">2</a>}</span>
+<pre class="prettyprint">
+export type Apply&lt;Static, In, OutA, OutB&gt; = {
+  ap: ((In, Static) =&gt; (OutA =&gt; OutB), (In, Static) =&gt; OutA) =&gt; (In, Static) =&gt; OutB,
+<span class="nocode pln">  {apAll-type, <a href="apply.html#4:3">3</a>}</span>
 };
 </pre>
 
 
 
 </div>
-<p>So a Functor is an object that implements a map property. That property must be a function that takes two arguments: a function that transforms from one type to another, and a consumer that outputs the first output state. It returns a consumer that outputs the second output state. In other words, it allows the transformation of the consumer output without knowledge of the specific consumer.
+<p>Like Functor, it has four generics representing the value that doesn't change, the input state, the output state of the initial consumer, and the output state of the final consumer. The difference between Functor is that instead of a map function taking a transformer, Apply has an ap function that takes a consumer that returns a transformer. This is precisely what I identified as necessary in the introduction.
 </p>
-<p>The map function has a few properties that make it convenient to work with. The first property is called the Identity property. It simply says that if the transformer is the identity function, the target doesn't change.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{laws <a href="functor.html#3:2">2</a>}</span>
-<pre class="prettyprint">
-const identity = x =&gt; x;
-
-Functor.map(identity, todoSelector) === todoSelector;
-</pre>
-
-
-
-</div>
-<p>The second property is known as the Composition property. This property says that if I have two transformers I want to apply to a target, applying the composition of those transformers is the same as applying each transformer individually one after the other.
+<p>The properties that Functor had make it convenient to work with, and Apply is
+no exception. It has a single property, similar to the composition property of
+Functor. Given two consumers that return functions and one that returns a
+value, I can map the normal function composition operation over the function
+returning consumers just as I would if the functions were not in consumers.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{laws <a href="functor.html#3:2">2</a>} +=</span>
+<span class="codeblock_name">{apply-laws <a href="apply.html#4:2">2</a>}</span>
 <pre class="prettyprint">
+const fC = (state, props) =&gt; (x) =&gt; state.foo + x
+const gC = (state, props) =&gt; (y) =&gt; state.bar * y
+const vC = (state, props) =&gt; state.baz
+
 <span class="nocode pln">{compose, <a href="appendix.html#5:2">5:2</a>}</span>
-const transformerA = todos =&gt; todos.emptyTodos;
-const transformerB = todos =&gt; todos.length;
 
-Functor.map(compose(transformerB, transformerA), todoSelector) ===
-    Functor.map(transformerB, map(transformerA, todoSelector));
+ap(ap(map(compose, fC), gC), vC) === ap(fC, ap(gC, vC))
 </pre>
 
 
 
 </div>
-<p>The consequence of this is that I don't need to worry about how I call <code>map</code> when I have multiple transformations. I can call it once, twice, or as many times as makes sense. I can also always refactor to build up one large transformer pipeline and only call map once.
-</p>
-<p>The implementation is relatively simple, but can be tricky for those who aren't used to functional programming or the Functor concepts. Remember that the context is selector functions, which have a specific shape.
+<p>The same thing, without the context of consumers.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{implementation <a href="functor.html#3:2">2</a>}</span>
+<span class="codeblock_name">{apply-laws <a href="apply.html#4:2">2</a>} +=</span>
 <pre class="prettyprint">
-map: function(transformer, context) {
-  return (state, props) =&gt;
-      transformer(context(state, props));
-}
+const f = (x) =&gt; x+1
+const g = (y) =&gt; y*2
+const v = 3
+
+compose(f, g)(v) === f(g(v))
 </pre>
 
 
 
 </div>
-<p>It needs to return a value in the same context, so the return value is a selector function that takes state and props as arguments. That returned function though, applies the transformer that was passed into map to the returned value of evaluating the context with the given state and props. Thus I get a new context that contains the transformed value.
+<p>Basically, Apply works the same as function application.
 </p>
-<p>This does obey the laws, but I leave it as an exercise to the reader to reason through them and prove it themselves.
-</p>
-<p>Finally I need to wrap it all up in a nice module.
+<p>The implementation of Apply is somewhat similar to that of Functor, recall
+<code>{functor-implementation,</code><a href="functor.html#3:2"><code>3:2</code></a><code>}</code>. Instead of applying a transformer directly though,
+it first applies state and props to get the transformer out of the consumer.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>Functor.js</strong> <a href="functor.html#3:2">2</a>}</span>
+<span class="codeblock_name">{apply-implementation <a href="apply.html#4:2">2</a>}</span>
 <pre class="prettyprint">
-<span class="nocode pln">{import-types-functor, <a href="functor.html#3:3">3</a>}</span>
-
-const FunctorI : Functor&lt;*, *, *, *&gt; = {
-<span class="nocode pln">{implementation, <a href="functor.html#3:2">2</a>}</span>
-}
-
-export default FunctorI;
+ap: (transformerConsumer, valueConsumer) =&gt; (
+  (state, props) =&gt; (
+    transformerConsumer(state, props)(valueConsumer(state, props))
+  )
+)
 </pre>
 
 
+<p class="seealso">Used in section <a href="apply.html#4:3">3</a></p>
+</div>
+<p>Again, I leave it as an exercise to the reader to prove that this satisfies the laws.
+</p>
 
 </div>
-</div>
-<a name="3:3"><div class="section"><h4>3. Imports</h4></a>
-<p>The Functor implementation must import the Functor type definition.
+<a name="4:3"><div class="section"><h4>3. Convenience</h4></a>
+<p>This implementation of Apply is good from an academic perspective. However it
+can be a little clunky to use in a language that does not automatically curry
+all functions. Currying is converting the functions to the style of chores from
+<code>{apply_introduction_1,</code><a href="apply.html#4:1"><code>1</code></a><code>}</code>, where the curried function takes a single argument and
+returns a function taking the next argument, and so on for all the arguments. I
+can curry my functions manually, but that is clunky. To help alleviate this
+I've defined an additional function in the Apply interface.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{import-types-functor <a href="functor.html#3:3">3</a>}</span>
+<span class="codeblock_name">{apAll-type <a href="apply.html#4:3">3</a>}</span>
 <pre class="prettyprint">
-import type { Functor } from './types/Functor';
+apAll: ((In, Static) =&gt; (mixed =&gt; OutB), ...Array&lt;(In, Static) =&gt; mixed&gt;) =&gt; (In, Static) =&gt; OutB
 </pre>
 
 
-<p class="seealso">Used in section <a href="functor.html#3:2">2</a></p>
+<p class="seealso">Used in section <a href="apply.html#4:2">2</a></p>
+</div>
+<p>The apAll function takes a consumer that returns a function of any number of
+arguments and the appropriate number of consumers to fill those arguments. This
+is useful if I have everything all ready to go in one place. If I don't then I
+can curry and partially apply the function and pass the result around to be
+used later. The apAll function is implemented as follows.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{apAll-implementation <a href="apply.html#4:3">3</a>}</span>
+<pre class="prettyprint">
+apAll: (transformerConsumer, ...argsConsumers) =&gt; (
+  (state, props) =&gt; (
+    transformerConsumer(state, props).apply(
+      argsConsumers.map(argConsumer =&gt; argConsumer(state, props))
+    )
+  )
+)
+</pre>
+
+
+
+</div>
+<p>An alternative implementation can be had using ap, although it will be slower
+and thrash the call stack a bit.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{apAll-implementation-alternative <a href="apply.html#4:3">3</a>}</span>
+<pre class="prettyprint">
+apAll: (transformerConsumer, ...argsConsumers) =&gt; (
+  (state, props) =&gt; (
+    argsConsumers.reduce((partiallyApplied, argConsumer) =&gt; (
+      ap(partiallyApplied, argConsumer)
+    ), (state, props) =&gt; curry(transformerConsumer(state, props)))
+  )
+)
+</pre>
+
+
+
+</div>
+<p>Finally it all needs wrapped up in a module
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>Apply.js</strong> <a href="apply.html#4:3">3</a>}</span>
+<pre class="prettyprint">
+<span class="nocode pln">{import-types-apply, <a href="apply.html#4:4">4</a>}</span>
+
+const ApplyI : Apply&lt;*, *, *, *&gt; = {
+<span class="nocode pln">{apply-implementation, <a href="apply.html#4:2">2</a>}</span>
+,
+<span class="nocode pln">{apAll-implementation, <a href="apply.html#4:3">3</a>}</span>
+};
+
+export default ApplyI;
+</pre>
+
+
+
+</div>
+</div>
+<a name="4:4"><div class="section"><h4>4. Imports</h4></a>
+<p>The Apply module must import the Apply type definition.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{import-types-apply <a href="apply.html#4:4">4</a>}</span>
+<pre class="prettyprint">
+import type { Apply } from './types/Apply'
+</pre>
+
+
+<p class="seealso">Used in section <a href="apply.html#4:3">3</a></p>
 </div>
 
 </div>
-<br><a style="float:left;" class="chapter-nav" href="consumer.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="apply.html">Next Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="functor.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="appendix.html">Next Chapter</a></body>

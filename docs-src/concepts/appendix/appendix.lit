@@ -10,9 +10,11 @@ self-documenting code.
 
 --- index.js
 import Functor from './Functor';
+import Apply from './Apply';
 
 export {
-  Functor
+  Functor,
+  Apply
 };
 ---
 
@@ -20,7 +22,8 @@ However I also want to allow users to just import all the functions if they wish
 
 --- index.js --- +=
 export default {
-  ...Functor
+  ...Functor,
+  ...Apply
 };
 ---
 
