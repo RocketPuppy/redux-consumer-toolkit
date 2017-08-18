@@ -5,7 +5,7 @@
 
 It is often the case when programming that I have a function that takes some input argument and returns a transformed output. I also might have some piece of data I wouldd like to apply that function to, but I can't because the data is encapsulated inside something else. I'll call the "data" in this case the "target" and the "something else" the "context". To make it concrete, I might have some way to get the number of completed todo items but the only way to get the todo items is via a selector function, because they are stored in a global store using Redux.
 
---- introduction_concrete
+--- functor-introduction
 const todoSelector = (state, props) => state.todos;
 
 const lengthOfTodos = (todos) => todos.length;
@@ -13,7 +13,7 @@ const lengthOfTodos = (todos) => todos.length;
 
 Note how I can't just apply the `lengthOfTodos` function to the `todoSelector`. The `lengthOfTodos` function expects an array of todo objects, and the `todoSelector` is a function. Somehow I need to apply `lengthOfTodos` to the result of `todoSelector`. I don't have the arguments to pass to `todoSelector` though to get the result! This is where Functor comes to help. With Functor I can define that `lengthOfTodos` is to be applied to the target data in the context of the selector function. This is what it looks like.
 
---- introduction_concrete --- +=
+--- functor-introduction --- +=
 Functor.map(lengthOfTodos, todoSelector)
 ---
 
@@ -23,7 +23,7 @@ Simple!
 
 A Functor is really best talked about as an interface that an entity can implement. That interface is pretty simple. It is simply the map function, along with some properties on how that function behaves. The specification is below.
 
---- types/functor.js
+--- types/Functor.js
 @{import-types-consumer}
 
 export type Functor<Static, In, OutA, OutB> = {
@@ -35,7 +35,7 @@ So a Functor is an object that implements a map property. That property must be 
 
 The map function has a few properties that make it convenient to work with. The first property is called the Identity property. It simply says that if the transformer is the identity function, the target doesn't change.
 
---- laws ---
+--- functor-laws ---
 const identity = x => x;
 
 Functor.map(identity, todoSelector) === todoSelector;
@@ -43,7 +43,7 @@ Functor.map(identity, todoSelector) === todoSelector;
 
 The second property is known as the Composition property. This property says that if I have two transformers I want to apply to a target, applying the composition of those transformers is the same as applying each transformer individually one after the other.
 
---- laws --- +=
+--- functor-laws --- +=
 @{compose}
 const transformerA = todos => todos.emptyTodos;
 const transformerB = todos => todos.length;
@@ -56,7 +56,7 @@ The consequence of this is that I don't need to worry about how I call `map` whe
 
 The implementation is relatively simple, but can be tricky for those who aren't used to functional programming or the Functor concepts. Remember that the context is selector functions, which have a specific shape.
 
---- implementation
+--- functor-implementation
 map: function(transformer, context) {
   return (state, props) =>
       transformer(context(state, props));
@@ -73,7 +73,7 @@ Finally I need to wrap it all up in a nice module.
 @{import-types-functor}
 
 const FunctorI : Functor<*, *, *, *> = {
-@{implementation}
+@{functor-implementation}
 }
 
 export default FunctorI;

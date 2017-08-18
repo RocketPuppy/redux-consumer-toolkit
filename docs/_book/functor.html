@@ -48,7 +48,7 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{introduction_concrete <a href="functor.html#3:1">1</a>}</span>
+<span class="codeblock_name">{functor-introduction <a href="functor.html#3:1">1</a>}</span>
 <pre class="prettyprint">
 const todoSelector = (state, props) =&gt; state.todos;
 
@@ -62,7 +62,7 @@ const lengthOfTodos = (todos) =&gt; todos.length;
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{introduction_concrete <a href="functor.html#3:1">1</a>} +=</span>
+<span class="codeblock_name">{functor-introduction <a href="functor.html#3:1">1</a>} +=</span>
 <pre class="prettyprint">
 Functor.map(lengthOfTodos, todoSelector)
 </pre>
@@ -79,7 +79,7 @@ Functor.map(lengthOfTodos, todoSelector)
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>types/functor.js</strong> <a href="functor.html#3:2">2</a>}</span>
+<span class="codeblock_name">{<strong>types/Functor.js</strong> <a href="functor.html#3:2">2</a>}</span>
 <pre class="prettyprint">
 <span class="nocode pln">{import-types-consumer, <a href="consumer.html#2:2">2:2</a>}</span>
 
@@ -97,7 +97,7 @@ export type Functor&lt;Static, In, OutA, OutB&gt; = {
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{laws <a href="functor.html#3:2">2</a>}</span>
+<span class="codeblock_name">{functor-laws <a href="functor.html#3:2">2</a>}</span>
 <pre class="prettyprint">
 const identity = x =&gt; x;
 
@@ -111,7 +111,7 @@ Functor.map(identity, todoSelector) === todoSelector;
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{laws <a href="functor.html#3:2">2</a>} +=</span>
+<span class="codeblock_name">{functor-laws <a href="functor.html#3:2">2</a>} +=</span>
 <pre class="prettyprint">
 <span class="nocode pln">{compose, <a href="appendix.html#5:2">5:2</a>}</span>
 const transformerA = todos =&gt; todos.emptyTodos;
@@ -130,7 +130,7 @@ Functor.map(compose(transformerB, transformerA), todoSelector) ===
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{implementation <a href="functor.html#3:2">2</a>}</span>
+<span class="codeblock_name">{functor-implementation <a href="functor.html#3:2">2</a>}</span>
 <pre class="prettyprint">
 map: function(transformer, context) {
   return (state, props) =&gt;
@@ -154,7 +154,7 @@ map: function(transformer, context) {
 <span class="nocode pln">{import-types-functor, <a href="functor.html#3:3">3</a>}</span>
 
 const FunctorI : Functor&lt;*, *, *, *&gt; = {
-<span class="nocode pln">{implementation, <a href="functor.html#3:2">2</a>}</span>
+<span class="nocode pln">{functor-implementation, <a href="functor.html#3:2">2</a>}</span>
 }
 
 export default FunctorI;
