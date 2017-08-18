@@ -2,7 +2,7 @@
 
 @title Concepts
 
-This document will outline the concepts used in this library and how you can apply them. It will provide both a generic overview of the concepts, and the specific implementation of them in this library.
+This document will outline the concepts used in this library and how they can be applied. It will provide both a generic overview of the concepts, and the specific implementation of them in this library.
 
 [Flow Basics](concepts/flow/flow.lit)
 [Consumers](concepts/consumer/consumer.lit)
