@@ -198,7 +198,7 @@ import { createSelector } from 'reselect';
 ---
 
 --- imports-redux-reducer-toolkit
-import * as $ from './index.js';
+import $ from './index.js';
 ---
 
 --- imports-react-redux
