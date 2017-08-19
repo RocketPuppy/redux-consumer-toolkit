@@ -11,10 +11,12 @@ self-documenting code.
 --- index.js
 import Functor from './Functor';
 import Apply from './Apply';
+import Applicative from './Applicative';
 
 export {
   Functor,
-  Apply
+  Apply,
+  Applicative
 };
 ---
 
@@ -23,7 +25,8 @@ However I also want to allow users to just import all the functions if they wish
 --- index.js --- +=
 export default {
   ...Functor,
-  ...Apply
+  ...Apply,
+  ...Applicative
 };
 ---
 
@@ -33,4 +36,17 @@ I use a version of function composition throughout the examples. It is defined a
 
 --- compose
 const compose = (f, g) => (...args) => f(g(...args))
+---
+
+The constant function is mentioned occasionally. It is defined with a type signature as follows.
+
+--- constant
+type Constant<A, B> = (a) => (b) => a
+const constant : Constant<*,*> = x => y => x
+---
+
+The identity function is a useful function and appears in some of the laws for the interfaces.
+
+--- identity
+const identity = (x) => x
 ---

@@ -1,0 +1,106 @@
+@code javascript js
+
+@title Applicative
+
+@s Motivation
+
+I've demonstrated the motivation and some use cases behind both Functor and
+Applicative. They let me apply functions to values in the context of a
+Consumer. When doing so, all the arguments for the function must be in a
+Consumer context. There might be some times though when that's not the case. I
+might need to apply a function to a constant value. Or I might need to
+dynamically construct consumers based on some parameters.
+
+Suppose I have a component for rendering lists, and I want to wire it up to a
+Redux store using a selector based on the type of list (todo or grocery). One
+way I might do that is with a factory function that returns the selector.
+
+--- applicative-introduction-1
+const listSelectorFactory = (type) =>
+  (state, props) => state[type];
+---
+
+This works, although there's a little bit of boilerplate. This would also get
+more complicated if the selector relied on some other information from the
+store. For example, if there were some stored user preferences changing the
+list sorting order.
+
+---applicative-introduction-2
+const listSelectorFactory = (type) =>
+    (state, props) =>
+        sortedListItems(state[type], state.sort)
+---
+
+The goal of Applicative is to simplify this by allowing the creation of
+"constant" consumers.
+
+@s Details
+
+The Applicative interface is simple.
+
+--- types/Applicative.js
+export type Applicative<Static, In, Out> = {
+  of: (Out) => (In, Static) => Out
+};
+---
+
+There is of course the generic type parameters. Contrary to many of the other
+interfaces, there are only three generics here, and none of them are
+duplicated. This knowledge tells me and the Flow checker that none of these
+parameters can change. The of function has a signature very similar to that of
+a constant function (@{constant}), and that's a clue that it works similarly.
+
+There are some laws that the Applicative interface must follow. They are
+related to and depend on the Apply interface. The first law is the Identity
+law, which simply says that using of on the identity function (@{identity}) and
+applying it to a value in a consumer is the same as just using that consumer.
+
+--- applicative-laws-identity
+ap(of(identity), consumer) === consumer
+---
+
+The next law is the homomorphism law, which says simply that using of on a
+function and all of its arguments is the same as just calling that function
+on its arguments directly and using of on the result.
+
+--- applicative-laws-homomorphism
+ap(of(f), of(x)) === of(f(x))
+---
+
+The final law is the interchange law. It is more complicated, but essentially
+it ensures that of has no side effects other than lifting its argument into the
+consumer context.
+
+--- applicative-laws-interchange
+ap(u, of(y)) === ap(of(f => f(y)), u)
+---
+
+With all those laws and the interface, the implementation is pretty
+straightforward. It's essentially the same as @{constant} but with consumers in
+mind.
+
+--- applicative-implementation
+of: (x) =>
+  (_state, _props) =>
+    x
+---
+
+That's it. I need to wrap it up in a module and then this interface is finished.
+
+--- Applicative.js
+@{import-types-applicative}
+
+const ApplicativeI : Applicative<*, *, *> = {
+@{applicative-implementation}
+};
+
+export default ApplicativeI;
+---
+
+@s Imports
+
+The Applicative module must import the Applicative type definition.
+
+--- import-types-applicative
+import type { Applicative } from './types/Applicative'
+---

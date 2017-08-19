@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Appendix</title>
+<title>Applicative</title>
 <script>
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
 (function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
@@ -42,87 +42,164 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </head>
 <body onload="prettyPrint()">
 <section>
-<h1>Appendix</h1>
-<a name="6:1"><div class="section"><h4>1. Library Entry-point</h4></a>
-<p>I need to define an entry-point file for the library so that NPM can package it
-properly.
+<h1>Applicative</h1>
+<a name="5:1"><div class="section"><h4>1. Motivation</h4></a>
+<p>I've demonstrated the motivation and some use cases behind both Functor and
+Applicative. They let me apply functions to values in the context of a
+Consumer. When doing so, all the arguments for the function must be in a
+Consumer context. There might be some times though when that's not the case. I
+might need to apply a function to a constant value. Or I might need to
+dynamically construct consumers based on some parameters.
 </p>
-<p>I want the library to be usable by importing specific modules to aid in
-self-documenting code.
+<p>Suppose I have a component for rendering lists, and I want to wire it up to a
+Redux store using a selector based on the type of list (todo or grocery). One
+way I might do that is with a factory function that returns the selector.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#6:1">1</a>}</span>
+<span class="codeblock_name">{applicative-introduction-1 <a href="applicative.html#5:1">1</a>}</span>
 <pre class="prettyprint">
-import Functor from './Functor';
-import Apply from './Apply';
-import Applicative from './Applicative';
+const listSelectorFactory = (type) =&gt;
+  (state, props) =&gt; state[type];
+</pre>
 
-export {
-  Functor,
-  Apply,
-  Applicative
+
+
+</div>
+<p>This works, although there's a little bit of boilerplate. This would also get
+more complicated if the selector relied on some other information from the
+store. For example, if there were some stored user preferences changing the
+list sorting order.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{applicative-introduction-2 <a href="applicative.html#5:1">1</a>}</span>
+<pre class="prettyprint">
+const listSelectorFactory = (type) =&gt;
+    (state, props) =&gt;
+        sortedListItems(state[type], state.sort)
+</pre>
+
+
+
+</div>
+<p>The goal of Applicative is to simplify this by allowing the creation of
+"constant" consumers.
+</p>
+
+</div>
+<a name="5:2"><div class="section"><h4>2. Details</h4></a>
+<p>The Applicative interface is simple.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>types/Applicative.js</strong> <a href="applicative.html#5:2">2</a>}</span>
+<pre class="prettyprint">
+export type Applicative&lt;Static, In, Out&gt; = {
+  of: (Out) =&gt; (In, Static) =&gt; Out
 };
 </pre>
 
 
 
 </div>
-<p>However I also want to allow users to just import all the functions if they wish.
+<p>There is of course the generic type parameters. Contrary to many of the other
+interfaces, there are only three generics here, and none of them are
+duplicated. This knowledge tells me and the Flow checker that none of these
+parameters can change. The of function has a signature very similar to that of
+a constant function (<code>{constant,</code><a href="appendix.html#6:2"><code>6:2</code></a><code>}</code>), and that's a clue that it works similarly.
+</p>
+<p>There are some laws that the Applicative interface must follow. They are
+related to and depend on the Apply interface. The first law is the Identity
+law, which simply says that using of on the identity function (<code>{identity,</code><a href="appendix.html#6:2"><code>6:2</code></a><code>}</code>) and
+applying it to a value in a consumer is the same as just using that consumer.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#6:1">1</a>} +=</span>
+<span class="codeblock_name">{applicative-laws-identity <a href="applicative.html#5:2">2</a>}</span>
 <pre class="prettyprint">
-export default {
-  ...Functor,
-  ...Apply,
-  ...Applicative
+ap(of(identity), consumer) === consumer
+</pre>
+
+
+
+</div>
+<p>The next law is the homomorphism law, which says simply that using of on a
+function and all of its arguments is the same as just calling that function
+on its arguments directly and using of on the result.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{applicative-laws-homomorphism <a href="applicative.html#5:2">2</a>}</span>
+<pre class="prettyprint">
+ap(of(f), of(x)) === of(f(x))
+</pre>
+
+
+
+</div>
+<p>The final law is the interchange law. It is more complicated, but essentially
+it ensures that of has no side effects other than lifting its argument into the
+consumer context.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{applicative-laws-interchange <a href="applicative.html#5:2">2</a>}</span>
+<pre class="prettyprint">
+ap(u, of(y)) === ap(of(f =&gt; f(y)), u)
+</pre>
+
+
+
+</div>
+<p>With all those laws and the interface, the implementation is pretty
+straightforward. It's essentially the same as <code>{constant,</code><a href="appendix.html#6:2"><code>6:2</code></a><code>}</code> but with consumers in
+mind.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{applicative-implementation <a href="applicative.html#5:2">2</a>}</span>
+<pre class="prettyprint">
+of: (x) =&gt;
+  (_state, _props) =&gt;
+    x
+</pre>
+
+
+
+</div>
+<p>That's it. I need to wrap it up in a module and then this interface is finished.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>Applicative.js</strong> <a href="applicative.html#5:2">2</a>}</span>
+<pre class="prettyprint">
+<span class="nocode pln">{import-types-applicative, <a href="applicative.html#5:3">3</a>}</span>
+
+const ApplicativeI : Applicative&lt;*, *, *&gt; = {
+<span class="nocode pln">{applicative-implementation, <a href="applicative.html#5:2">2</a>}</span>
 };
+
+export default ApplicativeI;
 </pre>
 
 
 
 </div>
 </div>
-<a name="6:2"><div class="section"><h4>2. Utility Functions</h4></a>
-<p>I use a version of function composition throughout the examples. It is defined as follows.
+<a name="5:3"><div class="section"><h4>3. Imports</h4></a>
+<p>The Applicative module must import the Applicative type definition.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{compose <a href="appendix.html#6:2">2</a>}</span>
+<span class="codeblock_name">{import-types-applicative <a href="applicative.html#5:3">3</a>}</span>
 <pre class="prettyprint">
-const compose = (f, g) =&gt; (...args) =&gt; f(g(...args))
+import type { Applicative } from './types/Applicative'
 </pre>
 
 
-<p class="seealso">Used in sections <a href="functor.html#3:2">3:2</a> and <a href="apply.html#4:2">4:2</a></p>
-</div>
-<p>The constant function is mentioned occasionally. It is defined with a type signature as follows.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{constant <a href="appendix.html#6:2">2</a>}</span>
-<pre class="prettyprint">
-type Constant&lt;A, B&gt; = (a) =&gt; (b) =&gt; a
-const constant : Constant&lt;*,*&gt; = x =&gt; y =&gt; x
-</pre>
-
-
-
-</div>
-<p>The identity function is a useful function and appears in some of the laws for the interfaces.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{identity <a href="appendix.html#6:2">2</a>}</span>
-<pre class="prettyprint">
-const identity = (x) =&gt; x
-</pre>
-
-
-
+<p class="seealso">Used in section <a href="applicative.html#5:2">2</a></p>
 </div>
 
 </div>
-<br><a style="float:left;" class="chapter-nav" href="applicative.html">Previous Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="apply.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="appendix.html">Next Chapter</a></body>

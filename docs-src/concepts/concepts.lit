@@ -8,4 +8,5 @@ This document will outline the concepts used in this library and how they can be
 [Consumers](concepts/consumer/consumer.lit)
 [Functor](concepts/functor/functor.lit)
 [Apply](concepts/apply/apply.lit)
+[Applicative](concepts/applicative/applicative.lit)
 [Appendix](concepts/appendix/appendix.lit)
