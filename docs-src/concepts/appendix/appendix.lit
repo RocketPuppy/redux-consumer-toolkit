@@ -6,9 +6,9 @@ I need to define an entry-point file for the library so that NPM can package it
 properly.
 
 I want the library to be usable by importing specific modules to aid in
-self-documenting code.
+self-documenting code. I need to import everything first
 
---- index.js
+--- import-list
 @{import-functor}
 @{import-apply}
 @{import-applicative}
@@ -16,7 +16,12 @@ self-documenting code.
 @{import-chain}
 @{import-monoid}
 @{import-semigroup}
+---
 
+The export list is just every individual module and a hand-selected list of
+methods that are easiest to use.
+
+--- export-list
 export {
   Functor,
   Apply,
@@ -24,22 +29,7 @@ export {
   Profunctor,
   Chain,
   Monoid,
-  Semigroup
-};
----
-
-However I also want to allow users to just import all the functions if they wish.
-
---- index.js --- +=
-const { map } = Functor;
-const { apAll } = Apply;
-const { of } = Applicative;
-const { promap, mapIn, objectify } = Profunctor;
-const { chain, expandAll, combine } = Chain;
-const { identity } = Monoid;
-const { concat } = Semigroup;
-
-export {
+  Semigroup,
   map,
   apAll,
   of,
@@ -52,6 +42,22 @@ export {
   identity,
   concat
 };
+---
+
+I need to extract all the methods for the named exports
+
+--- index.js ---
+@{import-list}
+
+const { map } = Functor;
+const { apAll } = Apply;
+const { of } = Applicative;
+const { promap, mapIn, objectify } = Profunctor;
+const { chain, expandAll, combine } = Chain;
+const { identity } = Monoid;
+const { concat } = Semigroup;
+
+@{export-list}
 ---
 
 @s Utility Functions

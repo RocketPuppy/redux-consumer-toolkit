@@ -48,11 +48,11 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 properly.
 </p>
 <p>I want the library to be usable by importing specific modules to aid in
-self-documenting code.
+self-documenting code. I need to import everything first
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#10:1">1</a>}</span>
+<span class="codeblock_name">{import-list <a href="appendix.html#10:1">1</a>}</span>
 <pre class="prettyprint">
 <span class="nocode pln">{import-functor, <a href="functor.html#3:3">3:3</a>}</span>
 <span class="nocode pln">{import-apply, <a href="apply.html#4:4">4:4</a>}</span>
@@ -61,7 +61,18 @@ self-documenting code.
 <span class="nocode pln">{import-chain, <a href="chain.html#6:3">6:3</a>}</span>
 <span class="nocode pln">{import-monoid, <a href="monoid.html#8:3">8:3</a>}</span>
 <span class="nocode pln">{import-semigroup, <a href="semigroup.html#7:3">7:3</a>}</span>
+</pre>
 
+
+
+</div>
+<p>The export list is just every individual module and a hand-selected list of
+methods that are easiest to use.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{export-list <a href="appendix.html#10:1">1</a>}</span>
+<pre class="prettyprint">
 export {
   Functor,
   Apply,
@@ -69,28 +80,7 @@ export {
   Profunctor,
   Chain,
   Monoid,
-  Semigroup
-};
-</pre>
-
-
-
-</div>
-<p>However I also want to allow users to just import all the functions if they wish.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#10:1">1</a>} +=</span>
-<pre class="prettyprint">
-const { map } = Functor;
-const { apAll } = Apply;
-const { of } = Applicative;
-const { promap, mapIn, objectify } = Profunctor;
-const { chain, expandAll, combine } = Chain;
-const { identity } = Monoid;
-const { concat } = Semigroup;
-
-export {
+  Semigroup,
   map,
   apAll,
   of,
@@ -103,6 +93,28 @@ export {
   identity,
   concat
 };
+</pre>
+
+
+
+</div>
+<p>I need to extract all the methods for the named exports
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#10:1">1</a>}</span>
+<pre class="prettyprint">
+<span class="nocode pln">{import-list, <a href="appendix.html#10:1">1</a>}</span>
+
+const { map } = Functor;
+const { apAll } = Apply;
+const { of } = Applicative;
+const { promap, mapIn, objectify } = Profunctor;
+const { chain, expandAll, combine } = Chain;
+const { identity } = Monoid;
+const { concat } = Semigroup;
+
+<span class="nocode pln">{export-list, <a href="appendix.html#10:1">1</a>}</span>
 </pre>
 
 
