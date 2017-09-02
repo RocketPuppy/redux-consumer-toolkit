@@ -123,8 +123,203 @@ const selector = chain(unfinishedTodos, orFinished);
 </div>
 </div>
 <a name="6:2"><div class="section"><h4>2. Details</h4></a>
-<p>TODO
+<p>The Chain interface consists of a single method, bind, and some useful
+convenience methods that are implemented using bind. I'll cover the bind
+method first and the convenience methods later. The chain method in the
+interface is exactly the same as the bind method, but the argument order is
+switched. This lends for some more convenient usage in practice.
 </p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>types/Chain.js</strong> <a href="chain.html#6:2">2</a>}</span>
+<pre class="prettyprint">
+export type Chain&lt;Static, In, OutA, OutB&gt; = {
+  bind: (OutA =&gt; ((In, Static) =&gt; OutB), (In, Static) =&gt; OutA) =&gt; (In, Static) =&gt; OutB,
+  chain: ((In, Static) =&gt; OutA, OutA =&gt; ((In, Static) =&gt; OutB)) =&gt; (In, Static) =&gt; OutB,
+<span class="nocode pln">  {chain-types-expand, <a href="chain.html#6:2">2</a>}</span>
+  ,
+<span class="nocode pln">  {chain-types-expandAll, <a href="chain.html#6:2">2</a>}</span>
+  ,
+<span class="nocode pln">  {chain-types-combine, <a href="chain.html#6:2">2</a>}</span>
+};
+</pre>
+
+
+
+</div>
+<p>The bind method is the most complicated method so far. It's first argument is a
+function that generates a consumer. The second argument is the consumer that
+will be run first. Both the generated consumer and the input consumer must take
+the same Input and Static values. The whole method eventually returns a
+consumer that outputs the result of the generated consumer.
+</p>
+<p>There is a single law that the bind interface needs to follow, and that is the
+law of associativity. It should not matter in which order I group method calls
+to bind using parentheses.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{chain-laws-associativity <a href="chain.html#6:2">2</a>}</span>
+<pre class="prettyprint">
+bind(g, bind(f, u)) === bind(x =&gt; bind(g, f(x)), u)
+</pre>
+
+
+
+</div>
+<p>An implementation that satisfies this law looks as follows. I also include the
+implementation of chain as it is simply a flipped version of bind.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{chain-bind-implementation <a href="chain.html#6:2">2</a>}</span>
+<pre class="prettyprint">
+bind: (r_, r) =&gt; (
+  (state, action) =&gt; (
+    r_(r(state, action))(state, action)
+  )
+),
+chain: (r, r_) =&gt; ChainI.bind(r_, r)
+</pre>
+
+
+
+</div>
+<p>There are in addition some convenience methods that I have added to the Chain
+interface. The first of this is named expand. The expand method takes two
+consumers that output objects, runs them, and merges their output into the same
+object. The output is biased towards the second argument in case of conflicting
+keys in the output.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{chain-types-expand <a href="chain.html#6:2">2</a>}</span>
+<pre class="prettyprint">
+  expand: ((In, Static) =&gt; {[string]: mixed}, (In, Static) =&gt; {[string]: mixed}) =&gt; (In, Static) =&gt; {[string]: mixed}
+</pre>
+
+
+
+</div>
+<p>The implementation uses bind.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{chain-expand-implementation <a href="chain.html#6:2">2</a>}</span>
+<pre class="prettyprint">
+expand: (r, r_) =&gt; (
+  ChainI.bind((s_) =&gt; (s, a) =&gt; ({ ...s_, ...r_(s, a) }), r)
+)
+</pre>
+
+
+
+</div>
+<p>The expand helper is useful when I have exactly two consumers to expand, but often in Javascript I have more and nesting calls to exapnd is syntactically ugly. The expandAll method is provided to address that. It is a variadic version of expand. It's signature and implementation follows.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{chain-types-expandAll <a href="chain.html#6:2">2</a>}</span>
+<pre class="prettyprint">
+expandAll: (...Array&lt;(In, Static) =&gt; {[string]: mixed}&gt;) =&gt; (In, Static) =&gt; {[string]: mixed}
+</pre>
+
+
+
+</div>
+<p>The implementation is straightforward. It reduces over the arguments, starting
+with an identity consumer and calling expand on each one. In this manner the
+merge is biased towards later arguments in case of name conflicts.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{chain-expandAll-implementation <a href="chain.html#6:2">2</a>}</span>
+<pre class="prettyprint">
+expandAll: (...consumers) =&gt; (
+  consumers.reduce(ChainI.expand, Monoid.identity)
+)
+</pre>
+
+
+
+</div>
+<p>The final convenience method is a reimplementation of the
+<a href="http://redux.js.org/docs/api/combineReducers.html">combineReducers</a> method
+from the popular <a href="https://github.com/reactjs/redux">redux</a> library. The method
+provided by the redux library is useful but has some runtime checks aimed
+towards helping beginners of the library and consequently does not fit well
+into pipelines constructed with this module. Semantically the combine method is
+the same but without the runtime checks.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{chain-types-combine <a href="chain.html#6:2">2</a>}</span>
+<pre class="prettyprint">
+combine: ({[key : string]: (In, Static) =&gt; mixed }) =&gt; (In, Static) =&gt; mixed
+</pre>
+
+
+
+</div>
+<p>It is implemented by first objectifying the consumers according to the provided specification. Next it takes those objectified consumers and passes them to the expandAll method. This returns a consumer that will run all the consumers, appropriately pulling their inputs off the state and placing their results back in the state object at the same key.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{chain-combine-implementation <a href="chain.html#6:2">2</a>}</span>
+<pre class="prettyprint">
+combine: (spec) =&gt; {
+  const objectified = mapObjIndexed((r, k) =&gt; Profunctor.objectify(k, r), spec);
+
+  return ChainI.expandAll(...values(objectified))
+}
+</pre>
+
+
+
+</div>
+<p>I wrap up the implementations in a module. Some of the methods require some
+imports from the ramda library.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>Chain.js</strong> <a href="chain.html#6:2">2</a>}</span>
+<pre class="prettyprint">
+import mapObjIndexed from 'ramda/src/mapObjIndexed.js';
+import values from 'ramda/src/values.js';
+<span class="nocode pln">{import-profunctor, <a href="profunctor.html#9:3">9:3</a>}</span>
+<span class="nocode pln">{import-monoid, <a href="monoid.html#8:2">8:2</a>}</span>
+<span class="nocode pln">{import-types-chain, <a href="chain.html#6:3">3</a>}</span>
+
+const ChainI : Chain&lt;*, *, *, *&gt; = {
+<span class="nocode pln">{chain-bind-implementation, <a href="chain.html#6:2">2</a>}</span>
+,
+<span class="nocode pln">{chain-expand-implementation, <a href="chain.html#6:2">2</a>}</span>
+,
+<span class="nocode pln">{chain-expandAll-implementation, <a href="chain.html#6:2">2</a>}</span>
+,
+<span class="nocode pln">{chain-combine-implementation, <a href="chain.html#6:2">2</a>}</span>
+};
+
+export default ChainI;
+</pre>
+
+
+
+</div>
+</div>
+<a name="6:3"><div class="section"><h4>3. Imports</h4></a>
+<p>The type definition for Chain needs imported.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{import-types-chain <a href="chain.html#6:3">3</a>}</span>
+<pre class="prettyprint">
+import type { Chain } from './types/Chain';
+</pre>
+
+
+<p class="seealso">Used in section <a href="chain.html#6:2">2</a></p>
+</div>
 
 </div>
 <br><a style="float:left;" class="chapter-nav" href="applicative.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="semigroup.html">Next Chapter</a></body>

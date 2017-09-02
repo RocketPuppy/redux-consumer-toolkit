@@ -13,12 +13,14 @@ import Functor from './Functor';
 import Apply from './Apply';
 import Applicative from './Applicative';
 import Profunctor from './Profunctor';
+import Chain from './Chain';
 
 export {
   Functor,
   Apply,
   Applicative,
-  Profunctor
+  Profunctor,
+  Chain
 };
 ---
 
@@ -29,7 +31,8 @@ export default {
   ...Functor,
   ...Apply,
   ...Applicative,
-  ...Profunctor
+  ...Profunctor,
+  ...Chain
 };
 ---
 

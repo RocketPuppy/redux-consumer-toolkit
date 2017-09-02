@@ -71,4 +71,133 @@ const selector = chain(unfinishedTodos, orFinished);
 
 @s Details
 
-TODO
+The Chain interface consists of a single method, bind, and some useful
+convenience methods that are implemented using bind. I'll cover the bind
+method first and the convenience methods later. The chain method in the
+interface is exactly the same as the bind method, but the argument order is
+switched. This lends for some more convenient usage in practice.
+
+--- types/Chain.js
+export type Chain<Static, In, OutA, OutB> = {
+  bind: (OutA => ((In, Static) => OutB), (In, Static) => OutA) => (In, Static) => OutB,
+  chain: ((In, Static) => OutA, OutA => ((In, Static) => OutB)) => (In, Static) => OutB,
+  @{chain-types-expand}
+  ,
+  @{chain-types-expandAll}
+  ,
+  @{chain-types-combine}
+};
+---
+
+The bind method is the most complicated method so far. It's first argument is a
+function that generates a consumer. The second argument is the consumer that
+will be run first. Both the generated consumer and the input consumer must take
+the same Input and Static values. The whole method eventually returns a
+consumer that outputs the result of the generated consumer.
+
+There is a single law that the bind interface needs to follow, and that is the
+law of associativity. It should not matter in which order I group method calls
+to bind using parentheses.
+
+--- chain-laws-associativity
+bind(g, bind(f, u)) === bind(x => bind(g, f(x)), u)
+---
+
+An implementation that satisfies this law looks as follows. I also include the
+implementation of chain as it is simply a flipped version of bind.
+
+--- chain-bind-implementation
+bind: (r_, r) => (
+  (state, action) => (
+    r_(r(state, action))(state, action)
+  )
+),
+chain: (r, r_) => ChainI.bind(r_, r)
+---
+
+There are in addition some convenience methods that I have added to the Chain
+interface. The first of this is named expand. The expand method takes two
+consumers that output objects, runs them, and merges their output into the same
+object. The output is biased towards the second argument in case of conflicting
+keys in the output.
+
+--- chain-types-expand
+  expand: ((In, Static) => {[string]: mixed}, (In, Static) => {[string]: mixed}) => (In, Static) => {[string]: mixed}
+---
+
+The implementation uses bind.
+
+--- chain-expand-implementation
+expand: (r, r_) => (
+  ChainI.bind((s_) => (s, a) => ({ ...s_, ...r_(s, a) }), r)
+)
+---
+
+The expand helper is useful when I have exactly two consumers to expand, but often in Javascript I have more and nesting calls to exapnd is syntactically ugly. The expandAll method is provided to address that. It is a variadic version of expand. It's signature and implementation follows.
+
+--- chain-types-expandAll
+expandAll: (...Array<(In, Static) => {[string]: mixed}>) => (In, Static) => {[string]: mixed}
+---
+
+The implementation is straightforward. It reduces over the arguments, starting
+with an identity consumer and calling expand on each one. In this manner the
+merge is biased towards later arguments in case of name conflicts.
+
+--- chain-expandAll-implementation
+expandAll: (...consumers) => (
+  consumers.reduce(ChainI.expand, Monoid.identity)
+)
+---
+
+The final convenience method is a reimplementation of the
+[combineReducers](http://redux.js.org/docs/api/combineReducers.html) method
+from the popular [redux](https://github.com/reactjs/redux) library. The method
+provided by the redux library is useful but has some runtime checks aimed
+towards helping beginners of the library and consequently does not fit well
+into pipelines constructed with this module. Semantically the combine method is
+the same but without the runtime checks.
+
+--- chain-types-combine
+combine: ({[key : string]: (In, Static) => mixed }) => (In, Static) => mixed
+---
+
+It is implemented by first objectifying the consumers according to the provided specification. Next it takes those objectified consumers and passes them to the expandAll method. This returns a consumer that will run all the consumers, appropriately pulling their inputs off the state and placing their results back in the state object at the same key.
+
+--- chain-combine-implementation
+combine: (spec) => {
+  const objectified = mapObjIndexed((r, k) => Profunctor.objectify(k, r), spec);
+
+  return ChainI.expandAll(...values(objectified))
+}
+---
+
+I wrap up the implementations in a module. Some of the methods require some
+imports from the ramda library.
+
+--- Chain.js
+import mapObjIndexed from 'ramda/src/mapObjIndexed.js';
+import values from 'ramda/src/values.js';
+@{import-profunctor}
+@{import-monoid}
+@{import-types-chain}
+
+const ChainI : Chain<*, *, *, *> = {
+@{chain-bind-implementation}
+,
+@{chain-expand-implementation}
+,
+@{chain-expandAll-implementation}
+,
+@{chain-combine-implementation}
+};
+
+export default ChainI;
+---
+
+@s Imports
+
+The type definition for Chain needs imported.
+
+--- import-types-chain
+import type { Chain } from './types/Chain';
+---

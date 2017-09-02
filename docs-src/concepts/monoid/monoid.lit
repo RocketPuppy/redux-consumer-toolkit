@@ -1,3 +1,17 @@
 @code javascript js
 
 @title Monoid
+
+@s Details
+
+--- Monoid.js
+export default {};
+---
+
+@s Imports
+
+Some modules need to import the Monoid interface.
+
+--- import-monoid
+import Monoid from './Monoid';
+---

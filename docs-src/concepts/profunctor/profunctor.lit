@@ -147,3 +147,9 @@ The type definition for Profunctor needs to be imported.
 --- import-types-profunctor
 import type { Profunctor } from './types/Profunctor';
 ---
+
+Some modules require the Profunctor interface.
+
+--- import-profunctor
+import Profunctor from './Profunctor'
+---
