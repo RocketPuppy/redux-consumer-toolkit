@@ -6,8 +6,8 @@
 
 The Functor interface provides an extremely useful method of transforming the
 output of a consumer. That handles one half of the problem of fitting consumers
-together into pipelines; making the output appropriate for the next stage. The
-other half of the problem is making the input appropriate for the next stage.
+together into pipelines; making the *output* appropriate for the next stage. The
+other half of the problem is making the *input* appropriate for the next stage.
 
 Suppose I have some selector to determine the props for a component. The
 component only needs the todos that are not done, in addition to any other
@@ -88,7 +88,8 @@ defined as part of the Profunctor interface. The first is mapIn.
 mapIn: ((InB => InA), (InA, Static) => OutA) => (InB, Static) => OutA
 ---
 
-It is implemented using promap.
+The mapIn function only accepts a function to transform the input of the
+consumer. It is implemented using promap.
 
 --- profunctor-mapIn-implementation
 mapIn: (inF, c) => ProfunctorI.promap(inF, x => x, c)
@@ -106,7 +107,7 @@ It is implemented as being the same as Functor's map function.
 mapOut: Functor.map
 ---
 
-The final convenience function is objectify.
+The final convenience function is objectify, as discussed in the motivating example.
 
 --- profunctor-types-objectify
 objectify: (string, (InA, Static) => OutA) => ({[string]: InA}, Static) => {[string]: OutA }

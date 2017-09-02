@@ -46,8 +46,8 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 <a name="9:1"><div class="section"><h4>1. Motivation</h4></a>
 <p>The Functor interface provides an extremely useful method of transforming the
 output of a consumer. That handles one half of the problem of fitting consumers
-together into pipelines; making the output appropriate for the next stage. The
-other half of the problem is making the input appropriate for the next stage.
+together into pipelines; making the <em>output</em> appropriate for the next stage. The
+other half of the problem is making the <em>input</em> appropriate for the next stage.
 </p>
 <p>Suppose I have some selector to determine the props for a component. The
 component only needs the todos that are not done, in addition to any other
@@ -165,7 +165,8 @@ mapIn: ((InB =&gt; InA), (InA, Static) =&gt; OutA) =&gt; (InB, Static) =&gt; Out
 
 
 </div>
-<p>It is implemented using promap.
+<p>The mapIn function only accepts a function to transform the input of the
+consumer. It is implemented using promap.
 </p>
 
 <div class="codeblock">
@@ -201,7 +202,7 @@ mapOut: Functor.map
 
 
 </div>
-<p>The final convenience function is objectify.
+<p>The final convenience function is objectify, as discussed in the motivating example.
 </p>
 
 <div class="codeblock">
