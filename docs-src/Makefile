@@ -26,6 +26,7 @@ dirsmarkdown:
 dirscode:
 	mkdir -p $(SRC)
 	mkdir -p $(SRC)/types
+	mkdir -p $(SRC)/examples/reselect
 
 cleanmarkdown:
 	rm -rf $(HTML)

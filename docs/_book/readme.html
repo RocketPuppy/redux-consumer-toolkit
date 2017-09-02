@@ -59,7 +59,7 @@ method.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>example1-reselect.js</strong> <a href="readme.html#1:2">2</a>}</span>
+<span class="codeblock_name">{<strong>examples/reselect/example1.js</strong> <a href="readme.html#1:2">2</a>}</span>
 <pre class="prettyprint lang-js">
 <span class="nocode pln">{imports-reselect, <a href="readme.html#1:4">4</a>}</span>
 const shopItemsSelector = state =&gt; state.shop.items
@@ -94,7 +94,7 @@ you will use to compose reducers together.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>example1-toolkit.js</strong> <a href="readme.html#1:2">2</a>}</span>
+<span class="codeblock_name">{<strong>examples/reselect/example1-toolkit.js</strong> <a href="readme.html#1:2">2</a>}</span>
 <pre class="prettyprint lang-js">
 <span class="nocode pln">{imports-redux-reducer-toolkit, <a href="readme.html#1:4">4</a>}</span>
 const shopItemsSelector = state =&gt; state.shop.items;
@@ -138,10 +138,10 @@ object.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>connecting-reselect.js</strong> <a href="readme.html#1:3">3</a>}</span>
+<span class="codeblock_name">{<strong>examples/reselect/connecting.js</strong> <a href="readme.html#1:3">3</a>}</span>
 <pre class="prettyprint lang-js">
 <span class="nocode pln">{imports-react-redux, <a href="readme.html#1:4">4</a>}</span>
-<span class="nocode pln">{props-reselect.js, <a href="readme.html#1:4">4</a>}</span>
+<span class="nocode pln">{examples/reselect/props.js, <a href="readme.html#1:4">4</a>}</span>
 const mapStateToProps = (state) =&gt; {
   return {
     todos: getVisibleTodos(state)
@@ -160,10 +160,10 @@ object shape, so you can connect them to the redux store concisely and directly.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>connecting-toolkit.js</strong> <a href="readme.html#1:3">3</a>}</span>
+<span class="codeblock_name">{<strong>examples/reselect/connecting-toolkit.js</strong> <a href="readme.html#1:3">3</a>}</span>
 <pre class="prettyprint lang-js">
 <span class="nocode pln">{imports-react-redux, <a href="readme.html#1:4">4</a>}</span>
-<span class="nocode pln">{props-toolkit.js, <a href="readme.html#1:4">4</a>}</span>
+<span class="nocode pln">{examples/reselect/props-toolkit.js, <a href="readme.html#1:4">4</a>}</span>
 connect($.combine({ todos: getVisibleTodos }));
 </pre>
 
@@ -182,7 +182,7 @@ and redux-reducer-toolkit examples.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>props-reselect.js</strong> <a href="readme.html#1:4">4</a>}</span>
+<span class="codeblock_name">{<strong>examples/reselect/props.js</strong> <a href="readme.html#1:4">4</a>}</span>
 <pre class="prettyprint lang-js">
 <span class="nocode pln">{imports-reselect, <a href="readme.html#1:4">4</a>}</span>
 const getVisibilityFilter = (state, props) =&gt;
@@ -206,7 +206,7 @@ This is exactly how it works with redux-reducer-toolkit as well.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>props-toolkit.js</strong> <a href="readme.html#1:4">4</a>}</span>
+<span class="codeblock_name">{<strong>examples/reselect/props-toolkit.js</strong> <a href="readme.html#1:4">4</a>}</span>
 <pre class="prettyprint lang-js">
 <span class="nocode pln">{imports-redux-reducer-toolkit, <a href="readme.html#1:4">4</a>}</span>
 const getVisibilityFilter = (state, props) =&gt; state.todoLists[props.listId].visibilityFilter;
@@ -229,7 +229,7 @@ selector that is reused.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>props-toolkit-alternate.js</strong> <a href="readme.html#1:4">4</a>}</span>
+<span class="codeblock_name">{<strong>examples/reselect/props-toolkit-alternate.js</strong> <a href="readme.html#1:4">4</a>}</span>
 <pre class="prettyprint lang-js">
 <span class="nocode pln">{imports-redux-reducer-toolkit, <a href="readme.html#1:4">4</a>}</span>
 const todoList = (state, props) =&gt; state.todoLists[props.listId];
@@ -251,7 +251,7 @@ const getVisibleTodos = $.apAll(
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>props-reselect-alternate.js</strong> <a href="readme.html#1:4">4</a>}</span>
+<span class="codeblock_name">{<strong>examples/reselect/props-alternate.js</strong> <a href="readme.html#1:4">4</a>}</span>
 <pre class="prettyprint lang-js">
 <span class="nocode pln">{imports-reselect, <a href="readme.html#1:4">4</a>}</span>
 const todoList = (state, props) =&gt; state.todoLists[props.listId];
@@ -290,7 +290,7 @@ import { createSelector } from 'reselect';
 <div class="codeblock">
 <span class="codeblock_name">{imports-redux-reducer-toolkit <a href="readme.html#1:4">4</a>}</span>
 <pre class="prettyprint lang-js">
-import * as $ from './index.js';
+import * as $ from '../../index';
 </pre>
 
 

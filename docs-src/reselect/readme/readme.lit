@@ -15,7 +15,7 @@ selectors to compute various parts of an order total, then composes them
 together to create the final selector. Note the reselect specific composition
 method.
 
---- example1-reselect.js
+--- examples/reselect/example1.js
 @{imports-reselect}
 const shopItemsSelector = state => state.shop.items
 const taxPercentSelector = state => state.shop.taxPercent
@@ -45,7 +45,7 @@ into more complicated selectors. Next I'll show how you can do the same thing
 with the tools exposed by this library. Remember that these are the same tools
 you will use to compose reducers together.
 
---- example1-toolkit.js
+--- examples/reselect/example1-toolkit.js
 @{imports-redux-reducer-toolkit}
 const shopItemsSelector = state => state.shop.items;
 const taxPercentSelector = state => state.shop.taxPercent;
@@ -83,9 +83,9 @@ Reselect advises to call selectors inside the `mapStateToProps` function. You
 could also use the selector as the `mapStateToProps` function if it returned an
 object.
 
---- connecting-reselect.js
+--- examples/reselect/connecting.js
 @{imports-react-redux}
-@{props-reselect.js}
+@{examples/reselect/props.js}
 const mapStateToProps = (state) => {
   return {
     todos: getVisibleTodos(state)
@@ -100,9 +100,9 @@ connect(mapStateToProps)
 With redux-reducer-toolkit there's a helper to combine selectors into a given
 object shape, so you can connect them to the redux store concisely and directly.
 
---- connecting-toolkit.js
+--- examples/reselect/connecting-toolkit.js
 @{imports-react-redux}
-@{props-toolkit.js}
+@{examples/reselect/props-toolkit.js}
 connect($.combine({ todos: getVisibleTodos }));
 ---
 
@@ -117,7 +117,7 @@ will let you do this as well! Here's how to do it in reselect. I've elided the
 full definition of `getVisibleTodos` as it doesn't change between the reselect
 and redux-reducer-toolkit examples.
 
---- props-reselect.js
+--- examples/reselect/props.js
 @{imports-reselect}
 const getVisibilityFilter = (state, props) =>
   state.todoLists[props.listId].visibilityFilter
@@ -136,7 +136,7 @@ const getVisibleTodos = createSelector(
 Note that in the above example every selector receives the same props values.
 This is exactly how it works with redux-reducer-toolkit as well.
 
---- props-toolkit.js
+--- examples/reselect/props-toolkit.js
 @{imports-redux-reducer-toolkit}
 const getVisibilityFilter = (state, props) => state.todoLists[props.listId].visibilityFilter;
 
@@ -154,7 +154,7 @@ const getVisibleTodos = $.apAll(
 As an alternate formulation of the example, you can extract a `todoList`
 selector that is reused.
 
---- props-toolkit-alternate.js
+--- examples/reselect/props-toolkit-alternate.js
 @{imports-redux-reducer-toolkit}
 const todoList = (state, props) => state.todoLists[props.listId];
 const getVisibilityFilter = $.map(list => list.visibilityFilter, todoList);
@@ -171,7 +171,7 @@ const getVisibleTodos = $.apAll(
 
 This is pretty clean. It's a little more verbose with reselect.
 
---- props-reselect-alternate.js
+--- examples/reselect/props-alternate.js
 @{imports-reselect}
 const todoList = (state, props) => state.todoLists[props.listId];
 
@@ -198,7 +198,7 @@ import { createSelector } from 'reselect';
 ---
 
 --- imports-redux-reducer-toolkit
-import * as $ from './index.js';
+import * as $ from '../../index';
 ---
 
 --- imports-react-redux
