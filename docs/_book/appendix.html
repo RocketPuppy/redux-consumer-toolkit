@@ -96,7 +96,7 @@ export {
 </pre>
 
 
-
+<p class="seealso">Used in section <a href="appendix.html#10:2">2</a></p>
 </div>
 <p>I need to extract all the methods for the named exports
 </p>
@@ -121,12 +121,95 @@ const { concat } = Semigroup;
 
 </div>
 </div>
-<a name="10:2"><div class="section"><h4>2. Utility Functions</h4></a>
+<a name="10:2"><div class="section"><h4>2. Memoization</h4></a>
+<p>It is sometimes useful to have the combinators exported by this library be
+memoized to avoid recomputing values that haven't changed. To that end a
+memoized version of each function is setup here. It currently relies on the
+memoize function from the ramda library. Note that Monoid does not need
+memoizing since it is memoized by its implementation. I also need to import the
+modules under a different name in order to re-export them properly.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>memoized.js</strong> <a href="appendix.html#10:2">2</a>}</span>
+<pre class="prettyprint">
+import memoize from 'ramda/src/memoize.js';
+import FunctorI from './Functor';
+import ApplyI from './Apply';
+import ApplicativeI from './Applicative';
+import ChainI from './Chain';
+import ProfunctorI from './Profunctor';
+import SemigroupI from './Semigroup';
+<span class="nocode pln">{import-monoid, <a href="monoid.html#8:3">8:3</a>}</span>
+
+let { map } = FunctorI;
+let { ap, apAll } = ApplyI;
+let { of } = ApplicativeI;
+let { promap, mapIn, mapOut, objectify } = ProfunctorI;
+let { bind, chain, expand, expandAll, combine } = ChainI;
+let { concat } = SemigroupI;
+const { identity } = Monoid;
+
+map = memoize(map);
+ap = memoize(ap);
+apAll = memoize(apAll);
+of = memoize(of);
+promap = memoize(promap);
+mapIn = memoize(mapIn);
+mapOut = memoize(mapOut);
+objectify = memoize(objectify);
+bind = memoize(bind);
+chain = memoize(chain);
+expand = memoize(expand);
+expandAll = memoize(expandAll);
+combine = memoize(combine);
+concat = memoize(concat);
+
+const Functor = {
+  map
+};
+
+const Apply = {
+  ap,
+  apAll
+};
+
+const Applicative = {
+  of
+};
+
+const Profunctor = {
+  promap,
+  mapIn,
+  mapOut,
+  objectify
+};
+
+const Chain = {
+  bind,
+  chain,
+  expand,
+  expandAll,
+  combine
+};
+
+const Semigroup = {
+  concat
+};
+
+<span class="nocode pln">{export-list, <a href="appendix.html#10:1">1</a>}</span>
+</pre>
+
+
+
+</div>
+</div>
+<a name="10:3"><div class="section"><h4>3. Utility Functions</h4></a>
 <p>I use a version of function composition throughout the examples. It is defined as follows.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{compose <a href="appendix.html#10:2">2</a>}</span>
+<span class="codeblock_name">{compose <a href="appendix.html#10:3">3</a>}</span>
 <pre class="prettyprint">
 const compose = (f, g) =&gt; (...args) =&gt; f(g(...args))
 </pre>
@@ -138,7 +221,7 @@ const compose = (f, g) =&gt; (...args) =&gt; f(g(...args))
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{constant <a href="appendix.html#10:2">2</a>}</span>
+<span class="codeblock_name">{constant <a href="appendix.html#10:3">3</a>}</span>
 <pre class="prettyprint">
 type Constant&lt;A, B&gt; = (a) =&gt; (b) =&gt; a
 const constant : Constant&lt;*,*&gt; = x =&gt; y =&gt; x
@@ -151,7 +234,7 @@ const constant : Constant&lt;*,*&gt; = x =&gt; y =&gt; x
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{identity <a href="appendix.html#10:2">2</a>}</span>
+<span class="codeblock_name">{identity <a href="appendix.html#10:3">3</a>}</span>
 <pre class="prettyprint">
 const identity = (x) =&gt; x
 </pre>
@@ -163,7 +246,7 @@ const identity = (x) =&gt; x
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{filter <a href="appendix.html#10:2">2</a>}</span>
+<span class="codeblock_name">{filter <a href="appendix.html#10:3">3</a>}</span>
 <pre class="prettyprint">
 const filter = (f, c) =&gt; (
   c.reduce((memo, x) =&gt; (

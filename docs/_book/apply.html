@@ -133,7 +133,7 @@ const fC = (state, props) =&gt; (x) =&gt; state.foo + x
 const gC = (state, props) =&gt; (y) =&gt; state.bar * y
 const vC = (state, props) =&gt; state.baz
 
-<span class="nocode pln">{compose, <a href="appendix.html#10:2">10:2</a>}</span>
+<span class="nocode pln">{compose, <a href="appendix.html#10:3">10:3</a>}</span>
 
 ap(ap(map(compose, fC), gC), vC) === ap(fC, ap(gC, vC))
 </pre>

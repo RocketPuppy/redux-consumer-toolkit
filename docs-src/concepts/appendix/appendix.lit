@@ -60,6 +60,83 @@ const { concat } = Semigroup;
 @{export-list}
 ---
 
+@s Memoization
+
+It is sometimes useful to have the combinators exported by this library be
+memoized to avoid recomputing values that haven't changed. To that end a
+memoized version of each function is setup here. It currently relies on the
+memoize function from the ramda library. Note that Monoid does not need
+memoizing since it is memoized by its implementation. I also need to import the
+modules under a different name in order to re-export them properly.
+
+--- memoized.js
+import memoize from 'ramda/src/memoize.js';
+import FunctorI from './Functor';
+import ApplyI from './Apply';
+import ApplicativeI from './Applicative';
+import ChainI from './Chain';
+import ProfunctorI from './Profunctor';
+import SemigroupI from './Semigroup';
+@{import-monoid}
+
+let { map } = FunctorI;
+let { ap, apAll } = ApplyI;
+let { of } = ApplicativeI;
+let { promap, mapIn, mapOut, objectify } = ProfunctorI;
+let { bind, chain, expand, expandAll, combine } = ChainI;
+let { concat } = SemigroupI;
+const { identity } = Monoid;
+
+map = memoize(map);
+ap = memoize(ap);
+apAll = memoize(apAll);
+of = memoize(of);
+promap = memoize(promap);
+mapIn = memoize(mapIn);
+mapOut = memoize(mapOut);
+objectify = memoize(objectify);
+bind = memoize(bind);
+chain = memoize(chain);
+expand = memoize(expand);
+expandAll = memoize(expandAll);
+combine = memoize(combine);
+concat = memoize(concat);
+
+const Functor = {
+  map
+};
+
+const Apply = {
+  ap,
+  apAll
+};
+
+const Applicative = {
+  of
+};
+
+const Profunctor = {
+  promap,
+  mapIn,
+  mapOut,
+  objectify
+};
+
+const Chain = {
+  bind,
+  chain,
+  expand,
+  expandAll,
+  combine
+};
+
+const Semigroup = {
+  concat
+};
+
+@{export-list}
+---
+
 @s Utility Functions
 
 I use a version of function composition throughout the examples. It is defined as follows.
