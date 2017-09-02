@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "github",
-    "url": "https://github.com/RocketPuppy/redux-reducer-toolkit"
+    "url": "https://github.com/RocketPuppy/redux-consumer-toolkit"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

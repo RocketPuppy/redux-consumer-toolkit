@@ -96,7 +96,7 @@ you will use to compose reducers together.
 <div class="codeblock">
 <span class="codeblock_name">{<strong>examples/reselect/example1-toolkit.js</strong> <a href="readme.html#1:2">2</a>}</span>
 <pre class="prettyprint lang-js">
-<span class="nocode pln">{imports-redux-reducer-toolkit, <a href="readme.html#1:4">4</a>}</span>
+<span class="nocode pln">{imports-redux-consumer-toolkit, <a href="readme.html#1:4">4</a>}</span>
 const shopItemsSelector = state =&gt; state.shop.items;
 const taxPercentSelector = state =&gt; state.shop.taxPercent;
 
@@ -155,7 +155,7 @@ connect(mapStateToProps)
 
 </div>
 <h2> Toolkit</h2>
-<p>With redux-reducer-toolkit there's a helper to combine selectors into a given
+<p>With redux-consumer-toolkit there's a helper to combine selectors into a given
 object shape, so you can connect them to the redux store concisely and directly.
 </p>
 
@@ -175,10 +175,10 @@ connect($.combine({ todos: getVisibleTodos }));
 <h2> Reselect</h2>
 <p>One of the important features of reselect is that you can still access props in
 your selectors. This lets you do things like pass the id of an entity into your
-component and pull the full data for it from the store. Redux-reducer-toolkit
+component and pull the full data for it from the store. Redux-consumer-toolkit
 will let you do this as well! Here's how to do it in reselect. I've elided the
 full definition of <code>getVisibleTodos</code> as it doesn't change between the reselect
-and redux-reducer-toolkit examples.
+and redux-consumer-toolkit examples.
 </p>
 
 <div class="codeblock">
@@ -202,13 +202,13 @@ const getVisibleTodos = createSelector(
 </div>
 <h2> Toolkit</h2>
 <p>Note that in the above example every selector receives the same props values.
-This is exactly how it works with redux-reducer-toolkit as well.
+This is exactly how it works with redux-consumer-toolkit as well.
 </p>
 
 <div class="codeblock">
 <span class="codeblock_name">{<strong>examples/reselect/props-toolkit.js</strong> <a href="readme.html#1:4">4</a>}</span>
 <pre class="prettyprint lang-js">
-<span class="nocode pln">{imports-redux-reducer-toolkit, <a href="readme.html#1:4">4</a>}</span>
+<span class="nocode pln">{imports-redux-consumer-toolkit, <a href="readme.html#1:4">4</a>}</span>
 const getVisibilityFilter = (state, props) =&gt; state.todoLists[props.listId].visibilityFilter;
 
 const getTodos = (state, props) =&gt; state.todoLists[props.listId].todos;
@@ -231,7 +231,7 @@ selector that is reused.
 <div class="codeblock">
 <span class="codeblock_name">{<strong>examples/reselect/props-toolkit-alternate.js</strong> <a href="readme.html#1:4">4</a>}</span>
 <pre class="prettyprint lang-js">
-<span class="nocode pln">{imports-redux-reducer-toolkit, <a href="readme.html#1:4">4</a>}</span>
+<span class="nocode pln">{imports-redux-consumer-toolkit, <a href="readme.html#1:4">4</a>}</span>
 const todoList = (state, props) =&gt; state.todoLists[props.listId];
 const getVisibilityFilter = $.map(list =&gt; list.visibilityFilter, todoList);
 const getTodos = $.map(list =&gt; list.todos, todoList);
@@ -288,7 +288,7 @@ import { createSelector } from 'reselect';
 </div>
 
 <div class="codeblock">
-<span class="codeblock_name">{imports-redux-reducer-toolkit <a href="readme.html#1:4">4</a>}</span>
+<span class="codeblock_name">{imports-redux-consumer-toolkit <a href="readme.html#1:4">4</a>}</span>
 <pre class="prettyprint lang-js">
 import * as $ from '../../index';
 </pre>
