@@ -82,14 +82,26 @@ export {
 <div class="codeblock">
 <span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#10:1">1</a>} +=</span>
 <pre class="prettyprint">
-export default {
-  ...Functor,
-  ...Apply,
-  ...Applicative,
-  ...Profunctor,
-  ...Chain,
-  ...Monoid,
-  ...Semigroup
+const { map } = Functor;
+const { apAll } = Apply;
+const { of } = Applicative;
+const { promap, mapIn, objectify } = Profunctor;
+const { chain, expandAll, combine } = Chain;
+const { identity } = Monoid;
+const { concat } = Semigroup;
+
+export {
+  map,
+  apAll,
+  of,
+  promap,
+  mapIn,
+  objectify,
+  chain,
+  expandAll,
+  combine,
+  identity,
+  concat
 };
 </pre>
 
