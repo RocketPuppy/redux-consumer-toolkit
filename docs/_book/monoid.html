@@ -43,24 +43,116 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 <body onload="prettyPrint()">
 <section>
 <h1>Monoid</h1>
-<a name="8:1"><div class="section"><h4>1. Details</h4></a>
+<a name="8:1"><div class="section"><h4>1. Motivation</h4></a>
+<p>The Monoid interface provides a consumer that functions as an identity
+consumer. Like the identity function, <code>{identity,</code><a href="appendix.html#10:2"><code>10:2</code></a><code>}</code>, this identity consumer is
+useful in a number of cases. Most often it is useful as the initial value when
+reducing over a list of consumers and is used as such in the definition of
+expandAll <code>{chain-expandAll-implementation,</code><a href="chain.html#6:2"><code>6:2</code></a><code>}</code>.
+</p>
+
+</div>
+<a name="8:2"><div class="section"><h4>2. Details</h4></a>
+<p>The interface of monoid is defined as follows.
+</p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>Monoid.js</strong> <a href="monoid.html#8:1">1</a>}</span>
+<span class="codeblock_name">{<strong>types/Monoid.js</strong> <a href="monoid.html#8:2">2</a>}</span>
 <pre class="prettyprint">
-export default {};
+export type Monoid&lt;Static, State&gt; = {
+  empty: () =&gt; (State, Static) =&gt; State,
+  identity: (State, Static) =&gt; State
+};
+</pre>
+
+
+
+</div>
+<p>The interface has two generic parameters, and the State parameter does not
+change from input to output. This is what tells Flow that this is an identity
+function and cannot modify its input. The empty method also takes no input, and
+so must always return the same consumer. The empty method is defined and
+required by the static-land specification. However using it like that can be a
+bit of a pain. I've included the identity property, which is just the result of
+calling the empty method.
+</p>
+<p>There are some laws that the Monoid implementation needs to follow with respect
+to the Semigroup concat function. These are simply the right and left identity
+laws. Concatenating the result of empty with any other consumer is the same as
+just using that consumer directly.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{monoid-right-identity <a href="monoid.html#8:2">2</a>}</span>
+<pre class="prettyprint">
+concat(c, empty()) === c
+</pre>
+
+
+
+</div>
+
+<div class="codeblock">
+<span class="codeblock_name">{monoid-left-identity <a href="monoid.html#8:2">2</a>}</span>
+<pre class="prettyprint">
+concat(empty(), c) === c
+</pre>
+
+
+
+</div>
+<p>The implementation is almost trivial. The state is simply returned, and the
+static part is ignored. In order to satisfy Javascript scoping requirements,
+the actual consumer is stored in identity and empty simply references it.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{monoid-implementation <a href="monoid.html#8:2">2</a>}</span>
+<pre class="prettyprint">
+empty: () =&gt; MonoidI.identity,
+identity: (s, _) =&gt; s
+</pre>
+
+
+
+</div>
+<p>I wrap it all up in a module.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>Monoid.js</strong> <a href="monoid.html#8:2">2</a>}</span>
+<pre class="prettyprint">
+<span class="nocode pln">{import-types-monoid, <a href="monoid.html#8:3">3</a>}</span>
+
+const MonoidI : Monoid&lt;*, *&gt; = {
+<span class="nocode pln">  {monoid-implementation, <a href="monoid.html#8:2">2</a>}</span>
+};
+
+export default MonoidI;
 </pre>
 
 
 
 </div>
 </div>
-<a name="8:2"><div class="section"><h4>2. Imports</h4></a>
+<a name="8:3"><div class="section"><h4>3. Imports</h4></a>
+<p>The Monoid type needs to be imported.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{import-types-monoid <a href="monoid.html#8:3">3</a>}</span>
+<pre class="prettyprint">
+import type { Monoid } from './types/Monoid';
+</pre>
+
+
+<p class="seealso">Used in section <a href="monoid.html#8:2">2</a></p>
+</div>
 <p>Some modules need to import the Monoid interface.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{import-monoid <a href="monoid.html#8:2">2</a>}</span>
+<span class="codeblock_name">{import-monoid <a href="monoid.html#8:3">3</a>}</span>
 <pre class="prettyprint">
 import Monoid from './Monoid';
 </pre>

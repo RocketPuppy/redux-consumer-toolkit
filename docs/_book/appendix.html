@@ -59,13 +59,15 @@ import Apply from './Apply';
 import Applicative from './Applicative';
 import Profunctor from './Profunctor';
 import Chain from './Chain';
+import Monoid from './Monoid';
 
 export {
   Functor,
   Apply,
   Applicative,
   Profunctor,
-  Chain
+  Chain,
+  Monoid
 };
 </pre>
 
@@ -83,7 +85,8 @@ export default {
   ...Apply,
   ...Applicative,
   ...Profunctor,
-  ...Chain
+  ...Chain,
+  ...Monoid
 };
 </pre>
 
