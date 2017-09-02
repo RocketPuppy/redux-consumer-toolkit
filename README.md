@@ -144,6 +144,7 @@ const combineReducers = (reducerSpec) => (
 
 ```javascript
 objectify : (string, Consumer<Static, In, Out>) => Consumer<Static, { string: In }, { string: Out }>
+```
 
 ### MapIn
 
@@ -153,6 +154,7 @@ Like Promap, but only change the input of a consumer.
 
 
 #### API
+
 ```
 mapIn : ((InA => InB), Consumer<Static, InB, Out>) => Consume<Static, InA, Out>
 ```
