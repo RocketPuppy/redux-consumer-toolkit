@@ -46,7 +46,7 @@ with the tools exposed by this library. Remember that these are the same tools
 you will use to compose reducers together.
 
 --- examples/reselect/example1-toolkit.js
-@{imports-redux-reducer-toolkit}
+@{imports-redux-consumer-toolkit}
 const shopItemsSelector = state => state.shop.items;
 const taxPercentSelector = state => state.shop.taxPercent;
 
@@ -97,7 +97,7 @@ connect(mapStateToProps)
 
 ## Toolkit
 
-With redux-reducer-toolkit there's a helper to combine selectors into a given
+With redux-consumer-toolkit there's a helper to combine selectors into a given
 object shape, so you can connect them to the redux store concisely and directly.
 
 --- examples/reselect/connecting-toolkit.js
@@ -112,10 +112,10 @@ connect($.combine({ todos: getVisibleTodos }));
 
 One of the important features of reselect is that you can still access props in
 your selectors. This lets you do things like pass the id of an entity into your
-component and pull the full data for it from the store. Redux-reducer-toolkit
+component and pull the full data for it from the store. Redux-consumer-toolkit
 will let you do this as well! Here's how to do it in reselect. I've elided the
 full definition of `getVisibleTodos` as it doesn't change between the reselect
-and redux-reducer-toolkit examples.
+and redux-consumer-toolkit examples.
 
 --- examples/reselect/props.js
 @{imports-reselect}
@@ -134,10 +134,10 @@ const getVisibleTodos = createSelector(
 ## Toolkit
 
 Note that in the above example every selector receives the same props values.
-This is exactly how it works with redux-reducer-toolkit as well.
+This is exactly how it works with redux-consumer-toolkit as well.
 
 --- examples/reselect/props-toolkit.js
-@{imports-redux-reducer-toolkit}
+@{imports-redux-consumer-toolkit}
 const getVisibilityFilter = (state, props) => state.todoLists[props.listId].visibilityFilter;
 
 const getTodos = (state, props) => state.todoLists[props.listId].todos;
@@ -155,7 +155,7 @@ As an alternate formulation of the example, you can extract a `todoList`
 selector that is reused.
 
 --- examples/reselect/props-toolkit-alternate.js
-@{imports-redux-reducer-toolkit}
+@{imports-redux-consumer-toolkit}
 const todoList = (state, props) => state.todoLists[props.listId];
 const getVisibilityFilter = $.map(list => list.visibilityFilter, todoList);
 const getTodos = $.map(list => list.todos, todoList);
@@ -197,7 +197,7 @@ const getVisibleTodos = createSelector(
 import { createSelector } from 'reselect';
 ---
 
---- imports-redux-reducer-toolkit
+--- imports-redux-consumer-toolkit
 import * as $ from '../../index';
 ---
 

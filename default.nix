@@ -5,9 +5,9 @@ let nixpkgs = nixpkgsFn ({
     } // ( if system == null then {} else { inherit system; } ));
 in
 nixpkgs.stdenv.mkDerivation {
-  name = "redux-reducer-toolkit";
+  name = "redux-consumer-toolkit";
   buildInputs = with nixpkgs; [ nodejs flow (import <custom_pkgs> {}).Literate ];
-  src = "/home/dwilson/redux-reducer-toolkit";
+  src = "/home/dwilson/redux-consumer-toolkit";
 
   builder = builtins.toFile "builder.sh" ''
     echo "Use this derivation with nix-shell only"

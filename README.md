@@ -1,8 +1,8 @@
-# Redux Reducer Toolkit
+# Redux Consumer Toolkit
 
 This library implements several functions that are useful for combining,
-composing, and altering reducers. Each of this functions returns a memoized
-reducer, similar to reselect, so data isn't re-computed unnecessarily. The
+composing, and altering reducers and selectors (consumers). Each of this functions returns a memoized
+consumer, similar to reselect, so data isn't re-computed unnecessarily. The
 inspiration for this library was
 [fantasyland-redux](https://github.com/philipnilsson/fantasyland-redux), only
 instead of basing it off of the
@@ -12,15 +12,18 @@ specification. This made it simple to build this as a library instead of pinning
 it to a specific redux version.
 
 See the [Github Pages
-site](https://rocketpuppy.github.io/redux-reducer-toolkit/index.html) for
-usage examples and documentation on the library.
+site](https://rocketpuppy.github.io/redux-consumer-toolkit/index.html) for
+usage examples and documentation on the library. It is a literate program from
+which is constructed this library's source code.
 
 ## API
 
-The library is organized into modules corresponding to the structures defined by
-the static-land spec, however you can also import all the methods at once
-without importing individual structures. It assumes a traditional reducer
-signature of:
+The library is organized internally into modules corresponding to the structures
+defined by the static-land spec. However it exposes a more idiomatic Javascript
+API than what is specified in static-land. This overview will go over the
+idiomatic API.
+
+The library assumes a traditional reducer signature of:
 
 ```javascript
 // Flow type
@@ -32,52 +35,75 @@ function reducer(state, action) {
 }
 ```
 
-This library considers a reducer function to be parameterized on its action,
-input state, and output state types. In general the action type never varies
-across arguments or return values. Depending on the module, either the output
-state or both the input and output state types will vary across arguments and
-return values. These will be noted in each module.
+and a traditional selector signature of:
+
+```javascript
+// Flow type
+type Selector<props, input, output> = (input, props) => output;
+
+// Traditional signature
+function selector(state, props) {
+  return state;
+}
+```
+
+It unifies them into a single type called a consumer:
+
+```javascript
+// Flow type
+type Consumer<Static, Input Output> = (input, static) => output;
+
+// Traditional signature
+function consumer(input, static) {
+  const output = input;
+  return output;
+}
+```
+
+Flow types are exported.
 
 Both memoized and non-memoized versions of these modules are exported. Memoized
-versions can be accessed by `import { Memoized } from 'redux-reducer-toolkit'`.
+versions can be accessed by importing from `'redux-consumer-toolkit/memoized'`
+instead of `'redux-consumer-toolkit'`.
 
-### Functor
+### Map
 
-### Use case
+#### Use case
 
-This module provides a method for modifying the returned state from a reducer.
+Modifying the returned state from a consumer.
 
 * Pull only the properties that a specific component requires
 * Derive computed properties from a reducer's state object
 
 ```javascript
+import { map } from 'redux-consumer-toolkit';
+
 function grandTotal(receipt) {
   return receipt.shipping + receipt.tax + receipt.subtotal;
 }
 
-Functor.map(grandTotal, receiptReducer);
+map(grandTotal, receiptReducer);
 ```
-
-#### Parameterized Types
-
-* Output state
 
 #### API
 
 ```javascript
-map : ((out_a => out_b), Reducer<action, input, out_a>) => Reducer<action, input, out_b>)
+map : ((OutA => OutB), Consumer<Static, In, OutA>) => Consumer<Static, In, OutB>)
 ```
 
-### Profunctor
+### Promap
 
 #### Use case
 
-This module provides methods for modifying both the input state and the output
-state of a reducer. Note that `mapOut` is identical to `Functor.map`.
+Modifying both the input state and the output state of a consumer.
 
-* Glue reducers lower in the hierarchy to reducers higher in the hierarchy
+* Glue consumers lower in the hierarchy to reducers higher in the hierarchy
+* Embed consumers in a context like an object key or reversible transformation
 
 ```javascript
+import { promap } from 'redux-consumer-toolkit';
+import Ramda from 'ramda';
+
 function grandTotal(receipt) {
   return receipt.shipping + receipt.tax + receipt.subtotal;
 }
@@ -86,148 +112,166 @@ function grandTotal(receipt) {
 const orderReducer;
 
 // Ramda.prop gets the named property off an object
-Promap.promap(Ramda.prop('receipt'), grandTotal, orderReducer);
+promap(Ramda.prop('receipt'), grandTotal, orderReducer);
 ```
 
-`Profunctor.objectify` takes a key and a reducer and generates a reducer which
-can take an object with that key and return an object with that key. You can
-reimplement `combineReducers` this way.
+#### API
+
+```
+promap : ((InA => InB), (OutA => OutB), Consumer<Static, InB, OutA>) => Consumer<Static, InA, OutB>
+```
+
+### Objectify
+
+#### Use case
+
+Embed a consumer in an object.
+
+`objectify` takes a key and a consumer and generates a consumer which can take
+an object with that key and return an object with that key. You can reimplement
+`combineReducers` this way.
 
 ```javascript
+import { objectify, identity, expandAll } from 'redux-consumer-toolkit';
+
 const combineReducers = (reducerSpec) => (
-  reducerSpec.map((r, k) => Profunctor.objectify(k, r))
-    .reduce(Chain.expand, Monoid.identity)
+  reducerSpec.map((r, k) => objectify(k, r))
+    .reduce(expandAll, identity)
 )
 ```
 
-#### Parameterized Types
-
-* Input state
-* Output state
-
 #### API
 
 ```javascript
-promap : ((in_a => in_b), (out_a => out_b), Reducer<action, in_b, out_a>) => Reducer<action, in_a, out_b>
-mapIn : ((in_a => in_b), Reducer<action, in_b, out>) => Reducer<action, in_a, out>
-mapOut : ((out_a => out_b), Reducer<action, input, out_a>) => Reducer<action, input, out_b>)
-objectify : (string, Reducer<action, ins, outs>) => Reducer<action, { string: ins }, { string: outs }>
-```
+objectify : (string, Consumer<Static, In, Out>) => Consumer<Static, { string: In }, { string: Out }>
 
-### Apply
+### MapIn
 
 #### Use case
 
-This module provides a way to take transformation functions you would use with
-`Functor.map`, but have multiple arguments, and apply them to multiple reducers.
-These transformation functions must be curried in order to work properly.
+Like Promap, but only change the input of a consumer.
+
+
+#### API
+```
+mapIn : ((InA => InB), Consumer<Static, InB, Out>) => Consume<Static, InA, Out>
+```
+
+### ApAll
+
+#### Use case
+
+Take transformation functions you would use with `map`, but have multiple
+arguments, and apply them to multiple consumer. Each consumer gets the same
+action/props and input state.
 
 ```
-const grandTotal = curry((shipping, tax, subtotal) => {
+import { apAll } from 'redux-consumer-toolkit';
+
+const grandTotal = (shipping, tax, subtotal) => {
   return shipping + tax + subtotal;
-});
+};
 
-Apply.ap(Apply.ap(Apply.ap(Applicative.of(grandTotal), shippingReducer), taxReducer), subtotalReducer);
+apAll(of(grandTotal), shippingReducer, taxReducer, subtotalReducer);
 ```
-
-#### Parameterized Types
-
-* Output State
 
 #### API
 
 ```javascript
-ap : (Reducer<action, ins, (outs => outs_)>, Reducer<action, ins, outs>) => Reducer<action, ins, outs_>
+apAll : (Consumer<Static, In, (mixed  => Out)>, ...Array<Consumer<Static, In, mixed>>) => Consumer<Static, In, Out>
 ```
 
-### Applicative
+### Constant
 
 #### Use case
 
-This module applies a way to take non-reducer things like functions and values
-and use them with `Apply.ap`. It essentially creates a reducer that always
-returns the same value. See the Use case for `Apply` for an example.
-
-#### Parameterized Types
-
-* None
+Provides a way to take non-consumer things like functions and values and use
+them with `apAll`. It essentially creates a consumer that always returns the
+same value. See the use case for `apAll` for an example.
 
 #### API
 
 ```javascript
-of: (outs) => Reducer<action, ins, outs>
+constant: (Out) => Consumer<Static, In, Out>
 ```
 
-### Semigroup
+### Concat
 
 #### Use case
 
-This module provides a way to take two reducers and run them with the same
-action, one after the other. The output of the first reducer is used as input to
-the second reducer.
+Provides a way to take two consumers and run them with the same action/props,
+one after the other. The output of the first consumer is used as input to the
+second consumer.
 
 ```javascript
+import { concat } from 'redux-consumer-toolkit';
+
 // Returns line items state
 const lineItemsReducer;
 // Takes line items and returns a total
 const subtotalReducer;
 
-Semigroup.concat(lineItemsReducer, subtotalReducer);
+concat(lineItemsReducer, subtotalReducer);
 ```
-
-#### Parameterized Types
-
-* Input state
-* Output state
 
 #### API
 
 ```javascript
-concat : (Reducer<action, in_a, out_a>, Reducer<action, out_a, out_b>) => Reducer<action, in_a, out_b>
+concat : (Consumer<Static, In, OutA>, Consumer<Static, OutA, OutB>) => Consumer<Static, In, OutB>
 ```
 
-### Monoid
+### Identity
 
 #### Use case
 
-This module provides a special reducer that can be used as an identity when
-combining reducers using `Semigroup.concat`. This is handy if you have a list of
-reducers you want to reduce over and need an initial value.
-
-#### Parameterized Types
-
-* None
+Provides a special consumer that can be used as an identity when combining
+reducers using `concat`. This is handy if you have a list of reducers you want
+to reduce over and need an initial value.
 
 #### API
 
 ```javascript
-empty : () => Reducer<action, state, state>
+identity : Consumer<Static, In, In>
 ```
 
 ### Chain
 
 #### Use case
 
-This module provides a way to combine reducers in such a way that the second
-reducer can depend on the first. This is useful for reducers that depend on the
-values of other reducers in addition to their own internal state. This is a
-powerful but fairly low-level ability. Therefore some convenience functions are
-specified here as well for common combinations.
+Provides a way to combine consumers in such a way that the second consumer's
+behavior can depend on the output of the first. Both consumers receive the same
+input and static values. This is useful for consumers that depend on the values
+of other consumers in addition to their own internal state. This is a powerful
+but fairly low-level ability. Therefore some convenience functions are specified
+here as well for common combinations.
 
 ```javascript
-// This reducer depends on the router state to know when to load more products
+import { chain, mapIn } from 'redux-consumer-toolkit';
+import Ramda from 'ramda';
+
+// This consumer depends on the router state to know when to load more products
 const productListReducer = (router) => (state, action) => { ... };
 
-Chain.chain((routerState) => (
-  Promap.mapIn(Ramda.prop('productList'), productListReducer(router))
-), Promap.mapIn(Ramda.prop('router'), routerReducer));
+chain((routerState) => (
+  mapIn(Ramda.prop('productList'), productListReducer(router))
+), mapIn(Ramda.prop('router'), routerReducer));
 ```
 
-`Chain.expand` handles the use case where you might want two reducers operating
-on the same state to each return separate keys of a resulting object.
-`Chain.expandAll` operates on more than two reducers.
+#### API
 
 ```javascript
+chain : (Consumer<Static, In, OutA>, OutA => Consumer<Static, In, OutB>) => Consumer<Static, In, OutB>
+```
+
+### ExpandAll
+
+#### Use case
+`expandAll` handles the use case where you might want consumers operating on the
+same state to each return separate keys of a resulting object.
+
+```javascript
+import { expandAll } from 'redux-consumer-toolkit';
+
 // Manages user account information
 const userReducer;
 // Manages cart information, the cart may be anonymous or registered to a user.
@@ -235,26 +279,29 @@ const cartReducer;
 
 // We might want to have all the cart and user information available in the same
 // object
-Chain.expand(userReducer, cartReducer);
+expandAll(userReducer, cartReducer);
 ```
-
-`Chain.combine` works just like the traditional `combineReducers` function. It
-accepts an object whose values are reducers, and returns a reducer that will
-generate an object with the same keys whose values are the state returned from
-the individual reducers.
-
-#### Parameterized Types
-
-* Input state
-* Output state
 
 #### API
 
 ```javascript
-chain : (outs => Reducer<action, ins, outs_>, Reducer<action, ins, outs>) => Reducer<action, ins, outs_>
-expand : (Reducer<action, ins, outs>, Reducer<action, ins, outs_>) => Reducer<action, ins, outs & outs_>
-expandAll : (...Reducer<action, ins, *>) => Reducer<action, ins, outs>
-combine : (Object<string, Reducer<action, *, *>>) => Reducer<action, *, *>
+expandAll : (...Consumer<Static, In, *>) => Consumer<Static, In, Out>
+```
+
+### Combine
+
+#### Use case
+
+`combine` works just like the traditional `combineReducers` function, but it can
+also operate on selectors. It also lacks the beginner-friendly runtime checks
+that `combineReducers` provides. It accepts an object whose values are
+consumers, and returns a consumer that will generate an object with the same
+keys whose values are the state returned from the individual consumers.
+
+#### API
+
+```javascript
+combine : (Object<string, Consumer<Static, In, *>>) => Consumer<Static, In, Out>
 ```
 
 ## Contributing
