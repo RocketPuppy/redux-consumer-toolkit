@@ -23,7 +23,7 @@ const Profunctor : ProfunctorT<*, *, *, *, *> = {
   mapIn: (inF, r) => Profunctor.promap(inF, x => x, r),
   mapOut: Functor.map,
   objectify: (k, r) => (
-    Profunctor.promap((s) => s[k], (s) => ({ [k]: s }), r)
+    Profunctor.promap((i) => i[k], (o) => ({ [k]: o }), r)
   )
 };
 
