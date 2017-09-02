@@ -160,3 +160,9 @@ The Apply module must import the Apply type definition.
 --- import-types-apply
 import type { Apply } from './types/Apply'
 ---
+
+Other modules need to import Apply.
+
+--- import-apply
+import Apply from './Apply';
+---

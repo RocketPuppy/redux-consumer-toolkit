@@ -120,3 +120,9 @@ The Semigroup type needs to be imported.
 --- import-types-semigroup
 import type { Semigroup } from './types/Semigroup';
 ---
+
+Other modules need to import Semigroup.
+
+--- import-semigroup
+import Semigroup from './Semigroup';
+---

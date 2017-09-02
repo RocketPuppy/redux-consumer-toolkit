@@ -201,3 +201,9 @@ The type definition for Chain needs imported.
 --- import-types-chain
 import type { Chain } from './types/Chain';
 ---
+
+Other modules need to import Chain.
+
+--- import-chain
+import Chain from './Chain';
+---

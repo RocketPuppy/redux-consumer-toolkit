@@ -104,3 +104,9 @@ The Applicative module must import the Applicative type definition.
 --- import-types-applicative
 import type { Applicative } from './types/Applicative'
 ---
+
+Other modules need to import Applicative
+
+--- import-applicative
+import Applicative from './Applicative';
+---

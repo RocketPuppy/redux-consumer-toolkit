@@ -9,13 +9,13 @@ I want the library to be usable by importing specific modules to aid in
 self-documenting code.
 
 --- index.js
-import Functor from './Functor';
-import Apply from './Apply';
-import Applicative from './Applicative';
-import Profunctor from './Profunctor';
-import Chain from './Chain';
-import Monoid from './Monoid';
-import Semigroup from './Semigroup';
+@{import-functor}
+@{import-apply}
+@{import-applicative}
+@{import-profunctor}
+@{import-chain}
+@{import-monoid}
+@{import-semigroup}
 
 export {
   Functor,
