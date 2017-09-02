@@ -158,7 +158,7 @@ selector that is reused.
 @{imports-redux-reducer-toolkit}
 const todoList = (state, props) => state.todoLists[props.listId];
 const getVisibilityFilter = $.map(list => list.visibilityFilter, todoList);
-const getTodos = $.map(list => list.todos, todoLists);
+const getTodos = $.map(list => list.todos, todoList);
 
 const getVisibleTodos = $.apAll(
   $.of((visibilityFilter, todos) => { /* ... */ }),
