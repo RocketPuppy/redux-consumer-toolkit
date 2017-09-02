@@ -11,13 +11,13 @@ const subtotalSelector = $.map(
 
 const calculateTax = (subtotal, taxPercent) => subtotal * (taxPercent / 100);
 const taxSelector = $.apAll(
-  $.of(calculateTax),
+  $.constant(calculateTax),
   subtotalSelector,
   taxPercentSelector
 );
 
 const totalSelector = $.apAll(
-  $.of((subtotal, tax) => ({ total: subtotal + tax })),
+  $.constant((subtotal, tax) => ({ total: subtotal + tax })),
   subtotalSelector,
   taxSelector
 );

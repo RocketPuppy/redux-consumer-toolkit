@@ -10,7 +10,7 @@ import Monoid from "./Monoid";
 
 let { map } = FunctorI;
 let { ap, apAll } = ApplyI;
-let { of } = ApplicativeI;
+let { of, constant } = ApplicativeI;
 let { promap, mapIn, mapOut, objectify } = ProfunctorI;
 let { bind, chain, expand, expandAll, combine } = ChainI;
 let { concat } = SemigroupI;
@@ -20,6 +20,7 @@ map = memoize(map);
 ap = memoize(ap);
 apAll = memoize(apAll);
 of = memoize(of);
+constant = memoize(constant);
 promap = memoize(promap);
 mapIn = memoize(mapIn);
 mapOut = memoize(mapOut);
@@ -41,7 +42,8 @@ const Apply = {
 };
 
 const Applicative = {
-  of
+  of,
+  constant
 };
 
 const Profunctor = {
@@ -73,7 +75,7 @@ export {
   Semigroup,
   map,
   apAll,
-  of,
+  constant,
   promap,
   mapIn,
   objectify,

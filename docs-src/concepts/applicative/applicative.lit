@@ -36,11 +36,14 @@ The goal of Applicative is to simplify this by allowing the creation of
 
 @s Details
 
-The Applicative interface is simple.
+The Applicative interface is simple. The of method is required by the
+static-land specification. I've aliased it as constant to provide a name that
+is potentially easier to remember.
 
 --- types/Applicative.js
 export type Applicative<Static, In, Out> = {
-  of: (Out) => (In, Static) => Out
+  of: (Out) => (In, Static) => Out,
+  constant: (Out) => (In, Static) => Out
 };
 ---
 
@@ -80,7 +83,7 @@ straightforward. It's essentially the same as @{constant} but with consumers in
 mind.
 
 --- applicative-implementation
-of: (x) =>
+const of = (x) =>
   (_state, _props) =>
     x
 ---
@@ -90,8 +93,10 @@ That's it. I need to wrap it up in a module and then this interface is finished.
 --- Applicative.js
 @{import-types-applicative}
 
-const ApplicativeI : Applicative<*, *, *> = {
 @{applicative-implementation}
+const ApplicativeI : Applicative<*, *, *> = {
+  of: of,
+  constant: of
 };
 
 export default ApplicativeI;

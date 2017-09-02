@@ -57,13 +57,13 @@ const subtotalSelector = $.map(
 
 const calculateTax = (subtotal, taxPercent) => subtotal * (taxPercent / 100)
 const taxSelector = $.apAll(
-    $.of(calculateTax),
+    $.constant(calculateTax),
     subtotalSelector,
     taxPercentSelector
 );
 
 const totalSelector = $.apAll(
-    $.of((subtotal, tax) => ({ total: subtotal + tax })),
+    $.constant((subtotal, tax) => ({ total: subtotal + tax })),
     subtotalSelector,
     taxSelector
 );
@@ -143,7 +143,7 @@ const getVisibilityFilter = (state, props) => state.todoLists[props.listId].visi
 const getTodos = (state, props) => state.todoLists[props.listId].todos;
 
 const getVisibleTodos = $.apAll(
-  $.of((visibilityFilter, todos) => { /* ... */ }),
+  $.constant((visibilityFilter, todos) => { /* ... */ }),
   getVisibilityFilter,
   getTodos
 );
@@ -161,7 +161,7 @@ const getVisibilityFilter = $.map(list => list.visibilityFilter, todoList);
 const getTodos = $.map(list => list.todos, todoList);
 
 const getVisibleTodos = $.apAll(
-  $.of((visibilityFilter, todos) => { /* ... */ }),
+  $.constant((visibilityFilter, todos) => { /* ... */ }),
   getVisibilityFilter,
   getTodos
 );

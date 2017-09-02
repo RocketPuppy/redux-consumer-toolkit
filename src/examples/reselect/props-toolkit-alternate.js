@@ -6,7 +6,7 @@ const getVisibilityFilter = $.map(list => list.visibilityFilter, todoList);
 const getTodos = $.map(list => list.todos, todoList);
 
 const getVisibleTodos = $.apAll(
-  $.of((visibilityFilter, todos) => {
+  $.constant((visibilityFilter, todos) => {
     /* ... */
   }),
   getVisibilityFilter,

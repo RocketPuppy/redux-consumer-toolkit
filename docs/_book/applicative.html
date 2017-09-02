@@ -89,14 +89,17 @@ const listSelectorFactory = (type) =&gt;
 
 </div>
 <a name="5:2"><div class="section"><h4>2. Details</h4></a>
-<p>The Applicative interface is simple.
+<p>The Applicative interface is simple. The of method is required by the
+static-land specification. I've aliased it as constant to provide a name that
+is potentially easier to remember.
 </p>
 
 <div class="codeblock">
 <span class="codeblock_name">{<strong>types/Applicative.js</strong> <a href="applicative.html#5:2">2</a>}</span>
 <pre class="prettyprint">
 export type Applicative&lt;Static, In, Out&gt; = {
-  of: (Out) =&gt; (In, Static) =&gt; Out
+  of: (Out) =&gt; (In, Static) =&gt; Out,
+  constant: (Out) =&gt; (In, Static) =&gt; Out
 };
 </pre>
 
@@ -160,7 +163,7 @@ mind.
 <div class="codeblock">
 <span class="codeblock_name">{applicative-implementation <a href="applicative.html#5:2">2</a>}</span>
 <pre class="prettyprint">
-of: (x) =&gt;
+const of = (x) =&gt;
   (_state, _props) =&gt;
     x
 </pre>
@@ -176,8 +179,10 @@ of: (x) =&gt;
 <pre class="prettyprint">
 <span class="nocode pln">{import-types-applicative, <a href="applicative.html#5:3">3</a>}</span>
 
-const ApplicativeI : Applicative&lt;*, *, *&gt; = {
 <span class="nocode pln">{applicative-implementation, <a href="applicative.html#5:2">2</a>}</span>
+const ApplicativeI : Applicative&lt;*, *, *&gt; = {
+  of: of,
+  constant: of
 };
 
 export default ApplicativeI;

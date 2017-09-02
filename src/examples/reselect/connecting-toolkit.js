@@ -9,7 +9,7 @@ const getVisibilityFilter = (state, props) =>
 const getTodos = (state, props) => state.todoLists[props.listId].todos;
 
 const getVisibleTodos = $.apAll(
-  $.of((visibilityFilter, todos) => {
+  $.constant((visibilityFilter, todos) => {
     /* ... */
   }),
   getVisibilityFilter,
