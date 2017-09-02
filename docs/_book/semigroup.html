@@ -50,10 +50,165 @@ normal function composition.
 </p>
 <p>The motivating example for this section can be seen as breaking up a consumer
 into smaller parts then recombining them with no processing inbetween the
-individual parts. I consider the problem of enabling code reuse over different
-types of todo lists. In this case I want to end up with the length of the lists
-of finished and unfinished todos.
+individual parts. I have two lists of todo items, finished and unfinished. When
+a todo item is marked as finished it must go in the finished list and be
+removed from the unfinished list.
 </p>
+
+<div class="codeblock">
+<span class="codeblock_name">{semigroup-example <a href="semigroup.html#7:1">1</a>}</span>
+<pre class="prettyprint">
+const todos = (state, action) =&gt; {
+  if (action.type === 'FINISH') {
+    return {
+      ...state,
+      finished: state.concat(action.todo)
+      unfinished: filter(
+        (todo) =&gt; todo === action.todo,
+        state
+      )
+    };
+  } else {
+    return state;
+  }
+};
+</pre>
+
+
+
+</div>
+<p>While small the example does serve to highlight that two concerns are mixed
+when handling the FINISH action. That of removing the todo from the unfinished
+list and adding it to the finished list. Using the Semigroup interface I can
+break this into two reducers, one responsible solely for finished todos and the
+other responsible for unfinished todos.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{semigroup-example-2 <a href="semigroup.html#7:1">1</a>}</span>
+<pre class="prettyprint">
+const finishedTodos = (state, action) =&gt; {
+  if (action.type === 'FINISH') {
+    return {
+      ...state,
+      finished: state.concat(action.todo)
+    };
+  } else {
+    return state;
+  }
+}
+
+const unfinishedTodos = (state, action) =&gt; {
+  if (action.type === 'FINISH') {
+    return {
+      ...state,
+      unfinished: filter(
+        (todo) =&gt; todo === action.todo,
+        state
+      )
+    };
+  } else {
+    return state;
+  }
+}
+</pre>
+
+
+
+</div>
+<p>Then they can simply be combined
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{semigroup-example-2 <a href="semigroup.html#7:1">1</a>} +=</span>
+<pre class="prettyprint">
+Semigroup.concat(finishedTodos, unfinishedTodos);
+</pre>
+
+
+
+</div>
+</div>
+<a name="7:2"><div class="section"><h4>2. Details</h4></a>
+<p>The Semigroup interface contains a single method.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>types/Semigroup.js</strong> <a href="semigroup.html#7:2">2</a>}</span>
+<pre class="prettyprint">
+export type Semigroup&lt;Static, In, OutA, OutB&gt; = {
+  concat: ((In, Static) =&gt; OutA, (OutA, Static) =&gt; OutB) =&gt; (In, Static) =&gt; OutB
+};
+</pre>
+
+
+
+</div>
+<p>The concat method takes two consumers and returns a new one. It passes the same
+Static value to each input consumer, and passes the output of the first
+consumer as the input to the second consumer. It must obey the law of
+associativity so that different groups of applications of concat do not change
+the final value.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{semigroup-laws-associativity <a href="semigroup.html#7:2">2</a>}</span>
+<pre class="prettyprint">
+concat(concat(c, c'), c'') === concat(c, concat(c', c''))
+</pre>
+
+
+
+</div>
+<p>With the laws and semantics defined above, the implementation of concat is
+straightforward.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{semigroup-concat-implementation <a href="semigroup.html#7:2">2</a>}</span>
+<pre class="prettyprint">
+concat: (c, c_) =&gt; (
+  (s, a) =&gt; (
+    c_(c(s, a), a)
+  )
+)
+</pre>
+
+
+
+</div>
+<p>Finally it is all wrapped up in a module.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>Semigroup.js</strong> <a href="semigroup.html#7:2">2</a>}</span>
+<pre class="prettyprint">
+<span class="nocode pln">{import-types-semigroup, <a href="semigroup.html#7:3">3</a>}</span>
+
+const SemigroupI : Semigroup&lt;*, *, *, *&gt; = {
+<span class="nocode pln">  {semigroup-concat-implementation, <a href="semigroup.html#7:2">2</a>}</span>
+};
+
+export default SemigroupI
+</pre>
+
+
+
+</div>
+</div>
+<a name="7:3"><div class="section"><h4>3. Import</h4></a>
+<p>The Semigroup type needs to be imported.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{import-types-semigroup <a href="semigroup.html#7:3">3</a>}</span>
+<pre class="prettyprint">
+import type { Semigroup } from './types/Semigroup';
+</pre>
+
+
+<p class="seealso">Used in section <a href="semigroup.html#7:2">2</a></p>
+</div>
 
 </div>
 <br><a style="float:left;" class="chapter-nav" href="chain.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="monoid.html">Next Chapter</a></body>

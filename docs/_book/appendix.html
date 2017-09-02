@@ -60,6 +60,7 @@ import Applicative from './Applicative';
 import Profunctor from './Profunctor';
 import Chain from './Chain';
 import Monoid from './Monoid';
+import Semigroup from './Semigroup';
 
 export {
   Functor,
@@ -67,7 +68,8 @@ export {
   Applicative,
   Profunctor,
   Chain,
-  Monoid
+  Monoid,
+  Semigroup
 };
 </pre>
 
@@ -86,7 +88,8 @@ export default {
   ...Applicative,
   ...Profunctor,
   ...Chain,
-  ...Monoid
+  ...Monoid,
+  ...Semigroup
 };
 </pre>
 

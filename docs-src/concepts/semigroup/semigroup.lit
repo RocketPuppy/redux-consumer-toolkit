@@ -10,6 +10,113 @@ normal function composition.
 
 The motivating example for this section can be seen as breaking up a consumer
 into smaller parts then recombining them with no processing inbetween the
-individual parts. I consider the problem of enabling code reuse over different
-types of todo lists. In this case I want to end up with the length of the lists
-of finished and unfinished todos.
+individual parts. I have two lists of todo items, finished and unfinished. When
+a todo item is marked as finished it must go in the finished list and be
+removed from the unfinished list.
+
+--- semigroup-example-
+const todos = (state, action) => {
+  if (action.type === 'FINISH') {
+    return {
+      ...state,
+      finished: state.concat(action.todo)
+      unfinished: filter(
+        (todo) => todo === action.todo,
+        state
+      )
+    };
+  } else {
+    return state;
+  }
+};
+---
+
+While small the example does serve to highlight that two concerns are mixed
+when handling the FINISH action. That of removing the todo from the unfinished
+list and adding it to the finished list. Using the Semigroup interface I can
+break this into two reducers, one responsible solely for finished todos and the
+other responsible for unfinished todos.
+
+--- semigroup-example-2
+const finishedTodos = (state, action) => {
+  if (action.type === 'FINISH') {
+    return {
+      ...state,
+      finished: state.concat(action.todo)
+    };
+  } else {
+    return state;
+  }
+}
+
+const unfinishedTodos = (state, action) => {
+  if (action.type === 'FINISH') {
+    return {
+      ...state,
+      unfinished: filter(
+        (todo) => todo === action.todo,
+        state
+      )
+    };
+  } else {
+    return state;
+  }
+}
+---
+
+Then they can simply be combined
+
+--- semigroup-example-2 +=
+Semigroup.concat(finishedTodos, unfinishedTodos);
+---
+
+@s Details
+
+The Semigroup interface contains a single method.
+
+--- types/Semigroup.js
+export type Semigroup<Static, In, OutA, OutB> = {
+  concat: ((In, Static) => OutA, (OutA, Static) => OutB) => (In, Static) => OutB
+};
+---
+
+The concat method takes two consumers and returns a new one. It passes the same
+Static value to each input consumer, and passes the output of the first
+consumer as the input to the second consumer. It must obey the law of
+associativity so that different groups of applications of concat do not change
+the final value.
+
+--- semigroup-laws-associativity
+concat(concat(c, c'), c'') === concat(c, concat(c', c''))
+---
+
+With the laws and semantics defined above, the implementation of concat is
+straightforward.
+
+--- semigroup-concat-implementation
+concat: (c, c_) => (
+  (s, a) => (
+    c_(c(s, a), a)
+  )
+)
+---
+
+Finally it is all wrapped up in a module.
+
+--- Semigroup.js
+@{import-types-semigroup}
+
+const SemigroupI : Semigroup<*, *, *, *> = {
+  @{semigroup-concat-implementation}
+};
+
+export default SemigroupI
+---
+
+@s Import
+
+The Semigroup type needs to be imported.
+
+--- import-types-semigroup
+import type { Semigroup } from './types/Semigroup';
+---
