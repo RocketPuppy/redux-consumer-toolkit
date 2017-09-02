@@ -6,7 +6,7 @@ let nixpkgs = nixpkgsFn ({
 in
 nixpkgs.stdenv.mkDerivation {
   name = "redux-consumer-toolkit";
-  buildInputs = with nixpkgs; [ nodejs flow (import <custom_pkgs> {}).Literate ];
+  buildInputs = with nixpkgs; [ nodejs flow (import <custom_pkgs> {}).Literate git ];
   src = "/home/dwilson/redux-consumer-toolkit";
 
   builder = builtins.toFile "builder.sh" ''
