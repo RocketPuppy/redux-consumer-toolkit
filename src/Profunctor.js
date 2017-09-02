@@ -4,7 +4,7 @@ import Functor from './Functor';
 
 export type ProfunctorT<Static, InA, InB, OutA, OutB> = {
   promap: ((InB => InA), (OutA => OutB), (InA, Static) => OutA) => (InB, Static) => OutB,
-  mapIn: ((InB => InA), (InA, Static) => OutA) => (InB, Static) => OutB,
+  mapIn: ((InB => InA), (InA, Static) => OutA) => (InB, Static) => OutA,
   mapOut: ((OutA => OutB), (InA, Static) => OutA) => (InA, Static) => OutB,
   objectify: (string, (InA, Static) => OutA) => ({[string]: InA}, Static) => {[string]: OutA}
 };
