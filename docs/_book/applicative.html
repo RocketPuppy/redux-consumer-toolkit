@@ -107,11 +107,11 @@ export type Applicative&lt;Static, In, Out&gt; = {
 interfaces, there are only three generics here, and none of them are
 duplicated. This knowledge tells me and the Flow checker that none of these
 parameters can change. The of function has a signature very similar to that of
-a constant function (<code>{constant,</code><a href="appendix.html#6:2"><code>6:2</code></a><code>}</code>), and that's a clue that it works similarly.
+a constant function (<code>{constant,</code><a href="appendix.html#10:2"><code>10:2</code></a><code>}</code>), and that's a clue that it works similarly.
 </p>
 <p>There are some laws that the Applicative interface must follow. They are
 related to and depend on the Apply interface. The first law is the Identity
-law, which simply says that using of on the identity function (<code>{identity,</code><a href="appendix.html#6:2"><code>6:2</code></a><code>}</code>) and
+law, which simply says that using of on the identity function (<code>{identity,</code><a href="appendix.html#10:2"><code>10:2</code></a><code>}</code>) and
 applying it to a value in a consumer is the same as just using that consumer.
 </p>
 
@@ -153,7 +153,7 @@ ap(u, of(y)) === ap(of(f =&gt; f(y)), u)
 
 </div>
 <p>With all those laws and the interface, the implementation is pretty
-straightforward. It's essentially the same as <code>{constant,</code><a href="appendix.html#6:2"><code>6:2</code></a><code>}</code> but with consumers in
+straightforward. It's essentially the same as <code>{constant,</code><a href="appendix.html#10:2"><code>10:2</code></a><code>}</code> but with consumers in
 mind.
 </p>
 
@@ -202,4 +202,4 @@ import type { Applicative } from './types/Applicative'
 </div>
 
 </div>
-<br><a style="float:left;" class="chapter-nav" href="apply.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="appendix.html">Next Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="apply.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="chain.html">Next Chapter</a></body>

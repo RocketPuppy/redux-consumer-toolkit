@@ -9,4 +9,8 @@ This document will outline the concepts used in this library and how they can be
 [Functor](concepts/functor/functor.lit)
 [Apply](concepts/apply/apply.lit)
 [Applicative](concepts/applicative/applicative.lit)
+[Chain](concepts/chain/chain.lit)
+[Semigroup](concepts/semigroup/semigroup.lit)
+[Monoid](concepts/monoid/monoid.lit)
+[Profunctor](concepts/profunctor/profunctor.lit)
 [Appendix](concepts/appendix/appendix.lit)

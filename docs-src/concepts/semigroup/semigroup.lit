@@ -1,0 +1,15 @@
+@code javascript js
+
+@title Semigroup
+
+@s Motivation
+
+Unlike the previous sections, which were all about transforming consumers, this
+section is explicitly about combining consumers. It provides an analogue to
+normal function composition.
+
+The motivating example for this section can be seen as breaking up a consumer
+into smaller parts then recombining them with no processing inbetween the
+individual parts. I consider the problem of enabling code reuse over different
+types of todo lists. In this case I want to end up with the length of the lists
+of finished and unfinished todos.

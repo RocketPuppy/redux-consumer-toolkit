@@ -1,0 +1,148 @@
+@code javascript js
+
+@title Profunctor
+
+@s Motivation
+
+The Functor interface provides an extremely useful method of transforming the
+output of a consumer. That handles one half of the problem of fitting consumers
+together into pipelines; making the output appropriate for the next stage. The
+other half of the problem is making the input appropriate for the next stage.
+
+Suppose I have some selector to determine the props for a component. The
+component only needs the todos that are not done, in addition to any other
+props. The todos are embedded in an object though, and it would also be nice if
+I could keep them in an object structure as that is what is expected from a
+selector function. The function to get the done todos though does not know
+anything about the todos being in an object. Using the Profunctor interface I
+can define a method to "objectify" a consumer. I can pull a value off a key,
+apply a function to it, and return an object with the transformed value in that
+same key.
+
+--- profunctor-example-1
+@{filter}
+const chores = (state, props) => state.chores;
+// Returns { todos, groceries } object
+
+const withoutDone = (todos) => filter((todo) => !todo.done, todos);
+
+const selector =
+  concat(chores, objectify('todos', withoutDone));
+---
+
+The final selector results in an object with a "todos" key that has the done
+todos filtered out of it.
+
+@s Details
+
+The Profunctor interface is really just an extension of the Functor interface.
+
+--- types/Profunctor.js
+export type Profunctor<Static, InA, InB, OutA, OutB> = {
+  promap: ((InB => InA), (OutA => OutB), (InA, Static) => OutA) => (InB, Static) => OutB,
+  @{profunctor-types-mapIn}
+  ,
+  @{profunctor-types-mapOut}
+  ,
+  @{profunctor-types-objectify}
+};
+---
+
+The promap function takes two transforming functions, a consumer, and returns a
+new consumer. The first transformer takes some input and turns it into an input
+that the given consumer can accept. The second transformer works just like the
+transformer in the Functor map interface.
+
+The laws promap needs to follow are similar to the Functor laws as well. The
+first is the identity law. It says that promapping two identity functions over
+a consumer is the same as just using that consumer.
+
+--- profunctor-laws-identity
+@{identity}
+promap(identity, identity, consumer) === consumer
+---
+
+The second law is the composition law. It says that one promap with two
+function applications is the same as two promaps with one function application.
+
+--- profunctor-laws-composition
+promap(x => f(g(x)), y => h(i(y)), consumer) === promap(f, h, promap(g, i, consumer))
+---
+
+To satisfy these laws the implementation looks something like what follows. The
+input transformer is applied first, the consumer is applied next, and the
+output transformer is applied at the end.
+
+--- profunctor-promap-implementation
+promap: (inF, outF, c) => (
+  (s, a) => (
+    outF(c(inF(s), a))
+  )
+)
+---
+
+In addition to the promap interface, there are some other convenience functions
+defined as part of the Profunctor interface. The first is mapIn.
+
+--- profunctor-types-mapIn
+mapIn: ((InB => InA), (InA, Static) => OutA) => (InB, Static) => OutA
+---
+
+It is implemented using promap.
+
+--- profunctor-mapIn-implementation
+mapIn: (inF, c) => ProfunctorI.promap(inF, x => x, c)
+---
+
+The second convenience function is mapOut.
+
+--- profunctor-types-mapOut
+mapOut: ((OutA => OutB), (InA, Static) => OutA) => (InA, Static) => OutB
+---
+
+It is implemented as being the same as Functor's map function.
+
+--- profunctor-mapOut-implementation
+mapOut: Functor.map
+---
+
+The final convenience function is objectify.
+
+--- profunctor-types-objectify
+objectify: (string, (InA, Static) => OutA) => ({[string]: InA}, Static) => {[string]: OutA }
+---
+
+It is also implemented in terms of promap.
+
+--- profunctor-objectify-implementation
+objectify: (k, c) => (
+  ProfunctorI.promap((i) => i[k], (o) => ({ [k]: o}), c)
+)
+---
+
+Finally all of this is wrapped up in a module.
+
+--- Profunctor.js
+@{import-functor}
+@{import-types-profunctor}
+
+const ProfunctorI : Profunctor<*, *, *, *, *> = {
+@{profunctor-promap-implementation}
+,
+@{profunctor-mapIn-implementation}
+,
+@{profunctor-mapOut-implementation}
+,
+@{profunctor-objectify-implementation}
+};
+
+export default ProfunctorI;
+---
+
+@s Imports
+
+The type definition for Profunctor needs to be imported.
+
+--- import-types-profunctor
+import type { Profunctor } from './types/Profunctor';
+---

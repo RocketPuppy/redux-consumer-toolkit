@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Functor</title>
+<title>Chain</title>
 <script>
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
 (function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
@@ -42,153 +42,89 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </head>
 <body onload="prettyPrint()">
 <section>
-<h1>Functor</h1>
-<a name="3:1"><div class="section"><h4>1. Motivation</h4></a>
-<p>It is often the case when programming that I have a function that takes some input argument and returns a transformed output. I also might have some piece of data I wouldd like to apply that function to, but I can't because the data is encapsulated inside something else. I'll call the "data" in this case the "target" and the "something else" the "context". To make it concrete, I might have some way to get the number of completed todo items but the only way to get the todo items is via a selector function, because they are stored in a global store using Redux.
+<h1>Chain</h1>
+<a name="6:1"><div class="section"><h4>1. Motivation</h4></a>
+<p>So far I've covered Functor, Apply, and Applicative. Those are all useful
+interfaces, but they all share a consistent weakness. The operations they can
+perform are all static. None of them can depend on the value of a previous
+operation. This is something I can take advantage of to write cleaner, more
+concise programs and is in general a good thing. Sometimes, however, I need to
+have operations depend on the value of previous operations. This is where the
+Chain interface becomes necessary.
+</p>
+<p>I consider the following motivating example. Again I have the todo list as a
+theme. In this example I want to prioritize viewing some types of todos over
+others. I only show unfinished todos, then if there are no unfinished todos I
+show finished todos, and if there are no finished todos I show an example todo.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{functor-introduction <a href="functor.html#3:1">1</a>}</span>
+<span class="codeblock_name">{chain-motivation-1 <a href="chain.html#6:1">1</a>}</span>
 <pre class="prettyprint">
-const todoSelector = (state, props) =&gt; state.todos;
+<span class="nocode pln">{filter, <a href="appendix.html#10:2">10:2</a>}</span>
+const todos = (state, props) =&gt; state.todos;
 
-const lengthOfTodos = (todos) =&gt; todos.length;
-</pre>
+const unfinishedTodos = map(
+  todos =&gt; filter((todo) =&gt; !todo.finished, todos),
+  todos
+);
 
+const finishedTodos = map(
+  todos =&gt; filter((todo) =&gt; todo.finished, todos),
+  todos
+);
 
+const templateTodo = { text: "Enter something to do!", finished: false };
 
-</div>
-<p>Note how I can't just apply the <code>lengthOfTodos</code> function to the <code>todoSelector</code>. The <code>lengthOfTodos</code> function expects an array of todo objects, and the <code>todoSelector</code> is a function. Somehow I need to apply <code>lengthOfTodos</code> to the result of <code>todoSelector</code>. I don't have the arguments to pass to <code>todoSelector</code> though to get the result! This is where Functor comes to help. With Functor I can define that <code>lengthOfTodos</code> is to be applied to the target data in the context of the selector function. This is what it looks like.
-</p>
+const selector = (state, props) =&gt; {
+  const u = unfinishedTodos(state, props);
+  if (u.length &gt; 0) {
+    return u;
+  }
 
-<div class="codeblock">
-<span class="codeblock_name">{functor-introduction <a href="functor.html#3:1">1</a>} +=</span>
-<pre class="prettyprint">
-Functor.map(lengthOfTodos, todoSelector)
-</pre>
+  const f = finishedTodos(state, props);
+  if (f.length &gt; 0) {
+    return f;
+  }
 
-
-
-</div>
-<p>Simple!
-</p>
-
-</div>
-<a name="3:2"><div class="section"><h4>2. Details</h4></a>
-<p>A Functor is really best talked about as an interface that an entity can implement. That interface is pretty simple. It is simply the map function, along with some properties on how that function behaves. The specification is below.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{<strong>types/Functor.js</strong> <a href="functor.html#3:2">2</a>}</span>
-<pre class="prettyprint">
-<span class="nocode pln">{import-types-consumer, <a href="consumer.html#2:2">2:2</a>}</span>
-
-export type Functor&lt;Static, In, OutA, OutB&gt; = {
-  map: ((OutA =&gt; OutB), Consumer&lt;Static, In, OutA&gt;) =&gt; Consumer&lt;Static, In, OutB&gt;
+  return templateTodo;
 };
 </pre>
 
 
 
 </div>
-<p>So a Functor is an object that implements a map property. That property must be a function that takes two arguments: a function that transforms from one type to another, and a consumer that outputs the first output state. It returns a consumer that outputs the second output state. In other words, it allows the transformation of the consumer output without knowledge of the specific consumer.
-</p>
-<p>The map function has a few properties that make it convenient to work with. The first property is called the Identity property. It simply says that if the transformer is the identity function, the target doesn't change.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{functor-laws <a href="functor.html#3:2">2</a>}</span>
-<pre class="prettyprint">
-const identity = x =&gt; x;
-
-Functor.map(identity, todoSelector) === todoSelector;
-</pre>
-
-
-
-</div>
-<p>The second property is known as the Composition property. This property says that if I have two transformers I want to apply to a target, applying the composition of those transformers is the same as applying each transformer individually one after the other.
+<p>To combine these selectors manually is a little tedious and requires careful
+threading of the state and props arguments through the selector. With the chain
+operation the manual threading is eliminated and individual pieces of logic can
+be extracted.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{functor-laws <a href="functor.html#3:2">2</a>} +=</span>
+<span class="codeblock_name">{chain-motivation-1 <a href="chain.html#6:1">1</a>} +=</span>
 <pre class="prettyprint">
-<span class="nocode pln">{compose, <a href="appendix.html#10:2">10:2</a>}</span>
-const transformerA = todos =&gt; todos.emptyTodos;
-const transformerB = todos =&gt; todos.length;
+const orTemplate = (f) =&gt; (
+  f.length &gt; 1
+    ? of(f)
+    : of(templateTodo)
+);
 
-Functor.map(compose(transformerB, transformerA), todoSelector) ===
-    Functor.map(transformerB, map(transformerA, todoSelector));
-</pre>
+const orFinished = (u) =&gt; (
+  u.length &gt; 1
+    ? of(u)
+    : chain(finishedTodos, orTemplate)
+);
 
-
-
-</div>
-<p>The consequence of this is that I don't need to worry about how I call <code>map</code> when I have multiple transformations. I can call it once, twice, or as many times as makes sense. I can also always refactor to build up one large transformer pipeline and only call map once.
-</p>
-<p>The implementation is relatively simple, but can be tricky for those who aren't used to functional programming or the Functor concepts. Remember that the context is selector functions, which have a specific shape.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{functor-implementation <a href="functor.html#3:2">2</a>}</span>
-<pre class="prettyprint">
-map: function(transformer, context) {
-  return (state, props) =&gt;
-      transformer(context(state, props));
-}
-</pre>
-
-
-
-</div>
-<p>It needs to return a value in the same context, so the return value is a selector function that takes state and props as arguments. That returned function though, applies the transformer that was passed into map to the returned value of evaluating the context with the given state and props. Thus I get a new context that contains the transformed value.
-</p>
-<p>This does obey the laws, but I leave it as an exercise to the reader to reason through them and prove it themselves.
-</p>
-<p>Finally I need to wrap it all up in a nice module.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{<strong>Functor.js</strong> <a href="functor.html#3:2">2</a>}</span>
-<pre class="prettyprint">
-<span class="nocode pln">{import-types-functor, <a href="functor.html#3:3">3</a>}</span>
-
-const FunctorI : Functor&lt;*, *, *, *&gt; = {
-<span class="nocode pln">{functor-implementation, <a href="functor.html#3:2">2</a>}</span>
-}
-
-export default FunctorI;
+const selector = chain(unfinishedTodos, orFinished);
 </pre>
 
 
 
 </div>
 </div>
-<a name="3:3"><div class="section"><h4>3. Imports</h4></a>
-<p>The Functor implementation must import the Functor type definition.
+<a name="6:2"><div class="section"><h4>2. Details</h4></a>
+<p>TODO
 </p>
 
-<div class="codeblock">
-<span class="codeblock_name">{import-types-functor <a href="functor.html#3:3">3</a>}</span>
-<pre class="prettyprint">
-import type { Functor } from './types/Functor';
-</pre>
-
-
-<p class="seealso">Used in section <a href="functor.html#3:2">2</a></p>
 </div>
-<p>Other modules need to import Functor.
-</p>
-
-<div class="codeblock">
-<span class="codeblock_name">{import-functor <a href="functor.html#3:3">3</a>}</span>
-<pre class="prettyprint">
-import Functor from './Functor';
-</pre>
-
-
-<p class="seealso">Used in section <a href="profunctor.html#9:2">9:2</a></p>
-</div>
-
-</div>
-<br><a style="float:left;" class="chapter-nav" href="consumer.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="apply.html">Next Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="applicative.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="semigroup.html">Next Chapter</a></body>

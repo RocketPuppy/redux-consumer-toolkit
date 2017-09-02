@@ -1,0 +1,74 @@
+@code javascript js
+
+@title Chain
+
+@s Motivation
+
+So far I've covered Functor, Apply, and Applicative. Those are all useful
+interfaces, but they all share a consistent weakness. The operations they can
+perform are all static. None of them can depend on the value of a previous
+operation. This is something I can take advantage of to write cleaner, more
+concise programs and is in general a good thing. Sometimes, however, I need to
+have operations depend on the value of previous operations. This is where the
+Chain interface becomes necessary.
+
+I consider the following motivating example. Again I have the todo list as a
+theme. In this example I want to prioritize viewing some types of todos over
+others. I only show unfinished todos, then if there are no unfinished todos I
+show finished todos, and if there are no finished todos I show an example todo.
+
+--- chain-motivation-1
+@{filter}
+const todos = (state, props) => state.todos;
+
+const unfinishedTodos = map(
+  todos => filter((todo) => !todo.finished, todos),
+  todos
+);
+
+const finishedTodos = map(
+  todos => filter((todo) => todo.finished, todos),
+  todos
+);
+
+const templateTodo = { text: "Enter something to do!", finished: false };
+
+const selector = (state, props) => {
+  const u = unfinishedTodos(state, props);
+  if (u.length > 0) {
+    return u;
+  }
+
+  const f = finishedTodos(state, props);
+  if (f.length > 0) {
+    return f;
+  }
+
+  return templateTodo;
+};
+---
+
+To combine these selectors manually is a little tedious and requires careful
+threading of the state and props arguments through the selector. With the chain
+operation the manual threading is eliminated and individual pieces of logic can
+be extracted.
+
+--- chain-motivation-1 +=
+const orTemplate = (f) => (
+  f.length > 1
+    ? of(f)
+    : of(templateTodo)
+);
+
+const orFinished = (u) => (
+  u.length > 1
+    ? of(u)
+    : chain(finishedTodos, orTemplate)
+);
+
+const selector = chain(unfinishedTodos, orFinished);
+---
+
+@s Details
+
+TODO

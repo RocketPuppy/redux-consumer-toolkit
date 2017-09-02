@@ -86,3 +86,9 @@ The Functor implementation must import the Functor type definition.
 --- import-types-functor
 import type { Functor } from './types/Functor';
 ---
+
+Other modules need to import Functor.
+
+--- import-functor
+import Functor from './Functor';
+---

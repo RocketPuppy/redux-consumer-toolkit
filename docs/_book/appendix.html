@@ -43,7 +43,7 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 <body onload="prettyPrint()">
 <section>
 <h1>Appendix</h1>
-<a name="6:1"><div class="section"><h4>1. Library Entry-point</h4></a>
+<a name="10:1"><div class="section"><h4>1. Library Entry-point</h4></a>
 <p>I need to define an entry-point file for the library so that NPM can package it
 properly.
 </p>
@@ -52,16 +52,18 @@ self-documenting code.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#6:1">1</a>}</span>
+<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#10:1">1</a>}</span>
 <pre class="prettyprint">
 import Functor from './Functor';
 import Apply from './Apply';
 import Applicative from './Applicative';
+import Profunctor from './Profunctor';
 
 export {
   Functor,
   Apply,
-  Applicative
+  Applicative,
+  Profunctor
 };
 </pre>
 
@@ -72,12 +74,13 @@ export {
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#6:1">1</a>} +=</span>
+<span class="codeblock_name">{<strong>index.js</strong> <a href="appendix.html#10:1">1</a>} +=</span>
 <pre class="prettyprint">
 export default {
   ...Functor,
   ...Apply,
-  ...Applicative
+  ...Applicative,
+  ...Profunctor
 };
 </pre>
 
@@ -85,12 +88,12 @@ export default {
 
 </div>
 </div>
-<a name="6:2"><div class="section"><h4>2. Utility Functions</h4></a>
+<a name="10:2"><div class="section"><h4>2. Utility Functions</h4></a>
 <p>I use a version of function composition throughout the examples. It is defined as follows.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{compose <a href="appendix.html#6:2">2</a>}</span>
+<span class="codeblock_name">{compose <a href="appendix.html#10:2">2</a>}</span>
 <pre class="prettyprint">
 const compose = (f, g) =&gt; (...args) =&gt; f(g(...args))
 </pre>
@@ -102,7 +105,7 @@ const compose = (f, g) =&gt; (...args) =&gt; f(g(...args))
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{constant <a href="appendix.html#6:2">2</a>}</span>
+<span class="codeblock_name">{constant <a href="appendix.html#10:2">2</a>}</span>
 <pre class="prettyprint">
 type Constant&lt;A, B&gt; = (a) =&gt; (b) =&gt; a
 const constant : Constant&lt;*,*&gt; = x =&gt; y =&gt; x
@@ -115,14 +118,30 @@ const constant : Constant&lt;*,*&gt; = x =&gt; y =&gt; x
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{identity <a href="appendix.html#6:2">2</a>}</span>
+<span class="codeblock_name">{identity <a href="appendix.html#10:2">2</a>}</span>
 <pre class="prettyprint">
 const identity = (x) =&gt; x
 </pre>
 
 
+<p class="seealso">Used in section <a href="profunctor.html#9:2">9:2</a></p>
+</div>
+<p>The filter function is used in some examples
+</p>
 
+<div class="codeblock">
+<span class="codeblock_name">{filter <a href="appendix.html#10:2">2</a>}</span>
+<pre class="prettyprint">
+const filter = (f, c) =&gt; (
+  c.reduce((memo, x) =&gt; (
+    f(x) ? memo.concat(x) : memo
+  ), [])
+);
+</pre>
+
+
+<p class="seealso">Used in sections <a href="chain.html#6:1">6:1</a> and <a href="profunctor.html#9:1">9:1</a></p>
 </div>
 
 </div>
-<br><a style="float:left;" class="chapter-nav" href="applicative.html">Previous Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="profunctor.html">Previous Chapter</a></body>

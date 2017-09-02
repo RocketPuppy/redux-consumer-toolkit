@@ -12,11 +12,13 @@ self-documenting code.
 import Functor from './Functor';
 import Apply from './Apply';
 import Applicative from './Applicative';
+import Profunctor from './Profunctor';
 
 export {
   Functor,
   Apply,
-  Applicative
+  Applicative,
+  Profunctor
 };
 ---
 
@@ -26,7 +28,8 @@ However I also want to allow users to just import all the functions if they wish
 export default {
   ...Functor,
   ...Apply,
-  ...Applicative
+  ...Applicative,
+  ...Profunctor
 };
 ---
 
@@ -49,4 +52,14 @@ The identity function is a useful function and appears in some of the laws for t
 
 --- identity
 const identity = (x) => x
+---
+
+The filter function is used in some examples
+
+--- filter
+const filter = (f, c) => (
+  c.reduce((memo, x) => (
+    f(x) ? memo.concat(x) : memo
+  ), [])
+);
 ---
