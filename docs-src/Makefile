@@ -1,5 +1,5 @@
 HTML=../docs
-SRC=../src_
+SRC=../src
 ESLINTCONF=../.eslintrc
 
 .PHONY: all markdown code

@@ -1,35 +1,43 @@
 // @flow
+import Functor from "./Functor";
 
-import Memoized, * as MemMod from './memoized';
+import Apply from "./Apply";
 
-import Functor from './Functor';
-import Profunctor from './Profunctor';
-import Apply from './Apply';
-import Applicative from './Applicative';
-import Semigroup from './Semigroup';
-import Monoid from './Monoid';
-import Chain from './Chain';
+import Applicative from "./Applicative";
+
+import Profunctor from "./Profunctor";
+
+import Chain from "./Chain";
+
+import Monoid from "./Monoid";
+
+import Semigroup from "./Semigroup";
+
+const { map } = Functor;
+const { apAll } = Apply;
+const { of } = Applicative;
+const { promap, mapIn, objectify } = Profunctor;
+const { chain, expandAll, combine } = Chain;
+const { identity } = Monoid;
+const { concat } = Semigroup;
 
 export {
   Functor,
-  Profunctor,
   Apply,
   Applicative,
-  Semigroup,
+  Profunctor,
+  Chain,
   Monoid,
-  Chain
-};
-
-export default {
-  ...Functor,
-  ...Profunctor,
-  ...Apply,
-  ...Applicative,
-  ...Semigroup,
-  ...Monoid,
-  ...Chain,
-  Memoized: {
-    ...Memoized,
-    ...MemMod
-  }
+  Semigroup,
+  map,
+  apAll,
+  of,
+  promap,
+  mapIn,
+  objectify,
+  chain,
+  expandAll,
+  combine,
+  identity,
+  concat
 };
