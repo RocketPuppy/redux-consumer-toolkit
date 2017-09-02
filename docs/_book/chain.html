@@ -45,11 +45,11 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 <h1>Chain</h1>
 <a name="6:1"><div class="section"><h4>1. Motivation</h4></a>
 <p>So far I've covered Functor, Apply, and Applicative. Those are all useful
-interfaces, but they all share a consistent weakness. The operations they can
-perform are all static. None of them can depend on the value of a previous
-operation. This is something I can take advantage of to write cleaner, more
-concise programs and is in general a good thing. Sometimes, however, I need to
-have operations depend on the value of previous operations. This is where the
+interfaces, but they all share a consistent weakness. I cannot introspect and
+change the behavior of consumers based on the output of other consumers.  This
+weakness is something I can take advantage of to write cleaner, more concise
+programs and is in general a good thing. Sometimes, however, I need to have
+consumer behavior depend on the value of other consumers.  This is where the
 Chain interface becomes necessary.
 </p>
 <p>I consider the following motivating example. Again I have the todo list as a
