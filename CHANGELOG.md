@@ -1,5 +1,7 @@
 # Change Log
 
+v 2.0.3
+
 * Remove ramda dependency
 
 v 2.0.2
