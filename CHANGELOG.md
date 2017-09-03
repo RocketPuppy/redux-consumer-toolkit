@@ -1,5 +1,9 @@
 # Change Log
 
+* Fix memoization
+
+v 2.0.0
+
 * Flipped the arguments of Chain.chain to promote more readable code.
 * Alias Monoid.empty to Monoid.identity. Identity doesn't require a function call.
 * Renamed package to redux-consumer-toolkit

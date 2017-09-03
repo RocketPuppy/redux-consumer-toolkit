@@ -16,21 +16,21 @@ let { bind, chain, expand, expandAll, combine } = ChainI;
 let { concat } = SemigroupI;
 const { identity } = Monoid;
 
-map = memoize(map);
-ap = memoize(ap);
-apAll = memoize(apAll);
-of = memoize(of);
-constant = memoize(constant);
-promap = memoize(promap);
-mapIn = memoize(mapIn);
-mapOut = memoize(mapOut);
-objectify = memoize(objectify);
-bind = memoize(bind);
-chain = memoize(chain);
-expand = memoize(expand);
-expandAll = memoize(expandAll);
-combine = memoize(combine);
-concat = memoize(concat);
+map = () => memoize(map(...arguments));
+ap = () => memoize(ap(...arguments));
+apAll = () => memoize(apAll(...arguments));
+of = () => memoize(of(...arguments));
+constant = () => memoize(constant(...arguments));
+promap = () => memoize(promap(...arguments));
+mapIn = () => memoize(mapIn(...arguments));
+mapOut = () => memoize(mapOut(...arguments));
+objectify = () => memoize(objectify(...arguments));
+bind = () => memoize(bind(...arguments));
+chain = () => memoize(chain(...arguments));
+expand = () => memoize(expand(...arguments));
+expandAll = () => memoize(expandAll(...arguments));
+combine = () => memoize(combine(...arguments));
+concat = () => memoize(concat(...arguments));
 
 const Functor = {
   map
