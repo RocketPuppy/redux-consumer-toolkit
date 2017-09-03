@@ -8,12 +8,12 @@
     "url": "https://github.com/RocketPuppy/redux-consumer-toolkit"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --compilers js:babel-register",
     "clean": "rm -rf lib/",
     "compile": "babel src/ -d lib/",
     "compile:flow": "flow-copy-source -i 'examples/**/*.js' src/ lib/",
     "build": "npm run docs && npm run compile && npm run compile:flow",
-    "prepublish": "npm run clean && npm run build",
+    "prepublish": "npm run clean && npm run build && npm run test",
     "flow": "flow",
     "lint": "eslint src",
     "docs": "cd docs-src && make"
@@ -26,10 +26,12 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-flow": "^6.23.0",
+    "babel-register": "^6.26.0",
     "eslint": "^4.3.0",
     "eslint-plugin-flowtype": "^2.35.0",
     "eslint-plugin-import": "^2.7.0",
     "flow-copy-source": "^1.2.1",
+    "mocha": "^3.5.0",
     "prettier": "^1.5.3",
     "react-redux": "^5.0.6",
     "reselect": "^3.0.1",
