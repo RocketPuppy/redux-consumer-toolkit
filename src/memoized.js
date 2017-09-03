@@ -2,35 +2,29 @@
 import memoize from "ramda/src/memoize.js";
 import FunctorI from "./Functor";
 import ApplyI from "./Apply";
-import ApplicativeI from "./Applicative";
 import ChainI from "./Chain";
 import ProfunctorI from "./Profunctor";
 import SemigroupI from "./Semigroup";
 import Monoid from "./Monoid";
 
-let { map } = FunctorI;
-let { ap, apAll } = ApplyI;
-let { of, constant } = ApplicativeI;
-let { promap, mapIn, mapOut, objectify } = ProfunctorI;
-let { bind, chain, expand, expandAll, combine } = ChainI;
-let { concat } = SemigroupI;
-const { identity } = Monoid;
+import Applicative from "./Applicative";
 
-map = () => memoize(map(...arguments));
-ap = () => memoize(ap(...arguments));
-apAll = () => memoize(apAll(...arguments));
-of = () => memoize(of(...arguments));
-constant = () => memoize(constant(...arguments));
-promap = () => memoize(promap(...arguments));
-mapIn = () => memoize(mapIn(...arguments));
-mapOut = () => memoize(mapOut(...arguments));
-objectify = () => memoize(objectify(...arguments));
-bind = () => memoize(bind(...arguments));
-chain = () => memoize(chain(...arguments));
-expand = () => memoize(expand(...arguments));
-expandAll = () => memoize(expandAll(...arguments));
-combine = () => memoize(combine(...arguments));
-concat = () => memoize(concat(...arguments));
+const { identity } = Monoid;
+const { constant } = Applicative;
+
+const map = (...args: *) => memoize(FunctorI.map(...args));
+const ap = (...args: *) => memoize(ApplyI.ap(...args));
+const apAll = (...args: *) => memoize(ApplyI.apAll(...args));
+const promap = (...args: *) => memoize(ProfunctorI.promap(...args));
+const mapIn = (...args: *) => memoize(ProfunctorI.mapIn(...args));
+const mapOut = map;
+const objectify = (...args: *) => memoize(ProfunctorI.objectify(...args));
+const bind = (...args: *) => memoize(ChainI.bind(...args));
+const chain = (...args: *) => memoize(ChainI.chain(...args));
+const expand = (...args: *) => memoize(ChainI.expand(...args));
+const expandAll = (...args: *) => memoize(ChainI.expandAll(...args));
+const combine = (...args: *) => memoize(ChainI.combine(...args));
+const concat = (...args: *) => memoize(SemigroupI.concat(...args));
 
 const Functor = {
   map
@@ -39,11 +33,6 @@ const Functor = {
 const Apply = {
   ap,
   apAll
-};
-
-const Applicative = {
-  of,
-  constant
 };
 
 const Profunctor = {
