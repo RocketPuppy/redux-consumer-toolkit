@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Appendix</title>
+<script>
+!function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
+(function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
+b[0]==="^",c=["["];a&&c.push("^");for(var a=a?1:0,f=b.length;a<f;++a){var h=b[a];if(/\\[bdsw]/i.test(h))c.push(h);else{var h=d(h),l;a+2<f&&"-"===b[a+1]?(l=d(b[a+2]),a+=2):l=h;e.push([h,l]);l<65||h>122||(l<65||h>90||e.push([Math.max(65,h)|32,Math.min(l,90)|32]),l<97||h>122||e.push([Math.max(97,h)&-33,Math.min(l,122)&-33]))}}e.sort(function(e,a){return e[0]-a[0]||a[1]-e[1]});b=[];f=[];for(a=0;a<e.length;++a)h=e[a],h[0]<=f[1]+1?f[1]=Math.max(f[1],h[1]):b.push(f=h);for(a=0;a<b.length;++a)h=b[a],c.push(g(h[0])),
+h[1]>h[0]&&(h[1]+1>h[0]&&c.push("-"),c.push(g(h[1])));c.push("]");return c.join("")}function s(e){for(var a=e.source.match(/\[(?:[^\\\] ]|\\[\S\s])*]|\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\\d+|\\[^\dux]|\(\?[!:=]|[()^]|[^()[\\^]+/g),c=a.length,d=[],f=0,h=0;f<c;++f){var l=a[f];l==="("?++h:"\\"===l.charAt(0)&&(l=+l.substring(1))&&(l<=h?d[l]=-1:a[f]=g(l))}for(f=1;f<d.length;++f)-1===d[f]&&(d[f]=++x);for(h=f=0;f<c;++f)l=a[f],l==="("?(++h,d[h]||(a[f]="(?:")):"\\"===l.charAt(0)&&(l=+l.substring(1))&&l<=h&&
+(a[f]="\\"+d[l]);for(f=0;f<c;++f)"^"===a[f]&&"^"!==a[f+1]&&(a[f]="");if(e.ignoreCase&&m)for(f=0;f<c;++f)l=a[f],e=l.charAt(0),l.length>=2&&e==="["?a[f]=b(l):e!=="\\"&&(a[f]=l.replace(/[A-Za-z]/g,function(a){a=a.charCodeAt(0);return"["+String.fromCharCode(a&-33,a|32)+"]"}));return a.join("")}for(var x=0,m=!1,j=!1,k=0,c=a.length;k<c;++k){var i=a[k];if(i.ignoreCase)j=!0;else if(/[a-z]/i.test(i.source.replace(/\\u[\da-f]{4}|\\x[\da-f]{2}|\\[^UXux]/gi,""))){m=!0;j=!1;break}}for(var r={b:8,t:9,n:10,v:11,
+f:12,r:13},n=[],k=0,c=a.length;k<c;++k){i=a[k];if(i.global||i.multiline)throw Error(""+i);n.push("(?:"+s(i)+")")}return RegExp(n.join("|"),j?"gi":"g")}function S(a,d){function g(a){var c=a.nodeType;if(c==1){if(!b.test(a.className)){for(c=a.firstChild;c;c=c.nextSibling)g(c);c=a.nodeName.toLowerCase();if("br"===c||"li"===c)s[j]="\n",m[j<<1]=x++,m[j++<<1|1]=a}}else if(c==3||c==4)c=a.nodeValue,c.length&&(c=d?c.replace(/\r\n?/g,"\n"):c.replace(/[\t\n\r ]+/g," "),s[j]=c,m[j<<1]=x,x+=c.length,m[j++<<1|1]=
+a)}var b=/(?:^|\s)nocode(?:\s|$)/,s=[],x=0,m=[],j=0;g(a);return{a:s.join("").replace(/\n$/,""),d:m}}function H(a,d,g,b){d&&(a={a:d,e:a},g(a),b.push.apply(b,a.g))}function T(a){for(var d=void 0,g=a.firstChild;g;g=g.nextSibling)var b=g.nodeType,d=b===1?d?a:g:b===3?U.test(g.nodeValue)?a:d:d;return d===a?void 0:d}function D(a,d){function g(a){for(var j=a.e,k=[j,"pln"],c=0,i=a.a.match(s)||[],r={},n=0,e=i.length;n<e;++n){var z=i[n],w=r[z],t=void 0,f;if(typeof w==="string")f=!1;else{var h=b[z.charAt(0)];
+if(h)t=z.match(h[1]),w=h[0];else{for(f=0;f<x;++f)if(h=d[f],t=z.match(h[1])){w=h[0];break}t||(w="pln")}if((f=w.length>=5&&"lang-"===w.substring(0,5))&&!(t&&typeof t[1]==="string"))f=!1,w="src";f||(r[z]=w)}h=c;c+=z.length;if(f){f=t[1];var l=z.indexOf(f),B=l+f.length;t[2]&&(B=z.length-t[2].length,l=B-f.length);w=w.substring(5);H(j+h,z.substring(0,l),g,k);H(j+h+l,f,I(w,f),k);H(j+h+B,z.substring(B),g,k)}else k.push(j+h,w)}a.g=k}var b={},s;(function(){for(var g=a.concat(d),j=[],k={},c=0,i=g.length;c<i;++c){var r=
+g[c],n=r[3];if(n)for(var e=n.length;--e>=0;)b[n.charAt(e)]=r;r=r[1];n=""+r;k.hasOwnProperty(n)||(j.push(r),k[n]=q)}j.push(/[\S\s]/);s=R(j)})();var x=d.length;return g}function v(a){var d=[],g=[];a.tripleQuotedStrings?d.push(["str",/^(?:'''(?:[^'\\]|\\[\S\s]|''?(?=[^']))*(?:'''|$)|"""(?:[^"\\]|\\[\S\s]|""?(?=[^"]))*(?:"""|$)|'(?:[^'\\]|\\[\S\s])*(?:'|$)|"(?:[^"\\]|\\[\S\s])*(?:"|$))/,q,"'\""]):a.multiLineStrings?d.push(["str",/^(?:'(?:[^'\\]|\\[\S\s])*(?:'|$)|"(?:[^"\\]|\\[\S\s])*(?:"|$)|`(?:[^\\`]|\\[\S\s])*(?:`|$))/,
+q,"'\"`"]):d.push(["str",/^(?:'(?:[^\n\r'\\]|\\.)*(?:'|$)|"(?:[^\n\r"\\]|\\.)*(?:"|$))/,q,"\"'"]);a.verbatimStrings&&g.push(["str",/^@"(?:[^"]|"")*(?:"|$)/,q]);var b=a.hashComments;b&&(a.cStyleComments?(b>1?d.push(["com",/^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/,q,"#"]):d.push(["com",/^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\n\r]*)/,q,"#"]),g.push(["str",/^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/,q])):d.push(["com",
+/^#[^\n\r]*/,q,"#"]));a.cStyleComments&&(g.push(["com",/^\/\/[^\n\r]*/,q]),g.push(["com",/^\/\*[\S\s]*?(?:\*\/|$)/,q]));if(b=a.regexLiterals){var s=(b=b>1?"":"\n\r")?".":"[\\S\\s]";g.push(["lang-regex",RegExp("^(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*("+("/(?=[^/*"+b+"])(?:[^/\\x5B\\x5C"+b+"]|\\x5C"+s+"|\\x5B(?:[^\\x5C\\x5D"+b+"]|\\x5C"+
+s+")*(?:\\x5D|$))+/")+")")])}(b=a.types)&&g.push(["typ",b]);b=(""+a.keywords).replace(/^ | $/g,"");b.length&&g.push(["kwd",RegExp("^(?:"+b.replace(/[\s,]+/g,"|")+")\\b"),q]);d.push(["pln",/^\s+/,q," \r\n\t\u00a0"]);b="^.[^\\s\\w.$@'\"`/\\\\]*";a.regexLiterals&&(b+="(?!s*/)");g.push(["lit",/^@[$_a-z][\w$@]*/i,q],["typ",/^(?:[@_]?[A-Z]+[a-z][\w$@]*|\w+_t\b)/,q],["pln",/^[$_a-z][\w$@]*/i,q],["lit",/^(?:0x[\da-f]+|(?:\d(?:_\d+)*\d*(?:\.\d*)?|\.\d\+)(?:e[+-]?\d+)?)[a-z]*/i,q,"0123456789"],["pln",/^\\[\S\s]?/,
+q],["pun",RegExp(b),q]);return D(d,g)}function J(a,d,g){function b(a){var c=a.nodeType;if(c==1&&!x.test(a.className))if("br"===a.nodeName)s(a),a.parentNode&&a.parentNode.removeChild(a);else for(a=a.firstChild;a;a=a.nextSibling)b(a);else if((c==3||c==4)&&g){var d=a.nodeValue,i=d.match(m);if(i)c=d.substring(0,i.index),a.nodeValue=c,(d=d.substring(i.index+i[0].length))&&a.parentNode.insertBefore(j.createTextNode(d),a.nextSibling),s(a),c||a.parentNode.removeChild(a)}}function s(a){function b(a,c){var d=
+c?a.cloneNode(!1):a,e=a.parentNode;if(e){var e=b(e,1),g=a.nextSibling;e.appendChild(d);for(var i=g;i;i=g)g=i.nextSibling,e.appendChild(i)}return d}for(;!a.nextSibling;)if(a=a.parentNode,!a)return;for(var a=b(a.nextSibling,0),d;(d=a.parentNode)&&d.nodeType===1;)a=d;c.push(a)}for(var x=/(?:^|\s)nocode(?:\s|$)/,m=/\r\n?|\n/,j=a.ownerDocument,k=j.createElement("li");a.firstChild;)k.appendChild(a.firstChild);for(var c=[k],i=0;i<c.length;++i)b(c[i]);d===(d|0)&&c[0].setAttribute("value",d);var r=j.createElement("ol");
+r.className="linenums";for(var d=Math.max(0,d-1|0)||0,i=0,n=c.length;i<n;++i)k=c[i],k.className="L"+(i+d)%10,k.firstChild||k.appendChild(j.createTextNode("\u00a0")),r.appendChild(k);a.appendChild(r)}function p(a,d){for(var g=d.length;--g>=0;){var b=d[g];F.hasOwnProperty(b)?E.console&&console.warn("cannot override language handler %s",b):F[b]=a}}function I(a,d){if(!a||!F.hasOwnProperty(a))a=/^\s*</.test(d)?"default-markup":"default-code";return F[a]}function K(a){var d=a.h;try{var g=S(a.c,a.i),b=g.a;
+a.a=b;a.d=g.d;a.e=0;I(d,b)(a);var s=/\bMSIE\s(\d+)/.exec(navigator.userAgent),s=s&&+s[1]<=8,d=/\n/g,x=a.a,m=x.length,g=0,j=a.d,k=j.length,b=0,c=a.g,i=c.length,r=0;c[i]=m;var n,e;for(e=n=0;e<i;)c[e]!==c[e+2]?(c[n++]=c[e++],c[n++]=c[e++]):e+=2;i=n;for(e=n=0;e<i;){for(var p=c[e],w=c[e+1],t=e+2;t+2<=i&&c[t+1]===w;)t+=2;c[n++]=p;c[n++]=w;e=t}c.length=n;var f=a.c,h;if(f)h=f.style.display,f.style.display="none";try{for(;b<k;){var l=j[b+2]||m,B=c[r+2]||m,t=Math.min(l,B),A=j[b+1],G;if(A.nodeType!==1&&(G=x.substring(g,
+t))){s&&(G=G.replace(d,"\r"));A.nodeValue=G;var L=A.ownerDocument,o=L.createElement("span");o.className=c[r+1];var v=A.parentNode;v.replaceChild(o,A);o.appendChild(A);g<l&&(j[b+1]=A=L.createTextNode(x.substring(t,l)),v.insertBefore(A,o.nextSibling))}g=t;g>=l&&(b+=2);g>=B&&(r+=2)}}finally{if(f)f.style.display=h}}catch(u){E.console&&console.log(u&&u.stack||u)}}var E=window,y=["break,continue,do,else,for,if,return,while"],C=[[y,"auto,case,char,const,default,double,enum,extern,float,goto,inline,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile"],
+"catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof"],M=[C,"alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,delegate,dynamic_cast,explicit,export,friend,generic,late_check,mutable,namespace,nullptr,property,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where"],V=[C,"abstract,assert,boolean,byte,extends,final,finally,implements,import,instanceof,interface,null,native,package,strictfp,super,synchronized,throws,transient"],
+N=[C,"abstract,as,base,bool,by,byte,checked,decimal,delegate,descending,dynamic,event,finally,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,null,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where"],C=[C,"debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN"],O=[y,"and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None"],
+P=[y,"alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END"],W=[y,"as,assert,const,copy,drop,enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv,pub,pure,ref,self,static,struct,true,trait,type,unsafe,use"],y=[y,"case,done,elif,esac,eval,fi,function,in,local,set,then,until"],Q=/^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/,
+U=/\S/,X=v({keywords:[M,N,C,"caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END",O,P,y],hashComments:!0,cStyleComments:!0,multiLineStrings:!0,regexLiterals:!0}),F={};p(X,["default-code"]);p(D([],[["pln",/^[^<?]+/],["dec",/^<!\w[^>]*(?:>|$)/],["com",/^<\!--[\S\s]*?(?:--\>|$)/],["lang-",/^<\?([\S\s]+?)(?:\?>|$)/],["lang-",/^<%([\S\s]+?)(?:%>|$)/],["pun",/^(?:<[%?]|[%?]>)/],["lang-",
+/^<xmp\b[^>]*>([\S\s]+?)<\/xmp\b[^>]*>/i],["lang-js",/^<script\b[^>]*>([\S\s]*?)(<\/script\b[^>]*>)/i],["lang-css",/^<style\b[^>]*>([\S\s]*?)(<\/style\b[^>]*>)/i],["lang-in.tag",/^(<\/?[a-z][^<>]*>)/i] ]),["default-markup","htm","html","mxml","xhtml","xml","xsl"]);p(D([["pln",/^\s+/,q," \t\r\n"],["atv",/^(?:"[^"]*"?|'[^']*'?)/,q,"\"'"] ],[["tag",/^^<\/?[a-z](?:[\w-.:]*\w)?|\/?>$/i],["atn",/^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i],["lang-uq.val",/^=\s*([^\s"'>]*(?:[^\s"'/>]|\/(?=\s)))/],["pun",/^[/<->]+/],
+["lang-js",/^on\w+\s*=\s*"([^"]+)"/i],["lang-js",/^on\w+\s*=\s*'([^']+)'/i],["lang-js",/^on\w+\s*=\s*([^\s"'>]+)/i],["lang-css",/^style\s*=\s*"([^"]+)"/i],["lang-css",/^style\s*=\s*'([^']+)'/i],["lang-css",/^style\s*=\s*([^\s"'>]+)/i] ]),["in.tag"]);p(D([],[["atv",/^[\S\s]+/] ]),["uq.val"]);p(v({keywords:M,hashComments:!0,cStyleComments:!0,types:Q}),["c","cc","cpp","cxx","cyc","m"]);p(v({keywords:"null,true,false"}),["json"]);p(v({keywords:N,hashComments:!0,cStyleComments:!0,verbatimStrings:!0,types:Q}),
+["cs"]);p(v({keywords:V,cStyleComments:!0}),["java"]);p(v({keywords:y,hashComments:!0,multiLineStrings:!0}),["bash","bsh","csh","sh"]);p(v({keywords:O,hashComments:!0,multiLineStrings:!0,tripleQuotedStrings:!0}),["cv","py","python"]);p(v({keywords:"caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END",hashComments:!0,multiLineStrings:!0,regexLiterals:2}),["perl","pl","pm"]);p(v({keywords:P,
+hashComments:!0,multiLineStrings:!0,regexLiterals:!0}),["rb","ruby"]);p(v({keywords:C,cStyleComments:!0,regexLiterals:!0}),["javascript","js"]);p(v({keywords:"all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes",hashComments:3,cStyleComments:!0,multilineStrings:!0,tripleQuotedStrings:!0,regexLiterals:!0}),["coffee"]);p(v({keywords:W,cStyleComments:!0,multilineStrings:!0}),["rc","rs","rust"]);
+p(D([],[["str",/^[\S\s]+/] ]),["regex"]);var Y=E.PR={createSimpleLexer:D,registerLangHandler:p,sourceDecorator:v,PR_ATTRIB_NAME:"atn",PR_ATTRIB_VALUE:"atv",PR_COMMENT:"com",PR_DECLARATION:"dec",PR_KEYWORD:"kwd",PR_LITERAL:"lit",PR_NOCODE:"nocode",PR_PLAIN:"pln",PR_PUNCTUATION:"pun",PR_SOURCE:"src",PR_STRING:"str",PR_TAG:"tag",PR_TYPE:"typ",prettyPrintOne:E.prettyPrintOne=function(a,d,g){var b=document.createElement("div");b.innerHTML="<pre>"+a+"</pre>";b=b.firstChild;g&&J(b,g,!0);K({h:d,j:g,c:b,i:1});
+return b.innerHTML},prettyPrint:E.prettyPrint=function(a,d){function g(){for(var b=E.PR_SHOULD_USE_CONTINUATION?c.now()+250:Infinity;i<p.length&&c.now()<b;i++){for(var d=p[i],j=h,k=d;k=k.previousSibling;){var m=k.nodeType,o=(m===7||m===8)&&k.nodeValue;if(o?!/^\??prettify\b/.test(o):m!==3||/\S/.test(k.nodeValue))break;if(o){j={};o.replace(/\b(\w+)=([\w%+\-.:]+)/g,function(a,b,c){j[b]=c});break}}k=d.className;if((j!==h||e.test(k))&&!v.test(k)){m=!1;for(o=d.parentNode;o;o=o.parentNode)if(f.test(o.tagName)&&
+o.className&&e.test(o.className)){m=!0;break}if(!m){d.className+=" prettyprinted";m=j.lang;if(!m){var m=k.match(n),y;if(!m&&(y=T(d))&&t.test(y.tagName))m=y.className.match(n);m&&(m=m[1])}if(w.test(d.tagName))o=1;else var o=d.currentStyle,u=s.defaultView,o=(o=o?o.whiteSpace:u&&u.getComputedStyle?u.getComputedStyle(d,q).getPropertyValue("white-space"):0)&&"pre"===o.substring(0,3);u=j.linenums;if(!(u=u==="true"||+u))u=(u=k.match(/\blinenums\b(?::(\d+))?/))?u[1]&&u[1].length?+u[1]:!0:!1;u&&J(d,u,o);r=
+{h:m,c:d,j:u,i:o};K(r)}}}i<p.length?setTimeout(g,250):"function"===typeof a&&a()}for(var b=d||document.body,s=b.ownerDocument||document,b=[b.getElementsByTagName("pre"),b.getElementsByTagName("code"),b.getElementsByTagName("xmp")],p=[],m=0;m<b.length;++m)for(var j=0,k=b[m].length;j<k;++j)p.push(b[m][j]);var b=q,c=Date;c.now||(c={now:function(){return+new Date}});var i=0,r,n=/\blang(?:uage)?-([\w.]+)(?!\S)/,e=/\bprettyprint\b/,v=/\bprettyprinted\b/,w=/pre|xmp/i,t=/^code$/i,f=/^(?:pre|code|xmp)$/i,
+h={};g()}};typeof define==="function"&&define.amd&&define("google-code-prettify",[],function(){return Y})})();}()
+</script>
+<style>
+.pln{color:#1b181b}.str{color:#918b3b}.kwd{color:#7b59c0}.com{color:#9e8f9e}.typ{color:#516aec}.lit{color:#a65926}.clo,.opn,.pun{color:#1b181b}.tag{color:#ca402b}.atn{color:#a65926}.atv{color:#159393}.dec{color:#a65926}.var{color:#ca402b}.fun{color:#516aec}pre.prettyprint{background:#f7f3f7;color:#ab9bab;font-family:Menlo,Consolas,"Bitstream Vera Sans Mono","DejaVu Sans Mono",Monaco,monospace;font-size:12px;line-height:1.5;border:1px solid #d8cad8;padding:10px}ol.linenums{margin-top:0;margin-bottom:0}
+body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{font-size: 10pt;}a:link,a:visited{color:#00f}.codeblock_name,code,pre.prettyprint{font-family:Monaco,"Lucida Console",monospace}body{font-size:14pt}.codeblock_name,.math,.seealso,code{font-size:10pt}.codeblock{page-break-inside:avoid;padding-bottom:15px}.math{text-indent:0}pre.prettyprint{font-size:10pt;padding:10px;border-radius:10px;border:none;white-space:pre-wrap}.codeblock_name{margin-top:1.25em;display:block}a:link{text-decoration:none}a:link:not(.lit):hover{color:#00f;text-decoration:underline}a:link:active{color:red}h4{padding-right:1.25em}h4.noheading{margin-bottom:0}h1{text-align:center}code{padding:2px}pre{-moz-tab-size:4;-o-tab-size:4;tab-size:4}p:not(.notp){margin:0;text-indent:2em}.two-col{list-style-type:none}.two-col li:before{content:'-';padding:5px;margin-right:5px;color:orange;background-color:#fff;display:inline-block}@media print{body{font-size:10pt}pre.prettyprint{font-size:8pt}.seealso{font-size:9pt}.codeblock_name,.math,code{font-size:8pt}.math{text-indent:0}}
+</style>
+</head>
+<body onload="prettyPrint()">
+<section>
+<h1>Appendix</h1>
+<a name="11:1"><div class="section"><h4>1. Ramda</h4></a>
+<p>This library uses some functions that come from the <a href="http://ramdajs.com">ramda</a>
+Javascript utility library. I don't want to force a ramda dependency on other
+users of my library so I'm copying the used functions directly from their
+source.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>ramda.js</strong> <a href="ramda.html#11:1">1</a>}</span>
+<pre class="prettyprint">
+/* eslint-disable */
+;(function() {
+
+  'use strict';
+
+  /* eslint-disable no-unused-vars */
+    var _arity = function _arity(n, fn) {
+        /* eslint-disable no-unused-vars */
+        switch (n) {
+        case 0:
+            return function () {
+                return fn.apply(this, arguments);
+            };
+        case 1:
+            return function (a0) {
+                return fn.apply(this, arguments);
+            };
+        case 2:
+            return function (a0, a1) {
+                return fn.apply(this, arguments);
+            };
+        case 3:
+            return function (a0, a1, a2) {
+                return fn.apply(this, arguments);
+            };
+        case 4:
+            return function (a0, a1, a2, a3) {
+                return fn.apply(this, arguments);
+            };
+        case 5:
+            return function (a0, a1, a2, a3, a4) {
+                return fn.apply(this, arguments);
+            };
+        case 6:
+            return function (a0, a1, a2, a3, a4, a5) {
+                return fn.apply(this, arguments);
+            };
+        case 7:
+            return function (a0, a1, a2, a3, a4, a5, a6) {
+                return fn.apply(this, arguments);
+            };
+        case 8:
+            return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+                return fn.apply(this, arguments);
+            };
+        case 9:
+            return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+                return fn.apply(this, arguments);
+            };
+        case 10:
+            return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+                return fn.apply(this, arguments);
+            };
+        default:
+            throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+        }
+    };
+
+    var _arrayFromIterator = function _arrayFromIterator(iter) {
+        var list = [];
+        var next;
+        while (!(next = iter.next()).done) {
+            list.push(next.value);
+        }
+        return list;
+    };
+
+    var _complement = function _complement(f) {
+        return function () {
+            return !f.apply(this, arguments);
+        };
+    };
+
+    var _containsWith = function _containsWith(pred, x, list) {
+        var idx = 0;
+        var len = list.length;
+        while (idx &lt; len) {
+            if (pred(x, list[idx])) {
+                return true;
+            }
+            idx += 1;
+        }
+        return false;
+    };
+
+    var _filter = function _filter(fn, list) {
+        var idx = 0;
+        var len = list.length;
+        var result = [];
+        while (idx &lt; len) {
+            if (fn(list[idx])) {
+                result[result.length] = list[idx];
+            }
+            idx += 1;
+        }
+        return result;
+    };
+
+    // String(x =&gt; x) evaluates to "x =&gt; x", so the pattern may not match.
+    var _functionName = function _functionName(f) {
+        // String(x =&gt; x) evaluates to "x =&gt; x", so the pattern may not match.
+        var match = String(f).match(/^function (\w*)/);
+        return match == null ? '' : match[1];
+    };
+
+    var _has = function _has(prop, obj) {
+        return Object.prototype.hasOwnProperty.call(obj, prop);
+    };
+
+    var _isArguments = function () {
+        var toString = Object.prototype.toString;
+        return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
+            return toString.call(x) === '[object Arguments]';
+        } : function _isArguments(x) {
+            return _has('callee', x);
+        };
+    }();
+
+    /**
+     * Tests whether or not an object is an array.
+     *
+     * @private
+     * @param {*} val The object to test.
+     * @return {Boolean} `true` if `val` is an array, `false` otherwise.
+     * @example
+     *
+     *      _isArray([]); //=&gt; true
+     *      _isArray(null); //=&gt; false
+     *      _isArray({}); //=&gt; false
+     */
+    var _isArray = Array.isArray || function _isArray(val) {
+        return val != null &amp;&amp; val.length &gt;= 0 &amp;&amp; Object.prototype.toString.call(val) === '[object Array]';
+    };
+
+    var _isObject = function _isObject(x) {
+        return Object.prototype.toString.call(x) === '[object Object]';
+    };
+
+    var _isPlaceholder = function _isPlaceholder(a) {
+        return a != null &amp;&amp; typeof a === 'object' &amp;&amp; a['@@functional/placeholder'] === true;
+    };
+
+    var _isString = function _isString(x) {
+        return Object.prototype.toString.call(x) === '[object String]';
+    };
+
+    var _isTransformer = function _isTransformer(obj) {
+        return typeof obj['@@transducer/step'] === 'function';
+    };
+
+    var _map = function _map(fn, functor) {
+        var idx = 0;
+        var len = functor.length;
+        var result = Array(len);
+        while (idx &lt; len) {
+            result[idx] = fn(functor[idx]);
+            idx += 1;
+        }
+        return result;
+    };
+
+    // \b matches word boundary; [\b] matches backspace
+    var _quote = function _quote(s) {
+        var escaped = s.replace(/\\/g, '\\\\').replace(/[\b]/g, '\\b')    // \b matches word boundary; [\b] matches backspace
+    .replace(/\f/g, '\\f').replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t').replace(/\v/g, '\\v').replace(/\0/g, '\\0');
+        return '"' + escaped.replace(/"/g, '\\"') + '"';
+    };
+
+    /**
+     * Polyfill from &lt;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString&gt;.
+     */
+    var _toISOString = function () {
+        var pad = function pad(n) {
+            return (n &lt; 10 ? '0' : '') + n;
+        };
+        return typeof Date.prototype.toISOString === 'function' ? function _toISOString(d) {
+            return d.toISOString();
+        } : function _toISOString(d) {
+            return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()) + ':' + pad(d.getUTCSeconds()) + '.' + (d.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) + 'Z';
+        };
+    }();
+
+    var _xfBase = {
+        init: function () {
+            return this.xf['@@transducer/init']();
+        },
+        result: function (result) {
+            return this.xf['@@transducer/result'](result);
+        }
+    };
+
+    var _xwrap = function () {
+        function XWrap(fn) {
+            this.f = fn;
+        }
+        XWrap.prototype['@@transducer/init'] = function () {
+            throw new Error('init not implemented on XWrap');
+        };
+        XWrap.prototype['@@transducer/result'] = function (acc) {
+            return acc;
+        };
+        XWrap.prototype['@@transducer/step'] = function (acc, x) {
+            return this.f(acc, x);
+        };
+        return function _xwrap(fn) {
+            return new XWrap(fn);
+        };
+    }();
+
+    /**
+     * Optimized internal one-arity curry function.
+     *
+     * @private
+     * @category Function
+     * @param {Function} fn The function to curry.
+     * @return {Function} The curried function.
+     */
+    var _curry1 = function _curry1(fn) {
+        return function f1(a) {
+            if (arguments.length === 0 || _isPlaceholder(a)) {
+                return f1;
+            } else {
+                return fn.apply(this, arguments);
+            }
+        };
+    };
+
+    /**
+     * Optimized internal two-arity curry function.
+     *
+     * @private
+     * @category Function
+     * @param {Function} fn The function to curry.
+     * @return {Function} The curried function.
+     */
+    var _curry2 = function _curry2(fn) {
+        return function f2(a, b) {
+            switch (arguments.length) {
+            case 0:
+                return f2;
+            case 1:
+                return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+                    return fn(a, _b);
+                });
+            default:
+                return _isPlaceholder(a) &amp;&amp; _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+                    return fn(_a, b);
+                }) : _isPlaceholder(b) ? _curry1(function (_b) {
+                    return fn(a, _b);
+                }) : fn(a, b);
+            }
+        };
+    };
+
+    /**
+     * Returns a function that dispatches with different strategies based on the
+     * object in list position (last argument). If it is an array, executes [fn].
+     * Otherwise, if it has a function with one of the given method names, it will
+     * execute that function (functor case). Otherwise, if it is a transformer,
+     * uses transducer [xf] to return a new transformer (transducer case).
+     * Otherwise, it will default to executing [fn].
+     *
+     * @private
+     * @param {Array} methodNames properties to check for a custom implementation
+     * @param {Function} xf transducer to initialize if object is transformer
+     * @param {Function} fn default ramda implementation
+     * @return {Function} A function that dispatches on object in list position
+     */
+    var _dispatchable = function _dispatchable(methodNames, xf, fn) {
+        return function () {
+            if (arguments.length === 0) {
+                return fn();
+            }
+            var args = Array.prototype.slice.call(arguments, 0);
+            var obj = args.pop();
+            if (!_isArray(obj)) {
+                var idx = 0;
+                while (idx &lt; methodNames.length) {
+                    if (typeof obj[methodNames[idx]] === 'function') {
+                        return obj[methodNames[idx]].apply(obj, args);
+                    }
+                    idx += 1;
+                }
+                if (_isTransformer(obj)) {
+                    var transducer = xf.apply(null, args);
+                    return transducer(obj);
+                }
+            }
+            return fn.apply(this, arguments);
+        };
+    };
+
+    /**
+     * Tests whether or not an object is similar to an array.
+     *
+     * @private
+     * @category Type
+     * @category List
+     * @sig * -&gt; Boolean
+     * @param {*} x The object to test.
+     * @return {Boolean} `true` if `x` has a numeric length property and extreme indices defined; `false` otherwise.
+     * @example
+     *
+     *      _isArrayLike([]); //=&gt; true
+     *      _isArrayLike(true); //=&gt; false
+     *      _isArrayLike({}); //=&gt; false
+     *      _isArrayLike({length: 10}); //=&gt; false
+     *      _isArrayLike({0: 'zero', 9: 'nine', length: 10}); //=&gt; true
+     */
+    var _isArrayLike = _curry1(function isArrayLike(x) {
+        if (_isArray(x)) {
+            return true;
+        }
+        if (!x) {
+            return false;
+        }
+        if (typeof x !== 'object') {
+            return false;
+        }
+        if (_isString(x)) {
+            return false;
+        }
+        if (x.nodeType === 1) {
+            return !!x.length;
+        }
+        if (x.length === 0) {
+            return true;
+        }
+        if (x.length &gt; 0) {
+            return x.hasOwnProperty(0) &amp;&amp; x.hasOwnProperty(x.length - 1);
+        }
+        return false;
+    });
+
+    var _xfilter = function () {
+        function XFilter(f, xf) {
+            this.xf = xf;
+            this.f = f;
+        }
+        XFilter.prototype['@@transducer/init'] = _xfBase.init;
+        XFilter.prototype['@@transducer/result'] = _xfBase.result;
+        XFilter.prototype['@@transducer/step'] = function (result, input) {
+            return this.f(input) ? this.xf['@@transducer/step'](result, input) : result;
+        };
+        return _curry2(function _xfilter(f, xf) {
+            return new XFilter(f, xf);
+        });
+    }();
+
+    /**
+     * Creates a function that is bound to a context.
+     * Note: `R.bind` does not provide the additional argument-binding capabilities of
+     * [Function.prototype.bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
+     *
+     * @func
+     * @memberOf R
+     * @since v0.6.0
+     * @category Function
+     * @category Object
+     * @sig (* -&gt; *) -&gt; {*} -&gt; (* -&gt; *)
+     * @param {Function} fn The function to bind to context
+     * @param {Object} thisObj The context to bind `fn` to
+     * @return {Function} A function that will execute in the context of `thisObj`.
+     * @see R.partial
+     * @example
+     *
+     *      var log = R.bind(console.log, console);
+     *      R.pipe(R.assoc('a', 2), R.tap(log), R.assoc('a', 3))({a: 1}); //=&gt; {a: 3}
+     *      // logs {a: 2}
+     * @symb R.bind(f, o)(a, b) = f.call(o, a, b)
+     */
+    var bind = _curry2(function bind(fn, thisObj) {
+        return _arity(fn.length, function () {
+            return fn.apply(thisObj, arguments);
+        });
+    });
+
+    /**
+     * Returns true if its arguments are identical, false otherwise. Values are
+     * identical if they reference the same memory. `NaN` is identical to `NaN`;
+     * `0` and `-0` are not identical.
+     *
+     * @func
+     * @memberOf R
+     * @since v0.15.0
+     * @category Relation
+     * @sig a -&gt; a -&gt; Boolean
+     * @param {*} a
+     * @param {*} b
+     * @return {Boolean}
+     * @example
+     *
+     *      var o = {};
+     *      R.identical(o, o); //=&gt; true
+     *      R.identical(1, 1); //=&gt; true
+     *      R.identical(1, '1'); //=&gt; false
+     *      R.identical([], []); //=&gt; false
+     *      R.identical(0, -0); //=&gt; false
+     *      R.identical(NaN, NaN); //=&gt; true
+     */
+    // SameValue algorithm
+    // Steps 1-5, 7-10
+    // Steps 6.b-6.e: +0 != -0
+    // Step 6.a: NaN == NaN
+    var identical = _curry2(function identical(a, b) {
+        // SameValue algorithm
+        if (a === b) {
+            // Steps 1-5, 7-10
+            // Steps 6.b-6.e: +0 != -0
+            return a !== 0 || 1 / a === 1 / b;
+        } else {
+            // Step 6.a: NaN == NaN
+            return a !== a &amp;&amp; b !== b;
+        }
+    });
+
+    /**
+     * Returns a list containing the names of all the enumerable own properties of
+     * the supplied object.
+     * Note that the order of the output array is not guaranteed to be consistent
+     * across different JS platforms.
+     *
+     * @func
+     * @memberOf R
+     * @since v0.1.0
+     * @category Object
+     * @sig {k: v} -&gt; [k]
+     * @param {Object} obj The object to extract properties from
+     * @return {Array} An array of the object's own properties.
+     * @see R.keysIn, R.values
+     * @example
+     *
+     *      R.keys({a: 1, b: 2, c: 3}); //=&gt; ['a', 'b', 'c']
+     */
+    // cover IE &lt; 9 keys issues
+    // Safari bug
+    var keys = function () {
+        // cover IE &lt; 9 keys issues
+        var hasEnumBug = !{ toString: null }.propertyIsEnumerable('toString');
+        var nonEnumerableProps = [
+            'constructor',
+            'valueOf',
+            'isPrototypeOf',
+            'toString',
+            'propertyIsEnumerable',
+            'hasOwnProperty',
+            'toLocaleString'
+        ];
+        // Safari bug
+        var hasArgsEnumBug = function () {
+            'use strict';
+            return arguments.propertyIsEnumerable('length');
+        }();
+        var contains = function contains(list, item) {
+            var idx = 0;
+            while (idx &lt; list.length) {
+                if (list[idx] === item) {
+                    return true;
+                }
+                idx += 1;
+            }
+            return false;
+        };
+        return typeof Object.keys === 'function' &amp;&amp; !hasArgsEnumBug ? _curry1(function keys(obj) {
+            return Object(obj) !== obj ? [] : Object.keys(obj);
+        }) : _curry1(function keys(obj) {
+            if (Object(obj) !== obj) {
+                return [];
+            }
+            var prop, nIdx;
+            var ks = [];
+            var checkArgsLength = hasArgsEnumBug &amp;&amp; _isArguments(obj);
+            for (prop in obj) {
+                if (_has(prop, obj) &amp;&amp; (!checkArgsLength || prop !== 'length')) {
+                    ks[ks.length] = prop;
+                }
+            }
+            if (hasEnumBug) {
+                nIdx = nonEnumerableProps.length - 1;
+                while (nIdx &gt;= 0) {
+                    prop = nonEnumerableProps[nIdx];
+                    if (_has(prop, obj) &amp;&amp; !contains(ks, prop)) {
+                        ks[ks.length] = prop;
+                    }
+                    nIdx -= 1;
+                }
+            }
+            return ks;
+        });
+    }();
+
+    /**
+     * A customisable version of [`R.memoize`](#memoize). `memoizeWith` takes an
+     * additional function that will be applied to a given argument set and used to
+     * create the cache key under which the results of the function to be memoized
+     * will be stored. Care must be taken when implementing key generation to avoid
+     * clashes that may overwrite previous entries erroneously.
+     *
+     *
+     * @func
+     * @memberOf R
+     * @since v0.24.0
+     * @category Function
+     * @sig (*... -&gt; String) -&gt; (*... -&gt; a) -&gt; (*... -&gt; a)
+     * @param {Function} fn The function to generate the cache key.
+     * @param {Function} fn The function to memoize.
+     * @return {Function} Memoized version of `fn`.
+     * @see R.memoize
+     * @example
+     *
+     *      let count = 0;
+     *      const factorial = R.memoizeWith(R.identity, n =&gt; {
+     *        count += 1;
+     *        return R.product(R.range(1, n + 1));
+     *      });
+     *      factorial(5); //=&gt; 120
+     *      factorial(5); //=&gt; 120
+     *      factorial(5); //=&gt; 120
+     *      count; //=&gt; 1
+     */
+    var memoizeWith = _curry2(function memoizeWith(mFn, fn) {
+        var cache = {};
+        return _arity(fn.length, function () {
+            var key = mFn.apply(this, arguments);
+            if (!_has(key, cache)) {
+                cache[key] = fn.apply(this, arguments);
+            }
+            return cache[key];
+        });
+    });
+
+    /**
+     * Gives a single-word string description of the (native) type of a value,
+     * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
+     * attempt to distinguish user Object types any further, reporting them all as
+     * 'Object'.
+     *
+     * @func
+     * @memberOf R
+     * @since v0.8.0
+     * @category Type
+     * @sig (* -&gt; {*}) -&gt; String
+     * @param {*} val The value to test
+     * @return {String}
+     * @example
+     *
+     *      R.type({}); //=&gt; "Object"
+     *      R.type(1); //=&gt; "Number"
+     *      R.type(false); //=&gt; "Boolean"
+     *      R.type('s'); //=&gt; "String"
+     *      R.type(null); //=&gt; "Null"
+     *      R.type([]); //=&gt; "Array"
+     *      R.type(/[A-z]/); //=&gt; "RegExp"
+     *      R.type(() =&gt; {}); //=&gt; "Function"
+     *      R.type(undefined); //=&gt; "Undefined"
+     */
+    var type = _curry1(function type(val) {
+        return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
+    });
+
+    /**
+     * Returns a list of all the enumerable own properties of the supplied object.
+     * Note that the order of the output array is not guaranteed across different
+     * JS platforms.
+     *
+     * @func
+     * @memberOf R
+     * @since v0.1.0
+     * @category Object
+     * @sig {k: v} -&gt; [v]
+     * @param {Object} obj The object to extract values from
+     * @return {Array} An array of the values of the object's own properties.
+     * @see R.valuesIn, R.keys
+     * @example
+     *
+     *      R.values({a: 1, b: 2, c: 3}); //=&gt; [1, 2, 3]
+     */
+    var values = _curry1(function values(obj) {
+        var props = keys(obj);
+        var len = props.length;
+        var vals = [];
+        var idx = 0;
+        while (idx &lt; len) {
+            vals[idx] = obj[props[idx]];
+            idx += 1;
+        }
+        return vals;
+    });
+
+    /**
+       * private _uniqContentEquals function.
+       * That function is checking equality of 2 iterator contents with 2 assumptions
+       * - iterators lengths are the same
+       * - iterators values are unique
+       *
+       * false-positive result will be returned for comparision of, e.g.
+       * - [1,2,3] and [1,2,3,4]
+       * - [1,1,1] and [1,2,3]
+       * */
+    // if *a* array contains any element that is not included in *b*
+    // Values of other types are only equal if identical.
+    var _equals = function () {
+        /**
+       * private _uniqContentEquals function.
+       * That function is checking equality of 2 iterator contents with 2 assumptions
+       * - iterators lengths are the same
+       * - iterators values are unique
+       *
+       * false-positive result will be returned for comparision of, e.g.
+       * - [1,2,3] and [1,2,3,4]
+       * - [1,1,1] and [1,2,3]
+       * */
+        function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
+            var a = _arrayFromIterator(aIterator);
+            var b = _arrayFromIterator(bIterator);
+            function eq(_a, _b) {
+                return _equals(_a, _b, stackA.slice(), stackB.slice());
+            }
+            // if *a* array contains any element that is not included in *b*
+            return !_containsWith(function (b, aItem) {
+                return !_containsWith(eq, aItem, b);
+            }, b, a);
+        }
+        function _equals(a, b, stackA, stackB) {
+            if (identical(a, b)) {
+                return true;
+            }
+            var typeA = type(a);
+            if (typeA !== type(b)) {
+                return false;
+            }
+            if (a == null || b == null) {
+                return false;
+            }
+            if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
+                return typeof a['fantasy-land/equals'] === 'function' &amp;&amp; a['fantasy-land/equals'](b) &amp;&amp; typeof b['fantasy-land/equals'] === 'function' &amp;&amp; b['fantasy-land/equals'](a);
+            }
+            if (typeof a.equals === 'function' || typeof b.equals === 'function') {
+                return typeof a.equals === 'function' &amp;&amp; a.equals(b) &amp;&amp; typeof b.equals === 'function' &amp;&amp; b.equals(a);
+            }
+            switch (typeA) {
+            case 'Arguments':
+            case 'Array':
+            case 'Object':
+                if (typeof a.constructor === 'function' &amp;&amp; _functionName(a.constructor) === 'Promise') {
+                    return a === b;
+                }
+                break;
+            case 'Boolean':
+            case 'Number':
+            case 'String':
+                if (!(typeof a === typeof b &amp;&amp; identical(a.valueOf(), b.valueOf()))) {
+                    return false;
+                }
+                break;
+            case 'Date':
+                if (!identical(a.valueOf(), b.valueOf())) {
+                    return false;
+                }
+                break;
+            case 'Error':
+                return a.name === b.name &amp;&amp; a.message === b.message;
+            case 'RegExp':
+                if (!(a.source === b.source &amp;&amp; a.global === b.global &amp;&amp; a.ignoreCase === b.ignoreCase &amp;&amp; a.multiline === b.multiline &amp;&amp; a.sticky === b.sticky &amp;&amp; a.unicode === b.unicode)) {
+                    return false;
+                }
+                break;
+            }
+            var idx = stackA.length - 1;
+            while (idx &gt;= 0) {
+                if (stackA[idx] === a) {
+                    return stackB[idx] === b;
+                }
+                idx -= 1;
+            }
+            switch (typeA) {
+            case 'Map':
+                if (a.size !== b.size) {
+                    return false;
+                }
+                return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
+            case 'Set':
+                if (a.size !== b.size) {
+                    return false;
+                }
+                return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
+            case 'Arguments':
+            case 'Array':
+            case 'Object':
+            case 'Boolean':
+            case 'Number':
+            case 'String':
+            case 'Date':
+            case 'Error':
+            case 'RegExp':
+            case 'Int8Array':
+            case 'Uint8Array':
+            case 'Uint8ClampedArray':
+            case 'Int16Array':
+            case 'Uint16Array':
+            case 'Int32Array':
+            case 'Uint32Array':
+            case 'Float32Array':
+            case 'Float64Array':
+            case 'ArrayBuffer':
+                break;
+            default:
+                // Values of other types are only equal if identical.
+                return false;
+            }
+            var keysA = keys(a);
+            if (keysA.length !== keys(b).length) {
+                return false;
+            }
+            var extendedStackA = stackA.concat([a]);
+            var extendedStackB = stackB.concat([b]);
+            idx = keysA.length - 1;
+            while (idx &gt;= 0) {
+                var key = keysA[idx];
+                if (!(_has(key, b) &amp;&amp; _equals(b[key], a[key], extendedStackA, extendedStackB))) {
+                    return false;
+                }
+                idx -= 1;
+            }
+            return true;
+        }
+        return _equals;
+    }();
+
+    var _reduce = function () {
+        function _arrayReduce(xf, acc, list) {
+            var idx = 0;
+            var len = list.length;
+            while (idx &lt; len) {
+                acc = xf['@@transducer/step'](acc, list[idx]);
+                if (acc &amp;&amp; acc['@@transducer/reduced']) {
+                    acc = acc['@@transducer/value'];
+                    break;
+                }
+                idx += 1;
+            }
+            return xf['@@transducer/result'](acc);
+        }
+        function _iterableReduce(xf, acc, iter) {
+            var step = iter.next();
+            while (!step.done) {
+                acc = xf['@@transducer/step'](acc, step.value);
+                if (acc &amp;&amp; acc['@@transducer/reduced']) {
+                    acc = acc['@@transducer/value'];
+                    break;
+                }
+                step = iter.next();
+            }
+            return xf['@@transducer/result'](acc);
+        }
+        function _methodReduce(xf, acc, obj, methodName) {
+            return xf['@@transducer/result'](obj[methodName](bind(xf['@@transducer/step'], xf), acc));
+        }
+        var symIterator = typeof Symbol !== 'undefined' ? Symbol.iterator : '@@iterator';
+        return function _reduce(fn, acc, list) {
+            if (typeof fn === 'function') {
+                fn = _xwrap(fn);
+            }
+            if (_isArrayLike(list)) {
+                return _arrayReduce(fn, acc, list);
+            }
+            if (typeof list['fantasy-land/reduce'] === 'function') {
+                return _methodReduce(fn, acc, list, 'fantasy-land/reduce');
+            }
+            if (list[symIterator] != null) {
+                return _iterableReduce(fn, acc, list[symIterator]());
+            }
+            if (typeof list.next === 'function') {
+                return _iterableReduce(fn, acc, list);
+            }
+            if (typeof list.reduce === 'function') {
+                return _methodReduce(fn, acc, list, 'reduce');
+            }
+            throw new TypeError('reduce: list must be array or iterable');
+        };
+    }();
+
+    /**
+     * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
+     * cyclical data structures.
+     *
+     * Dispatches symmetrically to the `equals` methods of both arguments, if
+     * present.
+     *
+     * @func
+     * @memberOf R
+     * @since v0.15.0
+     * @category Relation
+     * @sig a -&gt; b -&gt; Boolean
+     * @param {*} a
+     * @param {*} b
+     * @return {Boolean}
+     * @example
+     *
+     *      R.equals(1, 1); //=&gt; true
+     *      R.equals(1, '1'); //=&gt; false
+     *      R.equals([1, 2, 3], [1, 2, 3]); //=&gt; true
+     *
+     *      var a = {}; a.v = a;
+     *      var b = {}; b.v = b;
+     *      R.equals(a, b); //=&gt; true
+     */
+    var equals = _curry2(function equals(a, b) {
+        return _equals(a, b, [], []);
+    });
+
+    /**
+     * Takes a predicate and a `Filterable`, and returns a new filterable of the
+     * same type containing the members of the given filterable which satisfy the
+     * given predicate. Filterable objects include plain objects or any object
+     * that has a filter method such as `Array`.
+     *
+     * Dispatches to the `filter` method of the second argument, if present.
+     *
+     * Acts as a transducer if a transformer is given in list position.
+     *
+     * @func
+     * @memberOf R
+     * @since v0.1.0
+     * @category List
+     * @sig Filterable f =&gt; (a -&gt; Boolean) -&gt; f a -&gt; f a
+     * @param {Function} pred
+     * @param {Array} filterable
+     * @return {Array} Filterable
+     * @see R.reject, R.transduce, R.addIndex
+     * @example
+     *
+     *      var isEven = n =&gt; n % 2 === 0;
+     *
+     *      R.filter(isEven, [1, 2, 3, 4]); //=&gt; [2, 4]
+     *
+     *      R.filter(isEven, {a: 1, b: 2, c: 3, d: 4}); //=&gt; {b: 2, d: 4}
+     */
+    // else
+    var filter = _curry2(_dispatchable(['filter'], _xfilter, function (pred, filterable) {
+        return _isObject(filterable) ? _reduce(function (acc, key) {
+            if (pred(filterable[key])) {
+                acc[key] = filterable[key];
+            }
+            return acc;
+        }, {}, keys(filterable)) : // else
+        _filter(pred, filterable);
+    }));
+
+    /**
+     * An Object-specific version of [`map`](#map). The function is applied to three
+     * arguments: *(value, key, obj)*. If only the value is significant, use
+     * [`map`](#map) instead.
+     *
+     * @func
+     * @memberOf R
+     * @since v0.9.0
+     * @category Object
+     * @sig ((*, String, Object) -&gt; *) -&gt; Object -&gt; Object
+     * @param {Function} fn
+     * @param {Object} obj
+     * @return {Object}
+     * @see R.map
+     * @example
+     *
+     *      var values = { x: 1, y: 2, z: 3 };
+     *      var prependKeyAndDouble = (num, key, obj) =&gt; key + (num * 2);
+     *
+     *      R.mapObjIndexed(prependKeyAndDouble, values); //=&gt; { x: 'x2', y: 'y4', z: 'z6' }
+     */
+    var mapObjIndexed = _curry2(function mapObjIndexed(fn, obj) {
+        return _reduce(function (acc, key) {
+            acc[key] = fn(obj[key], key, obj);
+            return acc;
+        }, {}, keys(obj));
+    });
+
+    /**
+     * The complement of [`filter`](#filter).
+     *
+     * Acts as a transducer if a transformer is given in list position. Filterable
+     * objects include plain objects or any object that has a filter method such
+     * as `Array`.
+     *
+     * @func
+     * @memberOf R
+     * @since v0.1.0
+     * @category List
+     * @sig Filterable f =&gt; (a -&gt; Boolean) -&gt; f a -&gt; f a
+     * @param {Function} pred
+     * @param {Array} filterable
+     * @return {Array}
+     * @see R.filter, R.transduce, R.addIndex
+     * @example
+     *
+     *      var isOdd = (n) =&gt; n % 2 === 1;
+     *
+     *      R.reject(isOdd, [1, 2, 3, 4]); //=&gt; [2, 4]
+     *
+     *      R.reject(isOdd, {a: 1, b: 2, c: 3, d: 4}); //=&gt; {b: 2, d: 4}
+     */
+    var reject = _curry2(function reject(pred, filterable) {
+        return filter(_complement(pred), filterable);
+    });
+
+    // Array.prototype.indexOf doesn't exist below IE9
+    // manually crawl the list to distinguish between +0 and -0
+    // NaN
+    // non-zero numbers can utilise Set
+    // all these types can utilise Set
+    // null can utilise Set
+    // anything else not covered above, defer to R.equals
+    var _indexOf = function _indexOf(list, a, idx) {
+        var inf, item;
+        // Array.prototype.indexOf doesn't exist below IE9
+        if (typeof list.indexOf === 'function') {
+            switch (typeof a) {
+            case 'number':
+                if (a === 0) {
+                    // manually crawl the list to distinguish between +0 and -0
+                    inf = 1 / a;
+                    while (idx &lt; list.length) {
+                        item = list[idx];
+                        if (item === 0 &amp;&amp; 1 / item === inf) {
+                            return idx;
+                        }
+                        idx += 1;
+                    }
+                    return -1;
+                } else if (a !== a) {
+                    // NaN
+                    while (idx &lt; list.length) {
+                        item = list[idx];
+                        if (typeof item === 'number' &amp;&amp; item !== item) {
+                            return idx;
+                        }
+                        idx += 1;
+                    }
+                    return -1;
+                }
+                // non-zero numbers can utilise Set
+                return list.indexOf(a, idx);
+            // all these types can utilise Set
+            case 'string':
+            case 'boolean':
+            case 'function':
+            case 'undefined':
+                return list.indexOf(a, idx);
+            case 'object':
+                if (a === null) {
+                    // null can utilise Set
+                    return list.indexOf(a, idx);
+                }
+            }
+        }
+        // anything else not covered above, defer to R.equals
+        while (idx &lt; list.length) {
+            if (equals(list[idx], a)) {
+                return idx;
+            }
+            idx += 1;
+        }
+        return -1;
+    };
+
+    var _contains = function _contains(a, list) {
+        return _indexOf(list, a, 0) &gt;= 0;
+    };
+
+    //  mapPairs :: (Object, [String]) -&gt; [String]
+    var _toString = function _toString(x, seen) {
+        var recur = function recur(y) {
+            var xs = seen.concat([x]);
+            return _contains(y, xs) ? '&lt;Circular&gt;' : _toString(y, xs);
+        };
+        //  mapPairs :: (Object, [String]) -&gt; [String]
+        var mapPairs = function (obj, keys) {
+            return _map(function (k) {
+                return _quote(k) + ': ' + recur(obj[k]);
+            }, keys.slice().sort());
+        };
+        switch (Object.prototype.toString.call(x)) {
+        case '[object Arguments]':
+            return '(function() { return arguments; }(' + _map(recur, x).join(', ') + '))';
+        case '[object Array]':
+            return '[' + _map(recur, x).concat(mapPairs(x, reject(function (k) {
+                return /^\d+$/.test(k);
+            }, keys(x)))).join(', ') + ']';
+        case '[object Boolean]':
+            return typeof x === 'object' ? 'new Boolean(' + recur(x.valueOf()) + ')' : x.toString();
+        case '[object Date]':
+            return 'new Date(' + (isNaN(x.valueOf()) ? recur(NaN) : _quote(_toISOString(x))) + ')';
+        case '[object Null]':
+            return 'null';
+        case '[object Number]':
+            return typeof x === 'object' ? 'new Number(' + recur(x.valueOf()) + ')' : 1 / x === -Infinity ? '-0' : x.toString(10);
+        case '[object String]':
+            return typeof x === 'object' ? 'new String(' + recur(x.valueOf()) + ')' : _quote(x);
+        case '[object Undefined]':
+            return 'undefined';
+        default:
+            if (typeof x.toString === 'function') {
+                var repr = x.toString();
+                if (repr !== '[object Object]') {
+                    return repr;
+                }
+            }
+            return '{' + mapPairs(x, keys(x)).join(', ') + '}';
+        }
+    };
+
+    /**
+     * Returns the string representation of the given value. `eval`'ing the output
+     * should result in a value equivalent to the input value. Many of the built-in
+     * `toString` methods do not satisfy this requirement.
+     *
+     * If the given value is an `[object Object]` with a `toString` method other
+     * than `Object.prototype.toString`, this method is invoked with no arguments
+     * to produce the return value. This means user-defined constructor functions
+     * can provide a suitable `toString` method. For example:
+     *
+     *     function Point(x, y) {
+     *       this.x = x;
+     *       this.y = y;
+     *     }
+     *
+     *     Point.prototype.toString = function() {
+     *       return 'new Point(' + this.x + ', ' + this.y + ')';
+     *     };
+     *
+     *     R.toString(new Point(1, 2)); //=&gt; 'new Point(1, 2)'
+     *
+     * @func
+     * @memberOf R
+     * @since v0.14.0
+     * @category String
+     * @sig * -&gt; String
+     * @param {*} val
+     * @return {String}
+     * @example
+     *
+     *      R.toString(42); //=&gt; '42'
+     *      R.toString('abc'); //=&gt; '"abc"'
+     *      R.toString([1, 2, 3]); //=&gt; '[1, 2, 3]'
+     *      R.toString({foo: 1, bar: 2, baz: 3}); //=&gt; '{"bar": 2, "baz": 3, "foo": 1}'
+     *      R.toString(new Date('2001-02-03T04:05:06Z')); //=&gt; 'new Date("2001-02-03T04:05:06.000Z")'
+     */
+    var toString = _curry1(function toString(val) {
+        return _toString(val, []);
+    });
+
+    /**
+     * Creates a new function that, when invoked, caches the result of calling `fn`
+     * for a given argument set and returns the result. Subsequent calls to the
+     * memoized `fn` with the same argument set will not result in an additional
+     * call to `fn`; instead, the cached result for that set of arguments will be
+     * returned.
+     *
+     * @func
+     * @memberOf R
+     * @since v0.1.0
+     * @category Function
+     * @sig (*... -&gt; a) -&gt; (*... -&gt; a)
+     * @param {Function} fn The function to memoize.
+     * @return {Function} Memoized version of `fn`.
+     * @see R.memoizeWith
+     * @example
+     *
+     *      let count = 0;
+     *      const factorial = R.memoize(n =&gt; {
+     *        count += 1;
+     *        return R.product(R.range(1, n + 1));
+     *      });
+     *      factorial(5); //=&gt; 120
+     *      factorial(5); //=&gt; 120
+     *      factorial(5); //=&gt; 120
+     *      count; //=&gt; 1
+     */
+    var memoize = memoizeWith(function () {
+        return toString(arguments);
+    });
+
+    var R = {
+        mapObjIndexed: mapObjIndexed,
+        memoize: memoize,
+        values: values
+    };
+  /* eslint-env amd */
+
+  /* TEST_ENTRY_POINT */
+
+  if (typeof exports === 'object') {
+    module.exports = R;
+  } else if (typeof define === 'function' &amp;&amp; define.amd) {
+    define(function() { return R; });
+  } else {
+    this.R = R;
+  }
+
+}.call(this));
+/* eslint-enable */
+</pre>
+
+
+
+</div>
+
+</div>
+<br><a style="float:left;" class="chapter-nav" href="appendix.html">Previous Chapter</a></body>

@@ -1,5 +1,5 @@
 // @flow
-import memoize from "ramda/src/memoize.js";
+import R from "./ramda";
 import FunctorI from "./Functor";
 import ApplyI from "./Apply";
 import ChainI from "./Chain";
@@ -9,6 +9,7 @@ import Monoid from "./Monoid";
 
 import Applicative from "./Applicative";
 
+const { memoize } = R;
 const { identity } = Monoid;
 const { constant } = Applicative;
 

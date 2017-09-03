@@ -1,5 +1,9 @@
 # Change Log
 
+* Remove ramda dependency
+
+v 2.0.2
+
 * Fix memoization
 
 v 2.0.0

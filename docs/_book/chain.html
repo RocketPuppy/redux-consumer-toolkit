@@ -284,11 +284,11 @@ imports from the ramda library.
 <div class="codeblock">
 <span class="codeblock_name">{<strong>Chain.js</strong> <a href="chain.html#6:2">2</a>}</span>
 <pre class="prettyprint">
-import mapObjIndexed from 'ramda/src/mapObjIndexed.js';
-import values from 'ramda/src/values.js';
+import R from './ramda';
 <span class="nocode pln">{import-profunctor, <a href="profunctor.html#9:3">9:3</a>}</span>
 <span class="nocode pln">{import-monoid, <a href="monoid.html#8:3">8:3</a>}</span>
 <span class="nocode pln">{import-types-chain, <a href="chain.html#6:3">3</a>}</span>
+const { mapObjIndexed, values } = R;
 
 const ChainI : Chain&lt;*, *, *, *&gt; = {
 <span class="nocode pln">{chain-bind-implementation, <a href="chain.html#6:2">2</a>}</span>

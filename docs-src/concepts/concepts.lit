@@ -14,3 +14,4 @@ This document will outline the concepts used in this library and how they can be
 [Monoid](concepts/monoid/monoid.lit)
 [Profunctor](concepts/profunctor/profunctor.lit)
 [Appendix](concepts/appendix/appendix.lit)
+[Ramda](concepts/appendix/ramda.lit)

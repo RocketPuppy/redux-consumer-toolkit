@@ -134,7 +134,7 @@ properly.
 <div class="codeblock">
 <span class="codeblock_name">{<strong>memoized.js</strong> <a href="appendix.html#10:2">2</a>}</span>
 <pre class="prettyprint">
-import memoize from 'ramda/src/memoize.js';
+import R from './ramda';
 import FunctorI from './Functor';
 import ApplyI from './Apply';
 import ChainI from './Chain';
@@ -143,6 +143,7 @@ import SemigroupI from './Semigroup';
 <span class="nocode pln">{import-monoid, <a href="monoid.html#8:3">8:3</a>}</span>
 <span class="nocode pln">{import-applicative, <a href="applicative.html#5:3">5:3</a>}</span>
 
+const { memoize } = R;
 const { identity } = Monoid;
 const { constant } = Applicative;
 
@@ -251,4 +252,4 @@ const filter = (f, c) =&gt; (
 </div>
 
 </div>
-<br><a style="float:left;" class="chapter-nav" href="profunctor.html">Previous Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="profunctor.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="ramda.html">Next Chapter</a></body>

@@ -1,11 +1,12 @@
 // @flow
-import mapObjIndexed from "ramda/src/mapObjIndexed.js";
-import values from "ramda/src/values.js";
+import R from "./ramda";
 import Profunctor from "./Profunctor";
 
 import Monoid from "./Monoid";
 
 import type { Chain } from "./types/Chain";
+
+const { mapObjIndexed, values } = R;
 
 const ChainI: Chain<*, *, *, *> = {
   bind: (r_, r) => (state, action) => r_(r(state, action))(state, action),

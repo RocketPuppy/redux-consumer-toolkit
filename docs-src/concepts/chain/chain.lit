@@ -175,11 +175,11 @@ I wrap up the implementations in a module. Some of the methods require some
 imports from the ramda library.
 
 --- Chain.js
-import mapObjIndexed from 'ramda/src/mapObjIndexed.js';
-import values from 'ramda/src/values.js';
+import R from './ramda';
 @{import-profunctor}
 @{import-monoid}
 @{import-types-chain}
+const { mapObjIndexed, values } = R;
 
 const ChainI : Chain<*, *, *, *> = {
 @{chain-bind-implementation}

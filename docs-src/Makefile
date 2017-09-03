@@ -13,8 +13,8 @@ markdown: cleanmarkdown dirsmarkdown
 code: cleancode dirscode
 	lit --tangle -odir $(SRC) *.lit
 	lit --tangle -odir $(SRC) */*.lit
-	find $(SRC) -name "*.js" -execdir sh -c "echo '// @flow' | cat - {} > {}.f" \;
-	find $(SRC) -name "*.js" -exec mv {}.f {} \;
+	find $(SRC) ! -name "*ramda*" -name "*.js" -execdir sh -c "echo '// @flow' | cat - {} > {}.f" \;
+	find $(SRC) ! -name "*ramda*" -name "*.js" -exec mv {}.f {} \;
 	prettier --write "$(SRC)/**/*.js"
 	eslint --config $(ESLINTCONF) $(SRC)
 	flow check

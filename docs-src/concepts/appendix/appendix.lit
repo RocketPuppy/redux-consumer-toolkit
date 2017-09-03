@@ -71,7 +71,7 @@ to import the modules under a different name in order to re-export them
 properly.
 
 --- memoized.js
-import memoize from 'ramda/src/memoize.js';
+import R from './ramda';
 import FunctorI from './Functor';
 import ApplyI from './Apply';
 import ChainI from './Chain';
@@ -80,6 +80,7 @@ import SemigroupI from './Semigroup';
 @{import-monoid}
 @{import-applicative}
 
+const { memoize } = R;
 const { identity } = Monoid;
 const { constant } = Applicative;
 
