@@ -34,20 +34,6 @@ memoizedMemoizes(
   ['foo', 'bar']
 );
 
-describe('Profunctor.mapOut', function() {
-  it('is the same as Functor.map', function() {
-    assert(Functor.map === Profunctor.mapOut);
-    assert(FunctorM.map === ProfunctorM.mapOut);
-  });
-});
-
-describe('Profunctor.mapInOut', function() {
-  it('is the same as Profunctor.promap', function() {
-    assert(Profunctor.promap === Profunctor.mapInOut);
-    assert(ProfunctorM.promap === ProfunctorM.mapInOut);
-  });
-});
-
 memoizedMemoizes(
   'Profunctor.objectify',
   Profunctor.objectify,
@@ -61,3 +47,59 @@ memoizedMemoizes(
   ],
   ['foo', 'bar']
 );
+
+describe('Profunctor', function() {
+  describe('mapOut', function() {
+    it('is the same as Functor.map', function() {
+      assert(Functor.map === Profunctor.mapOut);
+      assert(FunctorM.map === ProfunctorM.mapOut);
+    });
+  });
+
+  describe('mapInOut', function() {
+    it('is the same as Profunctor.promap', function() {
+      assert(Profunctor.promap === Profunctor.mapInOut);
+      assert(ProfunctorM.promap === ProfunctorM.mapInOut);
+    });
+  });
+
+  describe('promap', function() {
+    it('transforms input and output', function() {
+      const f = x => x+x;
+      const g = (x, y) => x + y;
+      const v = 1;
+      const s = 3;
+      const c = Profunctor.promap(f, f, g);
+
+      assert.equal(c(v, s), f(g(f(v), s)));
+      assert.notEqual(c(v, s), g(f(v), s));
+      assert.notEqual(c(v, s), f(g(v, s)));
+    });
+  });
+
+  describe('mapIn', function() {
+    it('transforms input', function() {
+      const f = x => x+x;
+      const g = (x, y) => x + y;
+      const v = 1;
+      const s = 3;
+      const c = Profunctor.mapIn(f, g);
+
+      assert.notEqual(c(v, s), f(g(f(v), s)));
+      assert.equal(c(v, s), g(f(v), s));
+      assert.notEqual(c(v, s), f(g(v, s)));
+    });
+  });
+
+  describe('objectify', function() {
+    it('embeds consumer in object', function() {
+      const k = 'foo';
+      const f = (x, y) => x+y;
+      const v = { [k]: 1 };
+      const s = 3;
+      const c = Profunctor.objectify(k, f);
+
+      assert.deepEqual(c(v, s), { [k]: f(v[k], s) });
+    });
+  });
+});
