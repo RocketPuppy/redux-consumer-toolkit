@@ -1,5 +1,7 @@
 # Change Log
 
+v 2.2.0
+
 Breaking
 * Add and favor concatAll over concat in method API
 
