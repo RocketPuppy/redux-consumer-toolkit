@@ -130,14 +130,18 @@ Semigroup.concat(finishedTodos, unfinishedTodos);
 </div>
 </div>
 <a name="7:2"><div class="section"><h4>2. Details</h4></a>
-<p>The Semigroup interface contains a single method.
+<p>The Semigroup interface contains a concat method, which takes two arguments,
+and a concatAll method which is variadic to reduce the amount of nested concat
+calls that are necessary. The concatAll method requires all input and output
+state to be of the same type.
 </p>
 
 <div class="codeblock">
 <span class="codeblock_name">{<strong>types/Semigroup.js</strong> <a href="semigroup.html#7:2">2</a>}</span>
 <pre class="prettyprint">
 export type Semigroup&lt;Static, In, OutA, OutB&gt; = {
-  concat: ((In, Static) =&gt; OutA, (OutA, Static) =&gt; OutB) =&gt; (In, Static) =&gt; OutB
+  concat: ((In, Static) =&gt; OutA, (OutA, Static) =&gt; OutB) =&gt; (In, Static) =&gt; OutB,
+  concatAll: (...((In, Static) =&gt; In)) =&gt; (In, Static) =&gt; In
 };
 </pre>
 
@@ -177,6 +181,21 @@ concat: (c, c_) =&gt; (
 
 
 </div>
+<p>The concatAll implementation is defined in terms of concat and is simply a
+reduction over the input arguments.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{semigroup-concatAll-implementation <a href="semigroup.html#7:2">2</a>}</span>
+<pre class="prettyprint">
+concatAll: (...cs) =&gt; (
+  cs.reduce(SemigroupI.concat, Monoid.identity)
+)
+</pre>
+
+
+
+</div>
 <p>Finally it is all wrapped up in a module.
 </p>
 
@@ -184,9 +203,12 @@ concat: (c, c_) =&gt; (
 <span class="codeblock_name">{<strong>Semigroup.js</strong> <a href="semigroup.html#7:2">2</a>}</span>
 <pre class="prettyprint">
 <span class="nocode pln">{import-types-semigroup, <a href="semigroup.html#7:3">3</a>}</span>
+<span class="nocode pln">{import-monoid, <a href="monoid.html#8:3">8:3</a>}</span>
 
 const SemigroupI : Semigroup&lt;*, *, *, *&gt; = {
 <span class="nocode pln">  {semigroup-concat-implementation, <a href="semigroup.html#7:2">2</a>}</span>
+  ,
+<span class="nocode pln">  {semigroup-concatAll-implementation, <a href="semigroup.html#7:2">2</a>}</span>
 };
 
 export default SemigroupI

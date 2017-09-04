@@ -1,5 +1,8 @@
 # Change Log
 
+Breaking
+* Add and favor concatAll over concat in method API
+
 v 2.1.2
 
 * Add debugConsumer

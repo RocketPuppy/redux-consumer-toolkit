@@ -27,6 +27,7 @@ const expand = (...args: *) => memoize(ChainI.expand(...args));
 const expandAll = (...args: *) => memoize(ChainI.expandAll(...args));
 const combine = (...args: *) => memoize(ChainI.combine(...args));
 const concat = (...args: *) => memoize(SemigroupI.concat(...args));
+const concatAll = (...args: *) => memoize(SemigroupI.concatAll(...args));
 
 const Functor = {
   map
@@ -54,7 +55,8 @@ const Chain = {
 };
 
 const Semigroup = {
-  concat
+  concat,
+  concatAll
 };
 
 export {
@@ -75,5 +77,5 @@ export {
   expandAll,
   combine,
   identity,
-  concat
+  concatAll
 };

@@ -40,7 +40,7 @@ export {
   expandAll,
   combine,
   identity,
-  concat
+  concatAll
 };
 ---
 
@@ -55,7 +55,7 @@ const { constant } = Applicative;
 const { mapInOut, mapIn, objectify } = Profunctor;
 const { chain, expandAll, combine } = Chain;
 const { identity } = Monoid;
-const { concat } = Semigroup;
+const { concatAll } = Semigroup;
 
 @{export-list}
 ---
@@ -98,6 +98,7 @@ const expand = (...args: *) => memoize(ChainI.expand(...args));
 const expandAll = (...args: *) => memoize(ChainI.expandAll(...args));
 const combine = (...args: *) => memoize(ChainI.combine(...args));
 const concat = (...args: *) => memoize(SemigroupI.concat(...args));
+const concatAll = (...args: *) => memoize(SemigroupI.concatAll(...args));
 
 const Functor = {
   map
@@ -125,7 +126,8 @@ const Chain = {
 };
 
 const Semigroup = {
-  concat
+  concat,
+  concatAll
 };
 
 @{export-list}

@@ -197,29 +197,29 @@ same value. See the use case for `apAll` for an example.
 constant: (Out) => Consumer<Static, In, Out>
 ```
 
-### Concat
+### ConcatAll
 
 #### Use case
 
-Provides a way to take two consumers and run them with the same action/props,
-one after the other. The output of the first consumer is used as input to the
-second consumer.
+Provides a way to take two (or more) consumers and run them with the same
+action/props, one after the other. The output of the first consumer is used as
+input to the second consumer.
 
 ```javascript
-import { concat } from 'redux-consumer-toolkit';
+import { concatAll } from 'redux-consumer-toolkit';
 
 // Returns line items state
 const lineItemsReducer;
 // Takes line items and returns a total
 const subtotalReducer;
 
-concat(lineItemsReducer, subtotalReducer);
+concatAll(lineItemsReducer, subtotalReducer);
 ```
 
 #### API
 
 ```javascript
-concat : (Consumer<Static, In, OutA>, Consumer<Static, OutA, OutB>) => Consumer<Static, In, OutB>
+concatAll : (Consumer<Static, In, OutA>, Consumer<Static, OutA, OutB>) => Consumer<Static, In, OutB>
 ```
 
 ### Identity

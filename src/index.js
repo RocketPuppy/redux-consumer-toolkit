@@ -19,7 +19,7 @@ const { constant } = Applicative;
 const { mapInOut, mapIn, objectify } = Profunctor;
 const { chain, expandAll, combine } = Chain;
 const { identity } = Monoid;
-const { concat } = Semigroup;
+const { concatAll } = Semigroup;
 
 export {
   Functor,
@@ -39,5 +39,5 @@ export {
   expandAll,
   combine,
   identity,
-  concat
+  concatAll
 };

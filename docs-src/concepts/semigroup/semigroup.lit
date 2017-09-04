@@ -72,11 +72,15 @@ Semigroup.concat(finishedTodos, unfinishedTodos);
 
 @s Details
 
-The Semigroup interface contains a single method.
+The Semigroup interface contains a concat method, which takes two arguments,
+and a concatAll method which is variadic to reduce the amount of nested concat
+calls that are necessary. The concatAll method requires all input and output
+state to be of the same type.
 
 --- types/Semigroup.js
 export type Semigroup<Static, In, OutA, OutB> = {
-  concat: ((In, Static) => OutA, (OutA, Static) => OutB) => (In, Static) => OutB
+  concat: ((In, Static) => OutA, (OutA, Static) => OutB) => (In, Static) => OutB,
+  concatAll: (...((In, Static) => In)) => (In, Static) => In
 };
 ---
 
@@ -101,13 +105,25 @@ concat: (c, c_) => (
 )
 ---
 
+The concatAll implementation is defined in terms of concat and is simply a
+reduction over the input arguments.
+
+--- semigroup-concatAll-implementation
+concatAll: (...cs) => (
+  cs.reduce(SemigroupI.concat, Monoid.identity)
+)
+---
+
 Finally it is all wrapped up in a module.
 
 --- Semigroup.js
 @{import-types-semigroup}
+@{import-monoid}
 
 const SemigroupI : Semigroup<*, *, *, *> = {
   @{semigroup-concat-implementation}
+  ,
+  @{semigroup-concatAll-implementation}
 };
 
 export default SemigroupI
