@@ -1,5 +1,7 @@
 # Change Log
 
+v 2.1.1
+
 * Fix apAll function
 
 v 2.1.0
