@@ -212,8 +212,8 @@ used later. The apAll function is implemented as follows.
 <pre class="prettyprint">
 apAll: (transformerConsumer, ...argsConsumers) =&gt; (
   (state, props) =&gt; (
-    transformerConsumer(state, props).apply(
-      argsConsumers.map(argConsumer =&gt; argConsumer(state, props))
+    transformerConsumer(state, props)(
+      ...argsConsumers.map(argConsumer =&gt; argConsumer(state, props))
     )
   )
 )

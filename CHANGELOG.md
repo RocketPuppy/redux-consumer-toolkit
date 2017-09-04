@@ -1,5 +1,7 @@
 # Change Log
 
+* Fix apAll function
+
 v 2.1.0
 
 Breaking

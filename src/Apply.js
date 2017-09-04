@@ -6,8 +6,8 @@ const ApplyI: Apply<*, *, *, *> = {
     transformerConsumer(state, props)(valueConsumer(state, props)),
 
   apAll: (transformerConsumer, ...argsConsumers) => (state, props) =>
-    transformerConsumer(state, props).apply(
-      argsConsumers.map(argConsumer => argConsumer(state, props))
+    transformerConsumer(state, props)(
+      ...argsConsumers.map(argConsumer => argConsumer(state, props))
     )
 };
 
