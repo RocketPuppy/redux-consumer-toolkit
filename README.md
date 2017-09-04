@@ -306,6 +306,27 @@ keys whose values are the state returned from the individual consumers.
 combine : (Object<string, Consumer<Static, In, *>>) => Consumer<Static, In, Out>
 ```
 
+## Utilities
+
+There are some utility functions to help debug consumers.
+
+### LogConsumer
+
+Log the output of the consumer before returning it.
+
+```javascript
+logConsumer('message', consumer)
+```
+
+### DebugConsumer
+
+Enters a breakpoint before returning the output of the consumer for easy
+examination.
+
+```javascript
+debugConsumer(consumer)
+```
+
 ## Contributing
 
 Requires webpack, babel, and eslint to build. You can use a Nix shell to enter a

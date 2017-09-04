@@ -1,0 +1,30 @@
+@code javascript js
+
+@title Appendix
+
+There are some helpers and utilities that I have found to be useful.
+
+@s Logging Consumers
+
+--- utilities.js
+export function logConsumer(message, consumer) {
+  return (s, a) => {
+    const ret = consumer(s, a);
+    // eslint-disable-next-line no-console
+    console.log(message, ret);
+    return ret;
+  };
+}
+---
+
+@s Debugging consumers
+
+--- utilities.js --- +=
+export function debugConsumer(consumer) {
+  return (s, a) => {
+    // eslint-disable-next-line no-debugger
+    debugger;
+    return consumer(s, a);
+  };
+}
+---

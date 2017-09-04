@@ -1,5 +1,8 @@
 # Change Log
 
+* Add debugConsumer
+* Add logConsumer
+
 v 2.1.1
 
 * Fix apAll function
