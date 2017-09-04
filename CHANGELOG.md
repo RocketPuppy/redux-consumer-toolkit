@@ -1,5 +1,7 @@
 # Change Log
 
+v 2.1.0
+
 Breaking
 * Alias promap as mapInOut and expose it instead of promap in API
 
