@@ -1,5 +1,8 @@
 # Change Log
 
+Breaking
+* Alias promap as mapInOut and expose it instead of promap in API
+
 v 2.0.3
 
 * Remove ramda dependency

@@ -3,9 +3,11 @@ import Functor from "./Functor";
 
 import type { Profunctor } from "./types/Profunctor";
 
-const ProfunctorI: Profunctor<*, *, *, *, *> = {
-  promap: (inF, outF, c) => (s, a) => outF(c(inF(s), a)),
+const promap = (inF, outF, c) => (s, a) => outF(c(inF(s), a));
 
+const ProfunctorI: Profunctor<*, *, *, *, *> = {
+  promap,
+  mapInOut: promap,
   mapIn: (inF, c) => ProfunctorI.promap(inF, x => x, c),
 
   mapOut: Functor.map,

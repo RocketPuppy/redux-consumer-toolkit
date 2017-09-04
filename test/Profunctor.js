@@ -41,6 +41,13 @@ describe('Profunctor.mapOut', function() {
   });
 });
 
+describe('Profunctor.mapInOut', function() {
+  it('is the same as Profunctor.promap', function() {
+    assert(Profunctor.promap === Profunctor.mapInOut);
+    assert(ProfunctorM.promap === ProfunctorM.mapInOut);
+  });
+});
+
 memoizedMemoizes(
   'Profunctor.objectify',
   Profunctor.objectify,

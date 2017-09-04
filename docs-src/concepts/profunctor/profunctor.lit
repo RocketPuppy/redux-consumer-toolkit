@@ -40,6 +40,7 @@ The Profunctor interface is really just an extension of the Functor interface.
 --- types/Profunctor.js
 export type Profunctor<Static, InA, InB, OutA, OutB> = {
   promap: ((InB => InA), (OutA => OutB), (InA, Static) => OutA) => (InB, Static) => OutB,
+  mapInOut: ((InB => InA), (OutA => OutB), (InA, Static) => OutA) => (InB, Static) => OutB,
   @{profunctor-types-mapIn}
   ,
   @{profunctor-types-mapOut}
@@ -51,7 +52,8 @@ export type Profunctor<Static, InA, InB, OutA, OutB> = {
 The promap function takes two transforming functions, a consumer, and returns a
 new consumer. The first transformer takes some input and turns it into an input
 that the given consumer can accept. The second transformer works just like the
-transformer in the Functor map interface.
+transformer in the Functor map interface. As a more friendly name promap is
+aliased as mapInOut.
 
 The laws promap needs to follow are similar to the Functor laws as well. The
 first is the identity law. It says that promapping two identity functions over
@@ -74,11 +76,11 @@ input transformer is applied first, the consumer is applied next, and the
 output transformer is applied at the end.
 
 --- profunctor-promap-implementation
-promap: (inF, outF, c) => (
+const promap = (inF, outF, c) => (
   (s, a) => (
     outF(c(inF(s), a))
   )
-)
+);
 ---
 
 In addition to the promap interface, there are some other convenience functions
@@ -127,9 +129,10 @@ Finally all of this is wrapped up in a module.
 @{import-functor}
 @{import-types-profunctor}
 
-const ProfunctorI : Profunctor<*, *, *, *, *> = {
 @{profunctor-promap-implementation}
-,
+const ProfunctorI : Profunctor<*, *, *, *, *> = {
+promap,
+mapInOut: promap,
 @{profunctor-mapIn-implementation}
 ,
 @{profunctor-mapOut-implementation}

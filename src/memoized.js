@@ -17,6 +17,7 @@ const map = (...args: *) => memoize(FunctorI.map(...args));
 const ap = (...args: *) => memoize(ApplyI.ap(...args));
 const apAll = (...args: *) => memoize(ApplyI.apAll(...args));
 const promap = (...args: *) => memoize(ProfunctorI.promap(...args));
+const mapInOut = promap;
 const mapIn = (...args: *) => memoize(ProfunctorI.mapIn(...args));
 const mapOut = map;
 const objectify = (...args: *) => memoize(ProfunctorI.objectify(...args));
@@ -38,6 +39,7 @@ const Apply = {
 
 const Profunctor = {
   promap,
+  mapInOut,
   mapIn,
   mapOut,
   objectify
@@ -66,7 +68,7 @@ export {
   map,
   apAll,
   constant,
-  promap,
+  mapInOut,
   mapIn,
   objectify,
   chain,

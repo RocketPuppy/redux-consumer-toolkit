@@ -91,7 +91,7 @@ map(grandTotal, receiptReducer);
 map : ((OutA => OutB), Consumer<Static, In, OutA>) => Consumer<Static, In, OutB>)
 ```
 
-### Promap
+### MapInOut
 
 #### Use case
 
@@ -101,7 +101,7 @@ Modifying both the input state and the output state of a consumer.
 * Embed consumers in a context like an object key or reversible transformation
 
 ```javascript
-import { promap } from 'redux-consumer-toolkit';
+import { mapInOut } from 'redux-consumer-toolkit';
 import Ramda from 'ramda';
 
 function grandTotal(receipt) {
@@ -112,13 +112,13 @@ function grandTotal(receipt) {
 const orderReducer;
 
 // Ramda.prop gets the named property off an object
-promap(Ramda.prop('receipt'), grandTotal, orderReducer);
+mapInOut(Ramda.prop('receipt'), grandTotal, orderReducer);
 ```
 
 #### API
 
 ```
-promap : ((InA => InB), (OutA => OutB), Consumer<Static, InB, OutA>) => Consumer<Static, InA, OutB>
+mapInOut : ((InA => InB), (OutA => OutB), Consumer<Static, InB, OutA>) => Consumer<Static, InA, OutB>
 ```
 
 ### Objectify
@@ -150,7 +150,7 @@ objectify : (string, Consumer<Static, In, Out>) => Consumer<Static, { string: In
 
 #### Use case
 
-Like Promap, but only change the input of a consumer.
+Like mapInOut, but only change the input of a consumer.
 
 
 #### API

@@ -90,6 +90,7 @@ todos filtered out of it.
 <pre class="prettyprint">
 export type Profunctor&lt;Static, InA, InB, OutA, OutB&gt; = {
   promap: ((InB =&gt; InA), (OutA =&gt; OutB), (InA, Static) =&gt; OutA) =&gt; (InB, Static) =&gt; OutB,
+  mapInOut: ((InB =&gt; InA), (OutA =&gt; OutB), (InA, Static) =&gt; OutA) =&gt; (InB, Static) =&gt; OutB,
 <span class="nocode pln">  {profunctor-types-mapIn, <a href="profunctor.html#9:2">2</a>}</span>
   ,
 <span class="nocode pln">  {profunctor-types-mapOut, <a href="profunctor.html#9:2">2</a>}</span>
@@ -104,7 +105,8 @@ export type Profunctor&lt;Static, InA, InB, OutA, OutB&gt; = {
 <p>The promap function takes two transforming functions, a consumer, and returns a
 new consumer. The first transformer takes some input and turns it into an input
 that the given consumer can accept. The second transformer works just like the
-transformer in the Functor map interface.
+transformer in the Functor map interface. As a more friendly name promap is
+aliased as mapInOut.
 </p>
 <p>The laws promap needs to follow are similar to the Functor laws as well. The
 first is the identity law. It says that promapping two identity functions over
@@ -142,11 +144,11 @@ output transformer is applied at the end.
 <div class="codeblock">
 <span class="codeblock_name">{profunctor-promap-implementation <a href="profunctor.html#9:2">2</a>}</span>
 <pre class="prettyprint">
-promap: (inF, outF, c) =&gt; (
+const promap = (inF, outF, c) =&gt; (
   (s, a) =&gt; (
     outF(c(inF(s), a))
   )
-)
+);
 </pre>
 
 
@@ -237,9 +239,10 @@ objectify: (k, c) =&gt; (
 <span class="nocode pln">{import-functor, <a href="functor.html#3:3">3:3</a>}</span>
 <span class="nocode pln">{import-types-profunctor, <a href="profunctor.html#9:3">3</a>}</span>
 
-const ProfunctorI : Profunctor&lt;*, *, *, *, *&gt; = {
 <span class="nocode pln">{profunctor-promap-implementation, <a href="profunctor.html#9:2">2</a>}</span>
-,
+const ProfunctorI : Profunctor&lt;*, *, *, *, *&gt; = {
+promap,
+mapInOut: promap,
 <span class="nocode pln">{profunctor-mapIn-implementation, <a href="profunctor.html#9:2">2</a>}</span>
 ,
 <span class="nocode pln">{profunctor-mapOut-implementation, <a href="profunctor.html#9:2">2</a>}</span>

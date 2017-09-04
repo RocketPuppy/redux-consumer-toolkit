@@ -16,7 +16,7 @@ import Semigroup from "./Semigroup";
 const { map } = Functor;
 const { apAll } = Apply;
 const { constant } = Applicative;
-const { promap, mapIn, objectify } = Profunctor;
+const { mapInOut, mapIn, objectify } = Profunctor;
 const { chain, expandAll, combine } = Chain;
 const { identity } = Monoid;
 const { concat } = Semigroup;
@@ -32,7 +32,7 @@ export {
   map,
   apAll,
   constant,
-  promap,
+  mapInOut,
   mapIn,
   objectify,
   chain,

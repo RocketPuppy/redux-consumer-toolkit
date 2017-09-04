@@ -84,7 +84,7 @@ export {
   map,
   apAll,
   constant,
-  promap,
+  mapInOut,
   mapIn,
   objectify,
   chain,
@@ -109,7 +109,7 @@ export {
 const { map } = Functor;
 const { apAll } = Apply;
 const { constant } = Applicative;
-const { promap, mapIn, objectify } = Profunctor;
+const { mapInOut, mapIn, objectify } = Profunctor;
 const { chain, expandAll, combine } = Chain;
 const { identity } = Monoid;
 const { concat } = Semigroup;
@@ -151,6 +151,7 @@ const map = (...args: *) =&gt; memoize(FunctorI.map(...args));
 const ap = (...args: *) =&gt; memoize(ApplyI.ap(...args));
 const apAll = (...args: *) =&gt;  memoize(ApplyI.apAll(...args));
 const promap = (...args: *) =&gt; memoize(ProfunctorI.promap(...args));
+const mapInOut = promap;
 const mapIn = (...args: *) =&gt; memoize(ProfunctorI.mapIn(...args));
 const mapOut = map;
 const objectify = (...args: *) =&gt; memoize(ProfunctorI.objectify(...args));
@@ -172,6 +173,7 @@ const Apply = {
 
 const Profunctor = {
   promap,
+  mapInOut,
   mapIn,
   mapOut,
   objectify
