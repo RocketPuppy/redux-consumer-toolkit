@@ -1,5 +1,7 @@
 # Change Log
 
+v 2.1.2
+
 * Add debugConsumer
 * Add logConsumer
 
