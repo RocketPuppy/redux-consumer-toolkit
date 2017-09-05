@@ -80,7 +80,7 @@ state to be of the same type.
 --- types/Semigroup.js
 export type Semigroup<Static, In, OutA, OutB> = {
   concat: ((In, Static) => OutA, (OutA, Static) => OutB) => (In, Static) => OutB,
-  concatAll: (...((In, Static) => In)) => (In, Static) => In
+  concatAll: (...Array<(In, Static) => In>) => (In, Static) => In
 };
 ---
 

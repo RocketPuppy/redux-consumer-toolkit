@@ -4,5 +4,5 @@ export type Semigroup<Static, In, OutA, OutB> = {
     (In, Static) => OutA,
     (OutA, Static) => OutB
   ) => (In, Static) => OutB,
-  concatAll: (...(In, Static) => In) => (In, Static) => In
+  concatAll: (...Array<(In, Static) => In>) => (In, Static) => In
 };

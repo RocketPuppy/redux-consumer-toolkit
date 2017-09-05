@@ -141,7 +141,7 @@ state to be of the same type.
 <pre class="prettyprint">
 export type Semigroup&lt;Static, In, OutA, OutB&gt; = {
   concat: ((In, Static) =&gt; OutA, (OutA, Static) =&gt; OutB) =&gt; (In, Static) =&gt; OutB,
-  concatAll: (...((In, Static) =&gt; In)) =&gt; (In, Static) =&gt; In
+  concatAll: (...Array&lt;(In, Static) =&gt; In&gt;) =&gt; (In, Static) =&gt; In
 };
 </pre>
 
