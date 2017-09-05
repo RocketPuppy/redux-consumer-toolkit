@@ -122,7 +122,7 @@ object. The output is biased towards the second argument in case of conflicting
 keys in the output.
 
 --- chain-types-expand
-  expand: ((In, Static) => {[string]: mixed}, (In, Static) => {[string]: mixed}) => (In, Static) => {[string]: mixed}
+  expand: ((In, Static) => {[string]: OutA}, (In, Static) => {[string]: OutB}) => (In, Static) => {[string]: OutA & OutB}
 ---
 
 The implementation uses bind.
@@ -136,7 +136,7 @@ expand: (r, r_) => (
 The expand helper is useful when I have exactly two consumers to expand, but often in Javascript I have more and nesting calls to exapnd is syntactically ugly. The expandAll method is provided to address that. It is a variadic version of expand. It's signature and implementation follows.
 
 --- chain-types-expandAll
-expandAll: (...Array<(In, Static) => {[string]: mixed}>) => (In, Static) => {[string]: mixed}
+expandAll: (...Array<(In, Static) => {[string]: any}>) => (In, Static) => {[string]: *}
 ---
 
 The implementation is straightforward. It reduces over the arguments, starting

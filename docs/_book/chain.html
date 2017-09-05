@@ -195,7 +195,7 @@ keys in the output.
 <div class="codeblock">
 <span class="codeblock_name">{chain-types-expand <a href="chain.html#6:2">2</a>}</span>
 <pre class="prettyprint">
-  expand: ((In, Static) =&gt; {[string]: mixed}, (In, Static) =&gt; {[string]: mixed}) =&gt; (In, Static) =&gt; {[string]: mixed}
+  expand: ((In, Static) =&gt; {[string]: OutA}, (In, Static) =&gt; {[string]: OutB}) =&gt; (In, Static) =&gt; {[string]: OutA &amp; OutB}
 </pre>
 
 
@@ -221,7 +221,7 @@ expand: (r, r_) =&gt; (
 <div class="codeblock">
 <span class="codeblock_name">{chain-types-expandAll <a href="chain.html#6:2">2</a>}</span>
 <pre class="prettyprint">
-expandAll: (...Array&lt;(In, Static) =&gt; {[string]: mixed}&gt;) =&gt; (In, Static) =&gt; {[string]: mixed}
+expandAll: (...Array&lt;(In, Static) =&gt; {[string]: any}&gt;) =&gt; (In, Static) =&gt; {[string]: *}
 </pre>
 
 
