@@ -236,7 +236,7 @@ merge is biased towards later arguments in case of name conflicts.
 <span class="codeblock_name">{chain-expandAll-implementation <a href="chain.html#6:2">2</a>}</span>
 <pre class="prettyprint">
 expandAll: (...consumers) =&gt; (
-  consumers.reduce(ChainI.expand, Monoid.identity)
+  consumers.reduce(ChainI.expand, Applicative.constant({}))
 )
 </pre>
 
@@ -286,7 +286,7 @@ imports from the ramda library.
 <pre class="prettyprint">
 import R from './ramda';
 <span class="nocode pln">{import-profunctor, <a href="profunctor.html#9:3">9:3</a>}</span>
-<span class="nocode pln">{import-monoid, <a href="monoid.html#8:3">8:3</a>}</span>
+<span class="nocode pln">{import-applicative, <a href="applicative.html#5:3">5:3</a>}</span>
 <span class="nocode pln">{import-types-chain, <a href="chain.html#6:3">3</a>}</span>
 const { mapObjIndexed, values } = R;
 

@@ -145,7 +145,7 @@ merge is biased towards later arguments in case of name conflicts.
 
 --- chain-expandAll-implementation
 expandAll: (...consumers) => (
-  consumers.reduce(ChainI.expand, Monoid.identity)
+  consumers.reduce(ChainI.expand, Applicative.constant({}))
 )
 ---
 
@@ -177,7 +177,7 @@ imports from the ramda library.
 --- Chain.js
 import R from './ramda';
 @{import-profunctor}
-@{import-monoid}
+@{import-applicative}
 @{import-types-chain}
 const { mapObjIndexed, values } = R;
 

@@ -2,7 +2,7 @@
 import R from "./ramda";
 import Profunctor from "./Profunctor";
 
-import Monoid from "./Monoid";
+import Applicative from "./Applicative";
 
 import type { Chain } from "./types/Chain";
 
@@ -14,7 +14,8 @@ const ChainI: Chain<*, *, *, *> = {
 
   expand: (r, r_) => ChainI.bind(s_ => (s, a) => ({ ...s_, ...r_(s, a) }), r),
 
-  expandAll: (...consumers) => consumers.reduce(ChainI.expand, Monoid.identity),
+  expandAll: (...consumers) =>
+    consumers.reduce(ChainI.expand, Applicative.constant({})),
 
   combine: spec => {
     const objectified = mapObjIndexed(
