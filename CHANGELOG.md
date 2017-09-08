@@ -1,5 +1,11 @@
 # Change Log
 
+v 2.3.0
+
+* Use latest release of ramda instead of master
+* Change expandAll to start with a constant empty object consumer, instead of
+  identity
+
 v 2.2.0
 
 Breaking
