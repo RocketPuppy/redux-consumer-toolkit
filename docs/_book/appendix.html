@@ -143,9 +143,23 @@ import SemigroupI from './Semigroup';
 <span class="nocode pln">{import-monoid, <a href="monoid.html#8:3">8:3</a>}</span>
 <span class="nocode pln">{import-applicative, <a href="applicative.html#5:3">5:3</a>}</span>
 
-const { memoize } = R;
 const { identity } = Monoid;
 const { constant } = Applicative;
+
+function memoize(f) {
+  let lastFirst = null;
+  let lastSecond = null;
+  let lastResult = null;
+
+  return (first: *, second: *) =&gt; {
+    if (lastFirst !== first &amp;&amp; lastSecond !== second || lastResult === null) {
+      lastFirst = first;
+      lastSecond = second;
+      lastResult = f(first, second);
+    }
+    return lastResult;
+  };
+}
 
 const map = (...args: *) =&gt; memoize(FunctorI.map(...args));
 const ap = (...args: *) =&gt; memoize(ApplyI.ap(...args));

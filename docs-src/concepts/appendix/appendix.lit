@@ -80,9 +80,23 @@ import SemigroupI from './Semigroup';
 @{import-monoid}
 @{import-applicative}
 
-const { memoize } = R;
 const { identity } = Monoid;
 const { constant } = Applicative;
+
+function memoize(f) {
+  let lastFirst = null;
+  let lastSecond = null;
+  let lastResult = null;
+
+  return (first: *, second: *) => {
+    if (lastFirst !== first && lastSecond !== second || lastResult === null) {
+      lastFirst = first;
+      lastSecond = second;
+      lastResult = f(first, second);
+    }
+    return lastResult;
+  };
+}
 
 const map = (...args: *) => memoize(FunctorI.map(...args));
 const ap = (...args: *) => memoize(ApplyI.ap(...args));

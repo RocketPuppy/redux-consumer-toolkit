@@ -1,5 +1,7 @@
 # Change Log
 
+* Use custom memoize instead of Ramda's memoize. Ramda's is too slow, and the
+  custom version should suffice for most use cases.
 * Tweak types of Chain methods to use flow's inference
 
 v 2.3.0
