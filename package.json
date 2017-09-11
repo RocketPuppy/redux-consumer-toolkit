@@ -1,6 +1,6 @@
 {
   "name": "redux-consumer-toolkit",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Toolkit for combining and creating efficient derived reducers",
   "main": "lib/index.js",
   "repository": {
