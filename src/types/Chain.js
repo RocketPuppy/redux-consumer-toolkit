@@ -14,8 +14,8 @@ export type Chain<Static, In, OutA, OutB> = {
   ) => (In, Static) => { [string]: OutA & OutB },
 
   expandAll: (
-    ...Array<(In, Static) => { [string]: any }>
+    ...Array<(In, Static) => { [string]: * }>
   ) => (In, Static) => { [string]: * },
 
-  combine: ({ [key: string]: (In, Static) => mixed }) => (In, Static) => mixed
+  combine: ({ [string]: (In, Static) => * }) => (In, Static) => *
 };

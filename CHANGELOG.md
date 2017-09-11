@@ -1,5 +1,7 @@
 # Change Log
 
+* Tweak types of Chain methods to use flow's inference
+
 v 2.3.0
 
 * Use latest release of ramda instead of master

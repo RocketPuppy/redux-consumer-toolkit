@@ -221,7 +221,7 @@ expand: (r, r_) =&gt; (
 <div class="codeblock">
 <span class="codeblock_name">{chain-types-expandAll <a href="chain.html#6:2">2</a>}</span>
 <pre class="prettyprint">
-expandAll: (...Array&lt;(In, Static) =&gt; {[string]: any}&gt;) =&gt; (In, Static) =&gt; {[string]: *}
+expandAll: (...Array&lt;(In, Static) =&gt; {[string]: *}&gt;) =&gt; (In, Static) =&gt; {[string]: *}
 </pre>
 
 
@@ -255,7 +255,7 @@ the same but without the runtime checks.
 <div class="codeblock">
 <span class="codeblock_name">{chain-types-combine <a href="chain.html#6:2">2</a>}</span>
 <pre class="prettyprint">
-combine: ({[key : string]: (In, Static) =&gt; mixed }) =&gt; (In, Static) =&gt; mixed
+combine: ({[string]: (In, Static) =&gt; * }) =&gt; (In, Static) =&gt; *
 </pre>
 
 

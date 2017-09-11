@@ -136,7 +136,7 @@ expand: (r, r_) => (
 The expand helper is useful when I have exactly two consumers to expand, but often in Javascript I have more and nesting calls to exapnd is syntactically ugly. The expandAll method is provided to address that. It is a variadic version of expand. It's signature and implementation follows.
 
 --- chain-types-expandAll
-expandAll: (...Array<(In, Static) => {[string]: any}>) => (In, Static) => {[string]: *}
+expandAll: (...Array<(In, Static) => {[string]: *}>) => (In, Static) => {[string]: *}
 ---
 
 The implementation is straightforward. It reduces over the arguments, starting
@@ -158,7 +158,7 @@ into pipelines constructed with this module. Semantically the combine method is
 the same but without the runtime checks.
 
 --- chain-types-combine
-combine: ({[key : string]: (In, Static) => mixed }) => (In, Static) => mixed
+combine: ({[string]: (In, Static) => * }) => (In, Static) => *
 ---
 
 It is implemented by first objectifying the consumers according to the provided specification. Next it takes those objectified consumers and passes them to the expandAll method. This returns a consumer that will run all the consumers, appropriately pulling their inputs off the state and placing their results back in the state object at the same key.
