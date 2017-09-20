@@ -1,9 +1,154 @@
 # Redux Consumer Toolkit
 
-This library implements several functions that are useful for combining,
-composing, and altering reducers and selectors (consumers). Each of this functions returns a memoized
-consumer, similar to reselect, so data isn't re-computed unnecessarily. The
-inspiration for this library was
+## Decouple your business logic!
+
+Redux consumer toolkit allows you to write your business logic and then embed it
+in a reducer or selector. The underlying business logic need not know anything about
+the reducer or selector it's embedded in. For example, here's one way to
+encapsulate how to get the currently signed in user.
+
+```javascript
+const reducerState  = {
+  authInfo: {
+    currentUserId: 1,
+    lastSignedInAt: '2017-09-17'
+  },
+  userData: {
+    1: { /* user id 1 data */ },
+    4: { /* user id 2 data */ },
+    10: { /* user id 10 data */ }
+  }
+};
+
+// Encapsulated from the knowledge of selectors!
+const getUser = (userId, userData) => {
+  return userData[userId];
+};
+
+// Generic selector
+const currentUserIdSelector = (state) => {
+  return state.authInfo.currentUserId;
+};
+
+// Generic selector
+const userDataSelector = (state) => {
+  return state.userData;
+};
+
+// Just take the business logic and give it its data dependencies!
+const currentUserSelector =
+  apAll(getUser, currentUserIdSelector, userDataSelector);
+```
+
+The benefits of this decoupling come into play when you consider reusability.
+Now I need to get a user id from component props. I can simply reuse the
+`getCurrentUser` function with a different selector!
+
+```javascript
+const userIdSelector = (state, props) => {
+  return props.userId;
+};
+
+const userFromPropsSelector =
+  apAll(getUser, userIdSelector, userDataSelector);
+```
+
+## Encapsulate reducer responsibilities!
+
+Write reducers that have well isolated responsibilities and then combine them
+together seamlessly. Even isolate reducers that depend on the value of other
+reducers! Disentangle your monolithic reducers and make them easier to test and
+maintain. For example, here's how I might encapsulate entangled responsibilities
+of a reducer that handles form data.
+
+```javascript
+const initialState = {
+  name: {
+    dirty: false,
+    value: null
+  },
+  email: {
+    dirty: false,
+    value: null
+  }
+};
+
+const originalReducer = (state, action) {
+  switch(action.type) {
+  case FIELD_CHANGED:
+    const newField = {
+      value: action.value,
+      dirty: true
+    };
+    return {
+      ...state,
+      [action.fieldName]: newField
+    };
+  case FIELD_CLEARED:
+    const newField = {
+      value: null,
+      dirty: false
+    };
+    return {
+      ...state,
+      [action.fieldName]: newField
+    };
+  }
+}
+```
+
+The reducer is conflating three logical responsibilities by handling field
+values, dirty status, and state setting at the same time. Those can easily be
+encapsulated and recombined with a few functions from the toolkit.
+
+```javascript
+const dirtyHandler = (state, action) => {
+  switch(action.type) {
+  case FIELD_CHANGED:
+    return true;
+  case FIELD_CLEARED:
+    return false;
+  }
+}
+
+const valueHandler = (state, action) => {
+  switch(action.type) {
+  case FIELD_CHANGED:
+    return action.value;
+  case FIELD_CLEARED:
+    return null;
+}
+
+const newFieldReducer = combine({
+  dirty: dirtyHandler,
+  value: valueHandler
+});
+
+const formReducer = chain(
+  newFieldReducer,
+  (newField) => (state, action) => {
+    return {
+      ...state,
+      [action.fieldName]: newField
+    };
+  }
+);
+```
+
+## Focus on one thing at a time!
+
+All of this decoupling and encapsulation makes it so you can focus on one thing
+at a time. Write your business logic without needing to focus on the details of
+reducers. Combine your selectors without needing to focus on the underlying
+business logic. Even write a reducer without needing to focus on tangential
+responsibilities because you've isolated them from each other.
+
+Make your reducers, and selectors, more testable and easier to reason about and
+maintain with Redux Consumer Toolkit!
+
+## Inspiration
+
+The inspiration for this library was
 [fantasyland-redux](https://github.com/philipnilsson/fantasyland-redux), only
 instead of basing it off of the
 [fantasyland](https://github.com/fantasyland/fantasy-land) specification it is
