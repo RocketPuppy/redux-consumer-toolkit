@@ -1,7 +1,5 @@
 @code javascript js
 
-@title Semigroup
-
 @s Motivation
 
 Unlike the previous sections, which were all about transforming consumers, this

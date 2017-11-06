@@ -1,7 +1,5 @@
 @code javascript js
 
-@title Applicative
-
 @s Motivation
 
 I've demonstrated the motivation and some use cases behind both Functor and

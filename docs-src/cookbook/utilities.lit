@@ -1,7 +1,5 @@
 @code javascript js
 
-@title Appendix
-
 There are some helpers and utilities that I have found to be useful.
 
 @s Logging Consumers

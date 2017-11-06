@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Profunctor</title>
+<title>Concepts: Profunctor</title>
 <script>
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
 (function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
@@ -42,7 +42,7 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </head>
 <body onload="prettyPrint()">
 <section>
-<h1>Profunctor</h1>
+<h1>Concepts: Profunctor</h1>
 <a name="9:1"><div class="section"><h4>1. Motivation</h4></a>
 <p>The Functor interface provides an extremely useful method of transforming the
 output of a consumer. That handles one half of the problem of fitting consumers
@@ -63,7 +63,7 @@ same key.
 <div class="codeblock">
 <span class="codeblock_name">{profunctor-example-1 <a href="profunctor.html#9:1">1</a>}</span>
 <pre class="prettyprint">
-<span class="nocode pln">{filter, <a href="appendix.html#10:3">10:3</a>}</span>
+<span class="nocode pln">{filter, <a href="appendix.html#12:3">12:3</a>}</span>
 const chores = (state, props) =&gt; state.chores;
 // Returns { todos, groceries } object
 
@@ -116,7 +116,7 @@ a consumer is the same as just using that consumer.
 <div class="codeblock">
 <span class="codeblock_name">{profunctor-laws-identity <a href="profunctor.html#9:2">2</a>}</span>
 <pre class="prettyprint">
-<span class="nocode pln">{identity, <a href="appendix.html#10:3">10:3</a>}</span>
+<span class="nocode pln">{identity, <a href="appendix.html#12:3">12:3</a>}</span>
 promap(identity, identity, consumer) === consumer
 </pre>
 
@@ -280,8 +280,8 @@ import Profunctor from './Profunctor'
 </pre>
 
 
-<p class="seealso">Used in sections <a href="chain.html#6:2">6:2</a> and <a href="appendix.html#10:1">10:1</a></p>
+<p class="seealso">Used in sections <a href="chain.html#6:2">6:2</a> and <a href="appendix.html#12:1">12:1</a></p>
 </div>
 
 </div>
-<br><a style="float:left;" class="chapter-nav" href="monoid.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="appendix.html">Next Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="monoid.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="utilities.html">Next Chapter</a></body>

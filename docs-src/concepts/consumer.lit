@@ -1,7 +1,5 @@
 @code javascript js
 
-@title Consumer
-
 @s Definition
 
 Throughout the documentation I will be referencing Consumers. Consumers are my generic term for a function that has a specific shape. In Flow terms it is described as follows.

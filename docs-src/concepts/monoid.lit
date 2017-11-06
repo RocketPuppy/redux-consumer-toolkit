@@ -1,7 +1,5 @@
 @code javascript js
 
-@title Monoid
-
 @s Motivation
 
 The Monoid interface provides a consumer that functions as an identity

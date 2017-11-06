@@ -1,7 +1,5 @@
 @code javascript js
 
-@title Apply
-
 @s Motivation
 
 In the previous chapter I discussed the motivation and implementation of

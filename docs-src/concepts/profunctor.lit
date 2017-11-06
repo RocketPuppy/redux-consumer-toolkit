@@ -1,7 +1,5 @@
 @code javascript js
 
-@title Profunctor
-
 @s Motivation
 
 The Functor interface provides an extremely useful method of transforming the

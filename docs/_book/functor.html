@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Functor</title>
+<title>Concepts: Functor</title>
 <script>
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
 (function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
@@ -42,7 +42,7 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </head>
 <body onload="prettyPrint()">
 <section>
-<h1>Functor</h1>
+<h1>Concepts: Functor</h1>
 <a name="3:1"><div class="section"><h4>1. Motivation</h4></a>
 <p>It is often the case when programming that I have a function that takes some input argument and returns a transformed output. I also might have some piece of data I wouldd like to apply that function to, but I can't because the data is encapsulated inside something else. I'll call the "data" in this case the "target" and the "something else" the "context". To make it concrete, I might have some way to get the number of completed todo items but the only way to get the todo items is via a selector function, because they are stored in a global store using Redux.
 </p>
@@ -113,7 +113,7 @@ Functor.map(identity, todoSelector) === todoSelector;
 <div class="codeblock">
 <span class="codeblock_name">{functor-laws <a href="functor.html#3:2">2</a>} +=</span>
 <pre class="prettyprint">
-<span class="nocode pln">{compose, <a href="appendix.html#10:3">10:3</a>}</span>
+<span class="nocode pln">{compose, <a href="appendix.html#12:3">12:3</a>}</span>
 const transformerA = todos =&gt; todos.emptyTodos;
 const transformerB = todos =&gt; todos.length;
 
@@ -187,7 +187,7 @@ import Functor from './Functor';
 </pre>
 
 
-<p class="seealso">Used in sections <a href="profunctor.html#9:2">9:2</a> and <a href="appendix.html#10:1">10:1</a></p>
+<p class="seealso">Used in sections <a href="profunctor.html#9:2">9:2</a> and <a href="appendix.html#12:1">12:1</a></p>
 </div>
 
 </div>

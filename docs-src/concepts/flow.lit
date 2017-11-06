@@ -1,7 +1,5 @@
 @code javascript .js
 
-@title Flow Basics
-
 @s Motivation
 
 The [Flow](https://flow.org) type checker for Javascript provides me with some guarantees while I'm developing that the code I write is all internally consistent. This helps prevent me from making silly mistakes. Additionally the type signatures serve as a useful form of documentation.

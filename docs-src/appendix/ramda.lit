@@ -1,7 +1,5 @@
 @code javascript js
 
-@title Appendix
-
 @s Ramda
 
 This library uses some functions that come from the [ramda](http://ramdajs.com)

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Appendix</title>
+<title>Cookbook: Utilities</title>
 <script>
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
 (function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
@@ -42,11 +42,11 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </head>
 <body onload="prettyPrint()">
 <section>
-<h1>Appendix</h1>
-<a name="12:1"><div class="section"><h4>1. Logging Consumers</h4></a>
+<h1>Cookbook: Utilities</h1>
+<a name="10:1"><div class="section"><h4>1. Logging Consumers</h4></a>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>utilities.js</strong> <a href="utilities.html#12:1">1</a>}</span>
+<span class="codeblock_name">{<strong>utilities.js</strong> <a href="utilities.html#10:1">1</a>}</span>
 <pre class="prettyprint">
 export function logConsumer(message, consumer) {
   return (s, a) =&gt; {
@@ -57,15 +57,15 @@ export function logConsumer(message, consumer) {
   };
 }
 </pre>
-<p class="seealso">Added to in section <a href="utilities.html#12:2">2</a></p>
+<p class="seealso">Added to in section <a href="utilities.html#10:2">2</a></p>
 
 
 </div>
 </div>
-<a name="12:2"><div class="section"><h4>2. Debugging consumers</h4></a>
+<a name="10:2"><div class="section"><h4>2. Debugging consumers</h4></a>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>utilities.js</strong> <a href="utilities.html#12:1">1</a>} +=</span>
+<span class="codeblock_name">{<strong>utilities.js</strong> <a href="utilities.html#10:1">1</a>} +=</span>
 <pre class="prettyprint">
 export function debugConsumer(consumer) {
   return (s, a) =&gt; {
@@ -81,4 +81,4 @@ export function debugConsumer(consumer) {
 </div>
 
 </div>
-<br><a style="float:left;" class="chapter-nav" href="ramda.html">Previous Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="profunctor.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="reselect.html">Next Chapter</a></body>

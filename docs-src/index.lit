@@ -1,23 +1,27 @@
+@book
+
 @title Redux Reducer Toolkit
 
-@s Introduction
+Welcome to the documentation on the Redux Reducer Toolkit library. It is a
+library intended to help you build up both complicated reducer functions and
+complicated selector functions from simple parts. This document is a literate
+program, arranged as a book that can be read to understand the entirety of the
+library. The Concepts sections provide an overview of the major concepts and
+their implementions. They are designed to be read front-to-back. The Cookbook
+sections provide examples of patterns that are common in daily usage and can be
+read in any order. The Appendix sections contain useful miscellaneous
+information and implementation details.
 
-Welcome to the documentation on the Redux Reducer Toolkit library. It is a library intended to help you build up both complicated reducer functions and complicated selector functions from simple parts.
-
-@s Reselect
-
-This library is occupying a niche already filled in some part by the [Reselect](https://github.com/reactjs/reselect) library. If you are familiar with Reselect, starting with the chapters on translating concepts from Reselect is a good idea.
-
-[Reselect Translations](_book/Reselect Translations_contents.html)
-
-@s Cookbook
-
-You can dive into the cookbook which will demonstrate a few recipes you can apply to your programs now.
-
-[Cookbook](_book/cookbook.html)
-
-@s Fundamentals
-
-You can also get a feel for the concepts and practices introduced in this library through the following chapters. They are literate programs, which means they will explain how and why the library is built by intermingling prose with source code. The goal being to gain a deep understanding through reading.
-
-[Concepts](_book/Concepts_contents.html)
+[Concepts: Flow Basics](concepts/flow.lit)
+[Concepts: Consumers](concepts/consumer.lit)
+[Concepts: Functor](concepts/functor.lit)
+[Concepts: Apply](concepts/apply.lit)
+[Concepts: Applicative](concepts/applicative.lit)
+[Concepts: Chain](concepts/chain.lit)
+[Concepts: Semigroup](concepts/semigroup.lit)
+[Concepts: Monoid](concepts/monoid.lit)
+[Concepts: Profunctor](concepts/profunctor.lit)
+[Cookbook: Utilities](cookbook/utilities.lit)
+[Cookbook: Reselect](cookbook/reselect.lit)
+[Appendix: Library Entry-Point](appendix/appendix.lit)
+[Appendix: Ramda](appendix/ramda.lit)

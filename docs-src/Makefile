@@ -8,11 +8,9 @@ all: markdown code
 
 markdown: cleanmarkdown dirsmarkdown
 	lit --weave -odir $(HTML) *.lit
-	lit --weave -odir $(HTML) */*.lit
 
 code: cleancode dirscode
 	lit --tangle -odir $(SRC) *.lit
-	lit --tangle -odir $(SRC) */*.lit
 	find $(SRC) ! -name "*ramda*" ! -name "*utilities*" -name "*.js" -execdir sh -c "echo '// @flow' | cat - {} > {}.f" \;
 	find $(SRC) ! -name "*ramda*" ! -name "*utilities*" -name "*.js" -exec mv {}.f {} \;
 	prettier --write "$(SRC)/**/*.js"

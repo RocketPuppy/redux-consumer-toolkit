@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Applicative</title>
+<title>Concepts: Applicative</title>
 <script>
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
 (function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
@@ -42,7 +42,7 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </head>
 <body onload="prettyPrint()">
 <section>
-<h1>Applicative</h1>
+<h1>Concepts: Applicative</h1>
 <a name="5:1"><div class="section"><h4>1. Motivation</h4></a>
 <p>I've demonstrated the motivation and some use cases behind both Functor and
 Applicative. They let me apply functions to values in the context of a
@@ -110,11 +110,11 @@ export type Applicative&lt;Static, In, Out&gt; = {
 interfaces, there are only three generics here, and none of them are
 duplicated. This knowledge tells me and the Flow checker that none of these
 parameters can change. The of function has a signature very similar to that of
-a constant function (<code>{constant,</code><a href="appendix.html#10:3"><code>10:3</code></a><code>}</code>), and that's a clue that it works similarly.
+a constant function (<code>{constant,</code><a href="appendix.html#12:3"><code>12:3</code></a><code>}</code>), and that's a clue that it works similarly.
 </p>
 <p>There are some laws that the Applicative interface must follow. They are
 related to and depend on the Apply interface. The first law is the Identity
-law, which simply says that using of on the identity function (<code>{identity,</code><a href="appendix.html#10:3"><code>10:3</code></a><code>}</code>) and
+law, which simply says that using of on the identity function (<code>{identity,</code><a href="appendix.html#12:3"><code>12:3</code></a><code>}</code>) and
 applying it to a value in a consumer is the same as just using that consumer.
 </p>
 
@@ -156,7 +156,7 @@ ap(u, of(y)) === ap(of(f =&gt; f(y)), u)
 
 </div>
 <p>With all those laws and the interface, the implementation is pretty
-straightforward. It's essentially the same as <code>{constant,</code><a href="appendix.html#10:3"><code>10:3</code></a><code>}</code> but with consumers in
+straightforward. It's essentially the same as <code>{constant,</code><a href="appendix.html#12:3"><code>12:3</code></a><code>}</code> but with consumers in
 mind.
 </p>
 
@@ -215,7 +215,7 @@ import Applicative from './Applicative';
 </pre>
 
 
-<p class="seealso">Used in sections <a href="chain.html#6:2">6:2</a>, <a href="appendix.html#10:1">10:1</a> and <a href="appendix.html#10:2">10:2</a></p>
+<p class="seealso">Used in sections <a href="chain.html#6:2">6:2</a>, <a href="appendix.html#12:1">12:1</a> and <a href="appendix.html#12:2">12:2</a></p>
 </div>
 
 </div>

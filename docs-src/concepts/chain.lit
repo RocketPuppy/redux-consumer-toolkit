@@ -1,7 +1,5 @@
 @code javascript js
 
-@title Chain
-
 @s Motivation
 
 So far I've covered Functor, Apply, and Applicative. Those are all useful

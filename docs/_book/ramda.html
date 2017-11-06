@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Appendix</title>
+<title>Appendix: Ramda</title>
 <script>
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
 (function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
@@ -42,8 +42,8 @@ body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{fo
 </head>
 <body onload="prettyPrint()">
 <section>
-<h1>Appendix</h1>
-<a name="11:1"><div class="section"><h4>1. Ramda</h4></a>
+<h1>Appendix: Ramda</h1>
+<a name="13:1"><div class="section"><h4>1. Ramda</h4></a>
 <p>This library uses some functions that come from the <a href="http://ramdajs.com">ramda</a>
 Javascript utility library. I don't want to force a ramda dependency on other
 users of my library so I'm copying the used functions directly from their
@@ -51,7 +51,7 @@ source.
 </p>
 
 <div class="codeblock">
-<span class="codeblock_name">{<strong>ramda.js</strong> <a href="ramda.html#11:1">1</a>}</span>
+<span class="codeblock_name">{<strong>ramda.js</strong> <a href="ramda.html#13:1">1</a>}</span>
 <pre class="prettyprint">
 /* eslint-disable */
 ;(function() {
@@ -1087,4 +1087,4 @@ source.
 </div>
 
 </div>
-<br><a style="float:left;" class="chapter-nav" href="appendix.html">Previous Chapter</a><a style="float:right;" class="chapter-nav" href="utilities.html">Next Chapter</a></body>
+<br><a style="float:left;" class="chapter-nav" href="appendix.html">Previous Chapter</a></body>
