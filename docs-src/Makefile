@@ -8,6 +8,8 @@ all: markdown code
 
 markdown: cleanmarkdown dirsmarkdown
 	lit --weave -odir $(HTML) *.lit
+	mv $(HTML)/_book/Redux\ Reducer\ Toolkit_contents.html $(HTML)/index.html
+	sed -i "s/href=\"/href=\"_book\//" $(HTML)/index.html
 
 code: cleancode dirscode
 	lit --tangle -odir $(SRC) *.lit
