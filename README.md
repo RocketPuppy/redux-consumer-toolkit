@@ -157,9 +157,9 @@ specification. This made it simple to build this as a library instead of pinning
 it to a specific redux version.
 
 See the [Github Pages
-site](https://rocketpuppy.github.io/redux-consumer-toolkit/index.html) for
+site](https://rocketpuppy.github.io/redux-consumer-toolkit/index.html) for more
 usage examples and documentation on the library. It is a literate program from
-which is constructed this library's source code.
+which this library's source code is constructed.
 
 ## API
 
