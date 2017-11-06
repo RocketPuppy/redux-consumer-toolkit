@@ -17,6 +17,7 @@ nixpkgs.stdenv.mkDerivation {
 
   shellHook = ''
     export PATH=$src/node_modules/.bin:$PATH
+    npm i eslint prettier
     cd $src
   '';
 }
